@@ -220,6 +220,8 @@ body {
     animation: fadeInUp 1s ease forwards;
     opacity: 0;
     transform: translateY(30px);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    color: #fff;
 }
 
 .hero-content p {
@@ -228,6 +230,8 @@ body {
     animation: fadeInUp 1s ease 0.2s forwards;
     opacity: 0;
     transform: translateY(30px);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    color: #fff;
 }
 
 .hero-tagline {
@@ -271,6 +275,7 @@ body {
 
 /* ===== Page Hero ===== */
 .page-hero {
+    padding-top: 80px;
     height: 50vh;
     min-height: 300px;
     display: flex;
@@ -323,9 +328,10 @@ body {
 
 .section-header h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     color: var(--dark);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
 }
 
 .section-header p {
@@ -490,46 +496,66 @@ body {
 .contact-info {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 
-.contact-item {
+.contact-card {
     display: flex;
-    gap: 15px;
+    gap: 18px;
     align-items: flex-start;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.contact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
 }
 
 .contact-icon {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     background: var(--primary);
-    border-radius: 50%;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    transition: var(--transition);
 }
 
-.contact-item h4 {
+.contact-card:hover .contact-icon {
+    background: var(--accent);
+    transform: scale(1.05);
+}
+
+.contact-card h4 {
     color: var(--dark);
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
 }
 
-.contact-item p {
+.contact-card p {
     color: var(--text-light);
-    line-height: 1.7;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
-.contact-item a {
+.contact-card a {
     color: var(--primary);
     text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
 }
 
-.contact-item a:hover {
+.contact-card a:hover {
     color: var(--primary-dark);
     text-decoration: underline;
 }
@@ -537,8 +563,9 @@ body {
 .contact-form {
     background: #fff;
     padding: 40px;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: var(--shadow-hover);
+    border: 1px solid rgba(0,0,0,0.04);
 }
 
 .form-group {
@@ -549,12 +576,13 @@ body {
 .form-group textarea,
 .form-group select {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 14px 18px;
+    border: 2px solid #eee;
+    border-radius: 8px;
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     transition: var(--transition);
+    background: #fafafa;
 }
 
 .form-group input:focus,
@@ -562,12 +590,147 @@ body {
 .form-group select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(74, 124, 89, 0.08);
 }
 
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
+}
+
+/* ===== Service Cards ===== */
+.service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid rgba(0,0,0,0.04);
+    text-align: left;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.service-card i {
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.service-card:hover i {
+    background: var(--accent);
+    transform: scale(1.05);
+}
+
+.service-card h5 {
+    color: var(--dark);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.service-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ===== Content Grid (for About/Accommodation) ===== */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.content-grid.reverse {
+    direction: rtl;
+}
+
+.content-grid.reverse > * {
+    direction: ltr;
+}
+
+.content-grid img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: var(--shadow-hover);
+    object-fit: cover;
+    aspect-ratio: 4/3;
+}
+
+.content-text h3 {
+    color: var(--dark);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.content-text p {
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+/* ===== Room Cards ===== */
+.room-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-hover);
+    transition: var(--transition);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.room-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.room-card:hover img {
+    transform: scale(1.05);
+}
+
+.room-card-content {
+    padding: 25px;
+}
+
+.room-card-content h4 {
+    color: var(--dark);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.room-card-content p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.7;
 }
 
 /* ===== Footer ===== */
@@ -734,30 +897,30 @@ body {
 /* ===== Property Showcase ===== */
 .showcase-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 24px;
     margin-top: 30px;
 }
-
+@media (min-width: 768px) {
+    .showcase-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 .showcase-item {
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
-    aspect-ratio: 16/10;
+    border-radius: 12px;
+    aspect-ratio: 3/2;
     box-shadow: var(--shadow);
 }
-
 .showcase-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
 }
-
 .showcase-item:hover img {
     transform: scale(1.05);
 }
-
 .showcase-caption {
     position: absolute;
     bottom: 0;
@@ -789,7 +952,7 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
 .card-image {
@@ -814,9 +977,9 @@ body {
 
 .card-content h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: var(--dark);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .card-content p {
@@ -828,9 +991,12 @@ body {
 .card-price {
     display: inline-block;
     color: var(--accent);
+    background: var(--bg-light);
+    padding: 4px 10px;
+    border-radius: 4px;
     font-weight: 600;
-    font-size: 1.1rem;
-    margin: 15px 0;
+    font-size: 1.2rem;
+    margin: 12px 0;
 }
 
 .card-buttons {
@@ -937,12 +1103,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
-    margin-top: 40px;
+    gap: 15px;
+    margin-top: 20px;
     flex-wrap: wrap;
 }
 
 .trust-badge {
+    max-width: 120px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     opacity: 0.7;
     transition: var(--transition);
     filter: grayscale(100%);

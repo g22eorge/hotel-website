@@ -1,22 +1,22 @@
 backend:
   name: git-gateway
-  branch: main # Branch to update (optional; defaults to master)
+  branch: main
 
-media_folder: "assets/images" # Folder where user uploaded files should go
-public_folder: "/assets/images" # Folder where the uploaded files, when referencing them in the site, should go
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
   - name: "hero"
     label: "Hero Section"
-    description: "Edit the homepage hero section"
-    file: "index.html"
-    label_singular: "Hero Section"
-    widget: "object"
-    fields:
-      - { label: "Hero Title", name: "title", widget: "string", default: "Your Peaceful Stay Near Queen Elizabeth National Park" }
-      - { label: "Hero Subtitle", name: "subtitle", widget: "string", default: "Welcome to Latitude Zero Cottages Kikorongo — a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo. Whether you are here for a safari, a romantic escape, or a quiet retreat, we offer warm hospitality, delicious meals, and a place to truly unwind." }
-      - { label: "Hero Tagline", name: "tagline", widget: "string", default: "Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality." }
-      - { label: "Hero Background Image", name: "background_image", widget: "image", default: "images/IMG_3382.jpeg" }
+    files:
+      - file: "index.html"
+        label: "Hero Section"
+        name: "hero"
+        fields:
+          - { label: "Hero Title", name: "title", widget: "string", default: "Your Peaceful Stay Near Queen Elizabeth National Park" }
+          - { label: "Hero Subtitle", name: "subtitle", widget: "string", default: "Welcome to Latitude Zero Cottages Kikorongo -- a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo. Whether you are here for a safari, a romantic escape, or a quiet retreat, we offer warm hospitality, delicious meals, and a place to truly unwind." }
+          - { label: "Hero Tagline", name: "tagline", widget: "string", default: "Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality." }
+          - { label: "Hero Background Image", name: "background_image", widget: "image", default: "images/IMG_3382.jpeg" }
 
   - name: "testimonials"
     label: "Testimonials"
@@ -31,15 +31,15 @@ collections:
 
   - name: "stats"
     label: "Stats Section"
-    description: "Edit the statistics section"
-    file: "index.html"
-    label_singular: "Stats"
-    widget: "object"
-    fields:
-      - { label: "Years of Hospitality", name: "years", widget: "number", default: 10 }
-      - { label: "Happy Guests", name: "guests", widget: "number", default: 500 }
-      - { label: "Internet Availability", name: "internet", widget: "string", default: "24/7" }
-      - { label: "Distance to QENP Gate", name: "distance", widget: "string", default: "1km" }
+    files:
+      - file: "index.html"
+        label: "Stats"
+        name: "stats"
+        fields:
+          - { label: "Years of Hospitality", name: "years", widget: "number", default: 10 }
+          - { label: "Happy Guests", name: "guests", widget: "number", default: 500 }
+          - { label: "Internet Availability", name: "internet", widget: "string", default: "24/7" }
+          - { label: "Distance to QENP Gate", name: "distance", widget: "string", default: "1km" }
 
   - name: "featured_experiences"
     label: "Featured Experiences"
@@ -56,13 +56,13 @@ collections:
 
   - name: "settings"
     label: "Site Settings"
-    description: "General site settings"
-    file: "index.html"
-    label_singular: "Site Settings"
-    widget: "object"
-    fields:
-      - { label: "Site Title", name: "site_title", widget: "string", default: "Latitude Zero Cottages Kikorongo | Comfortable Accommodation Near Queen Elizabeth National Park" }
-      - { label: "Site Description", name: "site_description", widget: "string", default: "Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park." }
-      - { label: "WhatsApp Number", name: "whatsapp_number", widget: "string", default: "+256 700 000 000" }
-      - { label: "Phone Number", name: "phone_number", widget: "string", default: "+256 700 000 000" }
-      - { label: "Email Address", name: "email", widget: "string", default: "info@latitudezero.ug" }
+    files:
+      - file: "index.html"
+        label: "Site Settings"
+        name: "settings"
+        fields:
+          - { label: "Site Title", name: "site_title", widget: "string", default: "Latitude Zero Cottages Kikorongo | Comfortable Accommodation Near Queen Elizabeth National Park" }
+          - { label: "Site Description", name: "site_description", widget: "string", default: "Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park." }
+          - { label: "WhatsApp Number", name: "whatsapp_number", widget: "string", default: "+256 700 000 000" }
+          - { label: "Phone Number", name: "phone_number", widget: "string", default: "+256 700 000 000" }
+          - { label: "Email Address", name: "email", widget: "string", default: "info@latitudezero.ug" }

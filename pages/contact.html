@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Latitude Zero Cottages Kikorongo</title>
+    <title>Contact - Latitude Zero Cottages Kikorongo</title>
     <meta name="description" content="Contact Latitude Zero Cottages Kikorongo for room bookings, safari arrangements, dining inquiries, and group stays. Call or WhatsApp us today for personalized assistance.">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -18,13 +18,13 @@
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="accommodation.html">Accommodation</a></li>
-                <li><a href="dining.html">Restaurant & Dining</a></li>
-                <li><a href="safari.html">Safari & Nature</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="accommodation.html">Rooms</a></li>
+                <li><a href="dining.html">Dining</a></li>
+                <li><a href="safari.html">Safari</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="contact.html" class="active">Contact Us</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
             </ul>
             <a href="contact.html" class="btn btn-primary book-btn">Book Now</a>
             <div class="hamburger" id="hamburger">
@@ -33,60 +33,79 @@
         </div>
     </nav>
 
+    <section class="page-hero" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('../images/IMG_3389.jpeg') center/cover;">
+        <div class="page-hero-overlay"></div>
+        <div class="page-hero-content">
+            <h1>Contact Us</h1>
+        </div>
+    </section>
+
     <section class="section">
         <div class="container">
             <div class="section-header">
-                <h2>Contact & Book Your Stay</h2>
-                <p>Ready to experience comfort, nature, and exceptional hospitality near Queen Elizabeth National Park? We're here to help you plan your perfect stay.</p>
+                <h2>Get in Touch</h2>
+                <p>Ready to experience comfort, nature, and exceptional hospitality near Queen Elizabeth National Park? We are here to help you plan your perfect stay.</p>
             </div>
-            <div class="content-block">
-                <p>Whether you're planning a safari adventure, a romantic getaway, or a family vacation, our team is ready to assist with room bookings, meal reservations, and special requests.</p>
-                
-                <h4>Contact Information</h4>
+            <div class="contact-grid">
                 <div class="contact-info">
-                    <div class="contact-item">
+                    <div class="contact-card">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
                         <div>
                             <h4>Location</h4>
                             <p>Kikorongo, near Queen Elizabeth National Park<br>Kasese, Uganda</p>
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="contact-card">
                         <div class="contact-icon"><i class="fas fa-phone"></i></div>
                         <div>
                             <h4>Phone</h4>
-                            <p>+256 700 000 000</p>
+                            <p><a href="tel:+256700629083">+256 700 629 083</a></p>
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="contact-card">
                         <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
                         <div>
                             <h4>WhatsApp</h4>
-                            <p>+256 700 000 000</p>
+                            <p><a href="https://wa.me/256700629083">+256 700 629 083</a></p>
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="contact-card">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
                         <div>
                             <h4>Email</h4>
-                            <p>info@latitudezero.ug</p>
+                            <p><a href="mailto:info@latitudezero.ug">info@latitudezero.ug</a></p>
                         </div>
                     </div>
                 </div>
-                
-                <h4>Booking Options</h4>
-                <p>Choose your preferred method to contact us:</p>
-                <ul class="features-grid">
-                    <li><i class="fas fa-phone"></i> Call or WhatsApp: +256 700 000 000</li>
-                    <li><i class="fas fa-envelope"></i> Email: info@latitudezero.ug</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Visit us in person</li>
-                </ul>
-                
-                <div class="cta-center">
-                    <a href="pages/contact.html" class="btn btn-primary">Check Room Availability</a>
-                    <a href="pages/contact.html" class="btn btn-primary">Book Your Stay</a>
-                    <a href="https://wa.me/256700000000" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> Call / WhatsApp Us</a>
+                <div class="contact-form">
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="gpt-group">
+                            <input type="tel" name="phone" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group">
+                            <select name="subject">
+                                <option value="" disabled selected>Select Subject</option>
+                                <option value="booking">Room Booking</option>
+                                <option value="dining">Dining Inquiry</option>
+                                <option value="safari">Safari Arrangement</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
                 </div>
+            </div>
+            <div class="cta-center" style="margin-top: 40px;">
+                <a href="https://wa.me/256700629083" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> Call / WhatsApp Us</a>
             </div>
         </div>
     </section>
@@ -94,37 +113,32 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                    <div class="footer-brand">
+                <div class="footer-brand">
                     <a href="../index.html" class="logo"><i class="fas fa-home"></i><span>Latitude Zero Cottages</span></a>
                     <p>Where Comfort Meets Nature. Your Peaceful Stay Near Queen Elizabeth National Park.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    </div>
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="../index.html">Home</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="accommodation.html">Accommodation</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="accommodation.html">Rooms</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h4>Experiences</h4>
                     <ul>
-                        <li><a href="safari.html">Safari & Nature</a></li>
+                        <li><a href="safari.html">Safari</a></li>
                         <li><a href="services.html">Services</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
-                    <h4>Contact Us</h4>
+                    <h4>Contact</h4>
                     <p><i class="fas fa-map-marker-alt"></i> Kikorongo, near Queen Elizabeth National Park</p>
-                    <p><i class="fas fa-phone"></i> <a href="tel:+256700000000">+256 700 000 000</a></p>
-                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/256700000000">WhatsApp Us</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+256700629083">+256 700 629 083</a></p>
+                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/256700629083">WhatsApp Us</a></p>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:info@latitudezero.ug">info@latitudezero.ug</a></p>
                 </div>
             </div>

@@ -1507,9 +1507,8 @@ body {
 .footer-logo-img {
     max-width: 180px;
     height: auto;
-    margin-bottom: 20px;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
+    margin-bottom: 16px;
+    display: block;
 }
 
 .footer-brand .logo {

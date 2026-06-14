@@ -160,13 +160,14 @@ body {
 .logo-img {
     height: 44px;
     width: auto;
-    max-width: 200px;
+    max-width: 160px;
     object-fit: contain;
     transition: var(--transition);
 }
 
 .navbar.scrolled .logo-img {
     height: 36px;
+    max-width: 130px;
 }
 
 .logo i {
@@ -925,11 +926,44 @@ body {
 }
 
 .lightbox-prev {
-    left: -70px;
+    left: 10px;
 }
 
 .lightbox-next {
-    right: -70px;
+    right: 10px;
+}
+
+@media (max-width: 768px) {
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+        font-size: 2rem;
+        width: 44px;
+        height: 44px;
+        background: rgba(0,0,0,0.5);
+        border-radius: 50%;
+    }
+
+    .lightbox-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        top: auto;
+        bottom: 20px;
+        transform: none;
+    }
+
+    .lightbox-prev {
+        left: 20px;
+    }
+
+    .lightbox-next {
+        right: 20px;
+    }
+
+    .lightbox-content {
+        max-width: 95vw;
+    }
 }
 
 /* ===== Testimonials ===== */

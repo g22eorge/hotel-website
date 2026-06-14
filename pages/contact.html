@@ -13,15 +13,11 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="../index.html" class="logo">
-                <i class="fas fa-home"></i>
-                <span>Latitude Zero Cottages</span>
+                <img src="../images/logos/secondary-logo.png" alt="Latitude Zero" class="logo-img">
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="accommodation.html">Rooms</a></li>
-                <li><a href="dining.html">Dining</a></li>
-                <li><a href="safari.html">Safari</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
@@ -36,15 +32,15 @@
     <section class="page-hero" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('../images/IMG_3389.jpeg') center/cover;">
         <div class="page-hero-overlay"></div>
         <div class="page-hero-content">
-            <h1>Contact Us</h1>
+            <h1>Contact & Book</h1>
         </div>
     </section>
 
     <section class="section">
         <div class="container">
             <div class="section-header">
-                <h2>Get in Touch</h2>
-                <p>Ready to experience comfort, nature, and exceptional hospitality near Queen Elizabeth National Park? We are here to help you plan your perfect stay.</p>
+                <h2>Book Your Stay</h2>
+                <p>Reserve your room at Latitude Zero Cottages. Fill in the form below and we'll get back to you within 2 hours.</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-info">
@@ -79,33 +75,64 @@
                 </div>
                 <div class="contact-form">
                     <form action="#" method="post">
-                        <div class="form-group">
-                            <input type="text" name="name" placeholder="Your Name" required>
+                        <div class="booking-form-row">
+                            <div class="form-group">
+                                <label>Check-in Date</label>
+                                <input type="date" name="checkin" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Check-out Date</label>
+                                <input type="date" name="checkout" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="email" name="email" placeholder="Your Email" required>
+                        <div class="booking-form-row">
+                            <div class="form-group">
+                                <label>Number of Guests</label>
+                                <select name="guests" required>
+                                    <option value="" disabled selected>Select guests</option>
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                    <option value="5">5+ Guests</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Room Selection</label>
+                                <select name="room" required>
+                                    <option value="" disabled selected>Select room type</option>
+                                    <option value="standard">Standard Room - $45/night</option>
+                                    <option value="deluxe">Deluxe Room - $65/night</option>
+                                    <option value="family">Family Cottage - $85/night</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="gpt-group">
-                            <input type="tel" name="phone" placeholder="Phone Number">
+                        <div class="booking-form-row">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" name="name" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" name="email" placeholder="your@email.com" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <select name="subject">
-                                <option value="" disabled selected>Select Subject</option>
-                                <option value="booking">Room Booking</option>
-                                <option value="dining">Dining Inquiry</option>
-                                <option value="safari">Safari Arrangement</option>
-                                <option value="other">Other</option>
-                            </select>
+                        <div class="booking-form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" name="phone" placeholder="+256 700 000 000">
+                            </div>
+                            <div class="form-group">
+                                <label>Special Requests</label>
+                                <input type="text" name="requests" placeholder="Any special requirements?">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <textarea name="message" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.1rem; margin-top: 10px;">Book Now</button>
                     </form>
                 </div>
             </div>
             <div class="cta-center" style="margin-top: 40px;">
-                <a href="https://wa.me/256700629083" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> Call / WhatsApp Us</a>
+                <a href="https://wa.me/256700629083" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
             </div>
         </div>
     </section>
@@ -114,7 +141,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="../index.html" class="logo"><i class="fas fa-home"></i><span>Latitude Zero Cottages</span></a>
+                    <img src="../images/logos/primary-logo.png" alt="Latitude Zero Cottages" class="footer-logo-img">
                     <p>Where Comfort Meets Nature. Your Peaceful Stay Near Queen Elizabeth National Park.</p>
                 </div>
                 <div class="footer-links">
@@ -122,16 +149,16 @@
                     <ul>
                         <li><a href="../index.html">Home</a></li>
                         <li><a href="about.html">About</a></li>
-                        <li><a href="accommodation.html">Rooms</a></li>
+                        <li><a href="services.html">Services</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Experiences</h4>
+                    <h4>Explore</h4>
                     <ul>
-                        <li><a href="safari.html">Safari</a></li>
-                        <li><a href="services.html">Services</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="services.html#dining">Dining</a></li>
+                        <li><a href="services.html#safari">Safari</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -143,7 +170,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
+                <p>&copy; 2026 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
                 <p class="tagline">Where Comfort Meets Nature.</p>
             </div>
         </div>

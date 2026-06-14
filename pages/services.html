@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services - Latitude Zero Cottages Kikorongo</title>
-    <meta name="description" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park. Ideal for safari guests, couples, families, groups, and peaceful retreats.">
+    <meta name="description" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park.">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,15 +13,11 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="../index.html" class="logo">
-                <i class="fas fa-home"></i>
-                <span>Latitude Zero Cottages</span>
+                <img src="../images/logos/secondary-logo.png" alt="Latitude Zero" class="logo-img">
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="accommodation.html">Rooms</a></li>
-                <li><a href="dining.html">Dining</a></li>
-                <li><a href="safari.html">Safari</a></li>
                 <li><a href="services.html" class="active">Services</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="contact.html">Contact</a></li>
@@ -32,7 +28,7 @@
             </div>
         </div>
     </nav>
-    <!-- Page Hero -->
+
     <section class="page-hero" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('../images/IMG_3391.jpeg') center/cover;">
         <div class="page-hero-overlay"></div>
         <div class="page-hero-content">
@@ -40,67 +36,151 @@
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="rooms">
         <div class="container">
             <div class="section-header">
-                <h2>Our Services</h2>
-                <p>At Latitude Zero Cottages Kikorongo, we provide a complete guest experience designed for comfort, convenience, and unforgettable memories.</p>
+                <h2>Rooms & Accommodation</h2>
+                <p>Our cottages are designed for guests who value comfort, peace, and a natural environment.</p>
+            </div>
+            <div class="rooms-section-grid">
+                <div class="room-preview-card">
+                    <img src="../images/IMG_3384.jpeg" alt="Standard Room">
+                    <div class="room-preview-content">
+                        <h4>Standard Room</h4>
+                        <p>A cozy room with comfortable bedding and all essential amenities for a restful stay.</p>
+                        <div class="room-price">From $45/night</div>
+                        <a href="contact.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+                <div class="room-preview-card">
+                    <img src="../images/IMG_3385.jpeg" alt="Deluxe Room">
+                    <div class="room-preview-content">
+                        <h4>Deluxe Room</h4>
+                        <p>Extra spacious room with premium furnishings and scenic views of the surroundings.</p>
+                        <div class="room-price">From $65/night</div>
+                        <a href="contact.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+                <div class="room-preview-card">
+                    <img src="../images/IMG_3388.jpeg" alt="Family Cottage">
+                    <div class="room-preview-content">
+                        <h4>Family Cottage</h4>
+                        <p>Ideal for families and groups, offering generous space and a private cottage setting.</p>
+                        <div class="room-price">From $85/night</div>
+                        <a href="contact.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-light" id="dining">
+        <div class="container">
+            <div class="section-header">
+                <h2>Dining Experience</h2>
+                <p>A good stay deserves good food. Enjoy our locally sourced, freshly prepared meals.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="dining-card">
+                    <div class="dining-card-image">
+                        <img src="../images/IMG_3383.jpeg" alt="Local Cuisine">
+                    </div>
+                    <div class="dining-card-content">
+                        <h3>Local Ugandan Cuisine</h3>
+                        <p>Authentic Ugandan dishes prepared with fresh, locally sourced ingredients. Experience the rich flavours of Western Uganda.</p>
+                        <div class="card-price">Meals from $8/person</div>
+                        <a href="contact.html" class="btn btn-primary">Book a Table</a>
+                    </div>
+                </div>
+                <div class="dining-card">
+                    <div class="dining-card-image">
+                        <img src="../images/IMG_3389.jpeg" alt="International Cuisine">
+                    </div>
+                    <div class="dining-card-content">
+                        <h3>International Cuisine</h3>
+                        <p>A selection of international favourites to suit every palate, from continental breakfasts to hearty dinners.</p>
+                        <div class="card-price">Meals from $10/person</div>
+                        <a href="contact.html" class="btn btn-primary">Book a Table</a>
+                    </div>
+                </div>
+                <div class="dining-card">
+                    <div class="dining-card-image">
+                        <img src="../images/IMG_3392.jpeg" alt="Refreshments">
+                    </div>
+                    <div class="dining-card-content">
+                        <h3>Refreshments & Bar</h3>
+                        <p>Enjoy refreshing drinks, specialty cocktails, and a wide selection of beverages in our lounge and outdoor areas.</p>
+                        <div class="card-price">Drinks from $3</div>
+                        <a href="contact.html" class="btn btn-primary">Book a Table</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="safari">
+        <div class="container">
+            <div class="section-header">
+                <h2>Safari & Adventures</h2>
+                <p>Stay close to wildlife, nature & adventure at Queen Elizabeth National Park.</p>
             </div>
             <div class="content-block">
-                <p>Our services are tailored to ensure your stay is seamless, enjoyable, and perfectly aligned with your needs. Whether you're here for adventure, relaxation, or business, we've got you covered.</p>
-                
-                <h4>What We Offer:</h4>
-                <div class="features-grid">
-                    <div class="service-card">
-                        <i class="fas fa-home"></i>
-                        <h5>Comfortable Rooms</h5>
-                        <p>Cozy, well-appointed cottages and rooms designed for relaxation after a day of adventure or work.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-cut"></i>
-                        <h5>Dining Services</h5>
-                        <p>Delicious local and international cuisine served in our elegant dining area, with options for every palate.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-coffee"></i>
-                        <h5>Refreshing Beverages</h5>
-                        <p>Enjoy complimentary drinks, specialty cocktails, and a wide selection of beverages in our lounge areas.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-wifi"></i>
-                        <h5>24/7 Internet Connection</h5>
-                        <p>High-speed WiFi available throughout the property for staying connected.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h5>Safari &amp; Tour Arrangements</h5>
-                        <p>We assist with booking guided safari tours, bird watching, and nature walks in Queen Elizabeth National Park.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-spa"></i>
-                        <h5>Wellness &amp; Relaxation</h5>
-                        <p>Enjoy our spa services, massage therapy, and tranquil outdoor spaces for rejuvenation.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-users"></i>
-                        <h5>Event Support</h5>
-                        <p>We cater to weddings, meetings, and special events with customized packages.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h5>Flexible Booking</h5>
-                        <p>Flexible check-in/check-out times and reservation options to suit your travel plans.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h5>Secure &amp; Reliable</h5>
-                        <p>Secure bookings with mobile money payments and instant confirmations.</p>
-                    </div>
+                <p>Latitude Zero Cottages Kikorongo is located near the breathtaking landscapes of Queen Elizabeth National Park, making it a convenient stay for guests who want to enjoy wildlife and safari experiences.</p>
+            </div>
+            <div class="features-grid" style="margin-top: 30px;">
+                <div class="feature-item"><i class="fas fa-binoculars"></i> Game drives</div>
+                <div class="feature-item"><i class="fas fa-paw"></i> Wildlife viewing</div>
+                <div class="feature-item"><i class="fas fa-dove"></i> Bird watching</div>
+                <div class="feature-item"><i class="fas fa-camera"></i> Photography safaris</div>
+                <div class="feature-item"><i class="fas fa-leaf"></i> Nature walks</div>
+                <div class="feature-item"><i class="fas fa-ship"></i> Boat cruises</div>
+            </div>
+            <div class="cta-center" style="margin-top: 30px;">
+                <a href="contact.html" class="btn btn-primary">Book a Safari</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>Amenities & Other Services</h2>
+                <p>Everything you need for a comfortable and memorable stay.</p>
+            </div>
+            <div class="features-grid">
+                <div class="service-card">
+                    <i class="fas fa-wifi"></i>
+                    <h5>24/7 Internet Connection</h5>
+                    <p>High-speed WiFi available throughout the property for staying connected.</p>
                 </div>
-                
-                <div class="cta-center">
-                    <a href="contact.html" class="btn btn-primary">Inquire About Services</a>
+                <div class="service-card">
+                    <i class="fas fa-spa"></i>
+                    <h5>Wellness & Relaxation</h5>
+                    <p>Enjoy our spa services, massage therapy, and tranquil outdoor spaces for rejuvenation.</p>
                 </div>
+                <div class="service-card">
+                    <i class="fas fa-users"></i>
+                    <h5>Event Support</h5>
+                    <p>We cater to weddings, meetings, and special events with customized packages.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h5>Flexible Booking</h5>
+                    <p>Flexible check-in/check-out times and reservation options to suit your travel plans.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h5>Secure & Reliable</h5>
+                    <p>Secure bookings with mobile money payments and instant confirmations.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h5>Tour Arrangements</h5>
+                    <p>We assist with booking guided tours, bird watching, and nature walks in the area.</p>
+                </div>
+            </div>
+            <div class="cta-center" style="margin-top: 30px;">
+                <a href="contact.html" class="btn btn-primary">Contact Us</a>
             </div>
         </div>
     </section>
@@ -108,38 +188,37 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                    <div class="footer-brand">
-                    <a href="../index.html" class="logo"><i class="fas fa-home"></i><span>Latitude Zero Cottages</span></a>
+                <div class="footer-brand">
+                    <img src="../images/logos/primary-logo.png" alt="Latitude Zero Cottages" class="footer-logo-img">
                     <p>Where Comfort Meets Nature. Your Peaceful Stay Near Queen Elizabeth National Park.</p>
-                    
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="../index.html">Home</a></li>
                         <li><a href="about.html">About</a></li>
-                        <li><a href="accommodation.html">Rooms</a></li>
+                        <li><a href="services.html">Services</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Experiences</h4>
+                    <h4>Explore</h4>
                     <ul>
-                        <li><a href="safari.html">Safari</a></li>
-                        <li><a href="services.html">Services</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="services.html#dining">Dining</a></li>
+                        <li><a href="services.html#safari">Safari</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
                     <p><i class="fas fa-map-marker-alt"></i> Kikorongo, near Queen Elizabeth National Park</p>
-                    <p><i class="fas fa-phone"></i> <a href="tel:+256 700 629 083">+256 700 629 083</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+256700629083">+256 700 629 083</a></p>
                     <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/256700629083">WhatsApp Us</a></p>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:info@latitudezero.ug">info@latitudezero.ug</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
+                <p>&copy; 2026 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
                 <p class="tagline">Where Comfort Meets Nature.</p>
             </div>
         </div>

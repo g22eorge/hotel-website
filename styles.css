@@ -1506,15 +1506,16 @@ body {
 
 .footer-logo-wrap {
     display: inline-block;
-    background: #fff;
-    padding: 6px 8px;
-    border-radius: 8px;
+    background: var(--bg-warm);
+    border: 1px solid rgba(201, 189, 181, 0.5);
+    padding: 10px 16px;
+    border-radius: 10px;
     margin-bottom: 20px;
     line-height: 0;
 }
 
 .footer-logo-img {
-    max-width: 100px;
+    max-width: 160px;
     height: auto;
     display: block;
 }

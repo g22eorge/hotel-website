@@ -1504,11 +1504,20 @@ body {
     align-items: flex-start;
 }
 
+.footer-logo-wrap {
+    background: #fff;
+    padding: 24px 32px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    position: relative;
+}
+
 .footer-logo-img {
-    max-width: 180px;
+    max-width: 160px;
     height: auto;
-    margin-bottom: 16px;
     display: block;
+    opacity: 0.95;
 }
 
 .footer-brand .logo {

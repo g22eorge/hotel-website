@@ -151,4 +151,33 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.section').forEach(function(section) {
         observer.observe(section);
     });
+
+    // Booking form WhatsApp handler
+    function handleBookingForm(formEl) {
+        if (!formEl) return;
+        formEl.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var data = new FormData(formEl);
+            var fields = {};
+            data.forEach(function(value, key) {
+                fields[key] = value;
+            });
+
+            var msg = 'Hello Latitude Zero Cottages! I would like to make a booking:\n\n';
+            if (fields.checkin) msg += 'Check-in: ' + fields.checkin + '\n';
+            if (fields.checkout) msg += 'Check-out: ' + fields.checkout + '\n';
+            if (fields.guests) msg += 'Guests: ' + fields.guests + '\n';
+            if (fields.room) msg += 'Room: ' + fields.room + '\n';
+            if (fields.name) msg += 'Name: ' + fields.name + '\n';
+            if (fields.email) msg += 'Email: ' + fields.email + '\n';
+            if (fields.phone) msg += 'Phone: ' + fields.phone + '\n';
+            if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
+
+            var waUrl = 'https://wa.me/256700629083?text=' + encodeURIComponent(msg);
+            window.open(waUrl, '_blank');
+        });
+    }
+
+    handleBookingForm(document.getElementById('homepageBookingForm'));
+    handleBookingForm(document.getElementById('contactBookingForm'));
 });

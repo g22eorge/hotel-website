@@ -1754,6 +1754,10 @@ body {
         align-items: center;
     }
 
+    .hero-overlay {
+        background: linear-gradient(135deg, rgba(35,31,32,0.75) 0%, rgba(35,31,32,0.45) 50%, rgba(35,31,32,0.65) 100%);
+    }
+
     .section {
         padding: 70px 0;
     }
@@ -1807,11 +1811,19 @@ body {
 
 @media (max-width: 480px) {
     .hero-text h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+    }
+
+    .hero-text p {
+        font-size: 1rem;
     }
 
     .hero-buttons .btn {
         width: 100%;
+    }
+
+    .hero-overlay {
+        background: linear-gradient(135deg, rgba(35,31,32,0.8) 0%, rgba(35,31,32,0.5) 50%, rgba(35,31,32,0.7) 100%);
     }
 
     .testimonial-card::before {
@@ -1822,5 +1834,36 @@ body {
 
     .gallery-grid {
         grid-template-columns: 1fr;
+    }
+
+    .footer-logo-wrap {
+        padding: 8px 12px;
+    }
+
+    .footer-logo-img {
+        max-width: 90px;
+    }
+
+    .footer-brand p {
+        font-size: 0.85rem;
+    }
+
+    .page-hero-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .booking-form input,
+    .booking-form select,
+    .booking-form textarea {
+        padding: 12px 14px;
+        font-size: 16px;
+    }
+
+    .hamburger span {
+        height: 3px;
+    }
+
+    .trust-badges-track {
+        gap: 24px;
     }
 }

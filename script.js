@@ -173,6 +173,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fields.phone) msg += 'Phone: ' + fields.phone + '\n';
             if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
 
+            // Save to backend API (async, don't block WhatsApp)
+            fetch('/api/bookings/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(fields)
+            }).catch(function() {});
+
             var waUrl = 'https://wa.me/256700629083?text=' + encodeURIComponent(msg);
             window.open(waUrl, '_blank');
         });

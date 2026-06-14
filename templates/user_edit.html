@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Edit' if user else 'Create' }} User | Latitude Zero Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f7f5f3; color: #231F20; min-height: 100vh; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #231F20; color: #fff; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header img { max-width: 140px; margin-bottom: 8px; }
+        .sidebar-header h2 { font-size: 0.85rem; font-weight: 600; color: #C9BDB5; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-nav a.active { background: rgba(201,189,181,0.1); color: #C9BDB5; border-left-color: #C9BDB5; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .sidebar-footer a:hover { color: #fff; }
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; gap: 16px; flex-wrap: wrap; }
+        .page-header h1 { font-size: 1.6rem; font-weight: 700; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #fff; color: #231F20; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; }
+        .back-btn:hover { background: #C9BDB5; }
+        .form-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 32px; max-width: 520px; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: #231F20; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group label span { font-weight: 400; color: #4C4E4F; text-transform: none; font-size: 0.8rem; }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] { width: 100%; padding: 14px 16px; border: 2px solid #e8e4e1; border-radius: 10px; font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; }
+        .form-group input:focus { outline: none; border-color: #C9BDB5; }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        .checkbox-group { display: flex; flex-direction: column; gap: 12px; }
+        .checkbox-item { display: flex; align-items: center; gap: 12px; }
+        .checkbox-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: #231F20; cursor: pointer; }
+        .checkbox-item label { font-weight: 400; text-transform: none; font-size: 0.95rem; cursor: pointer; margin: 0; }
+        .form-actions { display: flex; gap: 12px; margin-top: 32px; }
+        .btn-save { padding: 14px 32px; background: #231F20; color: #C9BDB5; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
+        .btn-save:hover { background: #4C4E4F; }
+        .btn-cancel { padding: 14px 24px; background: #e8e4e1; color: #231F20; text-decoration: none; border-radius: 10px; font-size: 1rem; font-weight: 600; transition: background 0.2s; }
+        .btn-cancel:hover { background: #d4cfc9; }
+        .info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px 16px; font-size: 0.85rem; color: #1e40af; margin-bottom: 24px; }
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+            .sidebar-header { padding: 12px 16px; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+            .sidebar-header h2, .sidebar-footer { display: none; }
+            .sidebar-header img { max-width: 100px; margin-bottom: 0; }
+            .sidebar-nav { display: flex; flex-direction: row; padding: 0; flex-shrink: 0; }
+            .sidebar-nav a { padding: 12px 16px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+            .sidebar-nav a.active { border-left-color: transparent; border-bottom-color: #C9BDB5; }
+            .main-content { padding: 20px; }
+            .form-row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/images/logos/secondary-logo.png" alt="Latitude Zero">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="/admin/bookings/"><i class="fas fa-calendar-check"></i> Bookings</a>
+                <a href="/admin/users/" class="active"><i class="fas fa-users"></i> Users</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1>{{ 'Edit' if user else 'Create' }} User</h1>
+                <a href="/admin/users/" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Users</a>
+            </div>
+
+            <div class="form-card">
+                {% if not user %}
+                <div class="info-box">
+                    <strong>Note:</strong> Leave password blank to generate a temporary password. The user should change it after first login.
+                </div>
+                {% endif %}
+
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" name="username" value="{{ user.username if user else '' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" value="{{ user.email if user else '' }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Password {% if not user %}<span>(required){% else %}<span>(leave blank to keep current){% endif %}</span></label>
+                        <input type="password" name="password" {% if not user %}required{% endif %} autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="is_superuser" id="is_superuser" {% if (user and user.is_superuser) %}checked{% endif %}>
+                                <label for="is_superuser">Superuser <span>- Full access including user management</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="is_active" id="is_active" {% if not user or (user and user.is_active) %}checked{% endif %}>
+                                <label for="is_active">Active <span>- User can log in and manage bookings</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save"><i class="fas fa-save"></i> {{ 'Update' if user else 'Create' }} User</button>
+                        <a href="/admin/users/" class="btn-cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

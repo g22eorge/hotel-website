@@ -29,7 +29,7 @@
         </div>
     </nav>
 
-    <section class="page-hero" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('../images/IMG_3389.jpeg') center/cover;">
+    <section class="page-hero" data-section-key="hero" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('../images/IMG_3389.jpeg') center/cover;">
         <div class="page-hero-overlay"></div>
         <div class="page-hero-content">
             <h1 id="heroTitle">Contact & Book</h1>
@@ -38,7 +38,7 @@
 
     <section class="section">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header" data-section-key="intro">
                 <h2>Book Your Stay</h2>
                 <p>Reserve your room at Latitude Zero Cottages. Fill in the form below and we'll get back to you within 2 hours.</p>
             </div>
@@ -186,16 +186,45 @@
         fetch('/api/pages/' + page + '/')
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                if (data.sections) {
-                    data.sections.forEach(function(s) {
-                        if (s.key === 'hero' && s.title) {
-                            var h = document.getElementById('heroTitle');
-                            if (h) h.textContent = s.title;
+                if (!data.sections) return;
+                
+                data.sections.forEach(function(s) {
+                    // Update hero title
+                    if (s.key === 'hero' && s.title) {
+                        var h = document.getElementById('heroTitle');
+                        if (h) h.textContent = s.title;
+                    }
+                    
+                    // Update hero background image
+                    if (s.key === 'hero' && s.image) {
+                        var heroSection = document.querySelector('[data-section-key="hero"]');
+                        if (heroSection) {
+                            heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
+                        }
+                    }
+                    
+                    // Find all elements with this section key
+                    var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
+                    els.forEach(function(el) {
+                        // Update section title
+                        if (s.title) {
+                            var heading = el.querySelector('h2') || el.querySelector('h4');
+                            if (heading && s.key !== 'hero') heading.textContent = s.title;
+                        }
+                        
+                        // Update content (paragraph after heading)
+                        if (s.content) {
+                            var paragraphs = el.querySelectorAll('p');
+                            if (paragraphs.length > 0) {
+                                paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
+                            }
                         }
                     });
-                }
+                });
             })
-            .catch(function() {});
+            .catch(function(err) {
+                console.error('Error loading page content:', err);
+            });
     })();
     </script>
 </body>

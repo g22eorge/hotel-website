@@ -33,17 +33,31 @@
         .flash.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .flash.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
         .section-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 28px; margin-bottom: 24px; }
-        .section-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: #231F20; display: flex; align-items: center; gap: 10px; }
-        .section-card .section-key { font-family: monospace; color: #4C4E4F; font-size: 0.8rem; margin-bottom: 20px; padding: 4px 8px; background: #faf8f6; border-radius: 4px; display: inline-block; }
+        .section-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: #231F20; display: flex; align-items: center; gap: 10px; }
+        .section-card .section-key { font-family: monospace; color: #4C4E4F; font-size: 0.75rem; margin-bottom: 20px; padding: 4px 8px; background: #faf8f6; border-radius: 4px; display: inline-block; }
+        .section-card.has-image { border: 2px solid #e8e4e1; }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: #4C4E4F; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; color: #4C4E4F; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; }
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #C9BDB5; }
-        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .image-upload-group { display: flex; gap: 20px; align-items: flex-start; }
+        .image-upload-group .form-group { flex: 1; }
+        .image-preview { width: 200px; height: 130px; border-radius: 8px; border: 2px dashed #e8e4e1; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #faf8f6; flex-shrink: 0; }
+        .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .image-preview .placeholder { color: #999; font-size: 0.8rem; text-align: center; padding: 10px; }
+        .image-preview .placeholder i { font-size: 2rem; display: block; margin-bottom: 8px; color: #d4cfc9; }
+        .upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #231F20; color: #C9BDB5; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .upload-btn:hover { background: #4C4E4F; }
+        .upload-btn input { display: none; }
+        .remove-image { color: #dc2626; cursor: pointer; font-size: 0.8rem; margin-top: 8px; display: inline-block; }
+        .remove-image:hover { text-decoration: underline; }
         .form-actions { display: flex; justify-content: flex-end; margin-top: 32px; }
         .btn-save { padding: 14px 32px; background: #231F20; color: #C9BDB5; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
         .btn-save:hover { background: #4C4E4F; }
         .empty-state { text-align: center; padding: 60px 40px; color: #4C4E4F; }
+        .page-intro { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 28px; margin-bottom: 24px; }
+        .page-intro p { color: #666; font-size: 0.95rem; line-height: 1.6; }
         @media (max-width: 768px) {
             .admin-layout { flex-direction: column; }
             .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
@@ -54,6 +68,8 @@
             .sidebar-nav a { padding: 12px 16px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
             .sidebar-nav a.active { border-left-color: transparent; border-bottom-color: #C9BDB5; }
             .main-content { padding: 20px; }
+            .image-upload-group { flex-direction: column; }
+            .image-preview { width: 100%; height: 180px; }
         }
     </style>
 </head>
@@ -98,19 +114,53 @@
             </div>
 
             {% if sections %}
-            <form method="POST">
+            <div class="page-intro">
+                <p><i class="fas fa-info-circle"></i> Edit the sections below. Changes are saved when you click "Save Changes". For sections with images, click "Choose Image" to upload a new photo.</p>
+            </div>
+
+            <form method="POST" id="pageForm">
                 {% for section in sections %}
-                <div class="section-card">
+                <div class="section-card {% if section.image or section.section_key == 'hero' %}has-image{% endif %}">
                     <h3><i class="fas fa-pen"></i> {{ section.title }}</h3>
                     <div class="section-key">{{ section.section_key }}</div>
+
                     <div class="form-group">
                         <label>Section Title</label>
-                        <input type="text" name="title_{{ section.section_key }}" value="{{ section.title }}" placeholder="Section title" disabled style="background: #faf8f6; color: #999;">
+                        <input type="text" name="title_{{ section.section_key }}" value="{{ section.title }}" placeholder="Section title">
                     </div>
+
                     <div class="form-group">
                         <label>Content</label>
-                        <textarea name="content_{{ section.section_key }}" rows="4" placeholder="Enter content for this section...">{{ section.content }}</textarea>
+                        <textarea name="content_{{ section.section_key }}" rows="4" placeholder="Enter content...">{{ section.content }}</textarea>
                     </div>
+
+                    {% if section.section_key == 'hero' or section.section_key == 'intro' or section.section_key == 'gallery' %}
+                    <div class="image-upload-group">
+                        <div class="form-group">
+                            <label>Section Image</label>
+                            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                                <label class="upload-btn">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                    <input type="file" name="image_{{ section.section_key }}" accept="image/*" onchange="previewImage(this, 'preview_{{ section.section_key }}')">
+                                </label>
+                                {% if section.image %}
+                                <span class="remove-image" onclick="removeImage('{{ section.section_key }}')"><i class="fas fa-trash"></i> Remove</span>
+                                {% endif %}
+                            </div>
+                            <input type="hidden" name="existing_image_{{ section.section_key }}" value="{{ section.image or '' }}" id="existing_image_{{ section.section_key }}">
+                        </div>
+                        <div class="image-preview" id="preview_{{ section.section_key }}">
+                            {% if section.image %}
+                            <img src="{{ section.image }}" alt="Current image">
+                            {% else %}
+                            <div class="placeholder">
+                                <i class="fas fa-image"></i>
+                                No image
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
                 {% endfor %}
 
@@ -126,5 +176,27 @@
             {% endif %}
         </main>
     </div>
+
+    <script>
+    function previewImage(input, previewId) {
+        var preview = document.getElementById(previewId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage(sectionKey) {
+        var preview = document.getElementById('preview_' + sectionKey);
+        var existingInput = document.getElementById('existing_image_' + sectionKey);
+        if (confirm('Remove this image?')) {
+            preview.innerHTML = '<div class="placeholder"><i class="fas fa-image"></i>No image</div>';
+            existingInput.value = '';
+        }
+    }
+    </script>
 </body>
 </html>

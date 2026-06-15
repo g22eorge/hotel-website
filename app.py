@@ -407,7 +407,32 @@ def admin_edit_page(page):
                 section = PageSection.query.filter_by(page=page, section_key=section_key).first()
                 if section:
                     section.content = value.strip()
-                    db.session.commit()
+            elif key.startswith('title_'):
+                section_key = key.replace('title_', '')
+                section = PageSection.query.filter_by(page=page, section_key=section_key).first()
+                if section:
+                    section.title = value.strip()
+            elif key.startswith('existing_image_'):
+                section_key = key.replace('existing_image_', '')
+                section = PageSection.query.filter_by(page=page, section_key=section_key).first()
+                if section:
+                    section.image = value.strip()
+
+        for key, file in request.files.items():
+            if key.startswith('image_'):
+                section_key = key.replace('image_', '')
+                if file and file.filename:
+                    allowed = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
+                    ext = file.filename.rsplit('.', 1)[-1].lower()
+                    if ext in allowed:
+                        filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
+                        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        file.save(filepath)
+                        section = PageSection.query.filter_by(page=page, section_key=section_key).first()
+                        if section:
+                            section.image = f'/images/uploads/{filename}'
+
+        db.session.commit()
         flash(f'{page.title()} page updated.', 'success')
         return redirect(url_for('admin_edit_page', page=page))
     sections = PageSection.get_for_page(page)

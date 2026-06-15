@@ -71,6 +71,17 @@
             .image-upload-group { flex-direction: column; }
             .image-preview { width: 100%; height: 180px; }
         }
+        /* Feature Builder */
+        .feature-builder { margin-bottom: 12px; }
+        .feature-builder .intro-field label { font-size: 0.75rem; font-weight: 700; color: #4C4E4F; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .feature-builder .intro-field input { width: 100%; padding: 10px 12px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; margin-bottom: 12px; }
+        .feature-builder .builder-row { display: flex; gap: 12px; align-items: center; padding: 12px; background: #faf8f6; border-radius: 8px; margin-bottom: 10px; border: 1px dashed #e8e4e1; flex-wrap: wrap; }
+        .feature-builder .builder-row input { flex: 1; padding: 10px 12px; border: 2px solid #e8e4e1; border-radius: 6px; font-size: 0.9rem; min-width: 120px; }
+        .feature-builder .builder-row input.icon-input { max-width: 180px; flex: 0 0 180px; }
+        .feature-builder .builder-row .remove-btn { color: #dc2626; cursor: pointer; font-size: 0.85rem; white-space: nowrap; padding: 8px 12px; border-radius: 4px; transition: background 0.2s; border: none; background: transparent; }
+        .feature-builder .builder-row .remove-btn:hover { background: rgba(220,38,38,0.1); }
+        .feature-builder .btn-add { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #231F20; color: #C9BDB5; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .feature-builder .btn-add:hover { background: #4C4E4F; }
     </style>
 </head>
 <body>
@@ -133,20 +144,19 @@
 
                     <div class="form-group">
                         <label>Content</label>
-                        {% if section.section_key in ['promise', 'serve', 'safari'] %}
-                        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 14px;margin-bottom:8px;font-size:0.82rem;color:#92400e;">
-                            <strong><i class="fas fa-info-circle"></i> Feature list format:</strong> First line = intro text, then one feature per line as <code>icon-class|Feature text</code>. Example:<br>
-                            <code style="background:#fef3c7;padding:2px 6px;border-radius:3px;">fas fa-wifi|Reliable internet</code><br>
-                            <a href="https://fontawesome.com/v6/search?m=free" target="_blank" style="color:#92400e;text-decoration:underline;">Browse FontAwesome icons</a>
+                        {% if section.section_key in ['promise', 'serve', 'safari', 'amenities'] %}
+                        <div class="feature-builder" id="builder_{{ section.section_key }}" data-section-key="{{ section.section_key }}" data-format="{% if section.section_key == 'amenities' %}card{% else %}simple{% endif %}">
+                            <div class="intro-field">
+                                <label>Intro Text</label>
+                                <input type="text" class="feature-intro" placeholder="e.g. We are committed to offering every guest:" value="">
+                            </div>
+                            <div class="builder-rows"></div>
+                            <button type="button" class="btn-add" onclick="addFeatureRow('{{ section.section_key }}', '{{ 'card' if section.section_key == 'amenities' else 'simple' }}')"><i class="fas fa-plus"></i> Add Item</button>
                         </div>
-                        {% elif section.section_key == 'amenities' %}
-                        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 14px;margin-bottom:8px;font-size:0.82rem;color:#92400e;">
-                            <strong><i class="fas fa-info-circle"></i> Service card format:</strong> First line = intro text, then one card per line as <code>icon-class|Title|Description</code>. Example:<br>
-                            <code style="background:#fef3c7;padding:2px 6px;border-radius:3px;">fas fa-wifi|24/7 Internet|High-speed WiFi throughout.</code><br>
-                            <a href="https://fontawesome.com/v6/search?m=free" target="_blank" style="color:#92400e;text-decoration:underline;">Browse FontAwesome icons</a>
-                        </div>
+                        <textarea name="content_{{ section.section_key }}" style="display:none;" id="content_{{ section.section_key }}">{{ section.content }}</textarea>
+                        {% else %}
+                        <textarea name="content_{{ section.section_key }}" rows="4" placeholder="Enter content...">{{ section.content }}</textarea>
                         {% endif %}
-                        <textarea name="content_{{ section.section_key }}" rows="{% if section.section_key in ['promise', 'serve', 'safari', 'amenities'] %}10{% else %}4{% endif %}" placeholder="Enter content...">{{ section.content }}</textarea>
                     </div>
 
                     {% if section.section_key == 'hero' or section.section_key == 'intro' or section.section_key == 'gallery' %}
@@ -226,6 +236,109 @@
             existingInput.value = '';
         }
     }
+
+    /* Feature Builder Functions */
+    function parseFeatureContent(content, format) {
+        var lines = (content || '').split('\n');
+        var intro = '';
+        var items = [];
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (!line) continue;
+            if (line.indexOf('|') !== -1) {
+                var parts = line.split('|');
+                if (format === 'card' && parts.length >= 3) {
+                    items.push({icon: parts[0].trim(), text: parts[1].trim(), desc: parts.slice(2).join('|').trim()});
+                } else if (parts.length >= 2) {
+                    items.push({icon: parts[0].trim(), text: parts.slice(1).join('|').trim()});
+                }
+            } else if (items.length === 0) {
+                intro = line;
+            }
+        }
+        return {intro: intro, items: items};
+    }
+
+    function createFeatureRow(item, format, sectionKey) {
+        var html = '<div class="builder-row">';
+        html += '<input type="text" class="icon-input" placeholder="fas fa-icon" value="' + (item.icon || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + '\', \'' + format + \'\')">';
+        if (format === 'card') {
+            html += '<input type="text" placeholder="Title" value="' + (item.text || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + \'\', \'' + format + \'\')">';
+            html += '<input type="text" placeholder="Description" value="' + (item.desc || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + \'\', \'' + format + \'\')">';
+        } else {
+            html += '<input type="text" placeholder="Feature text" value="' + (item.text || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + \'\', \'' + format + \'\')">';
+        }
+        html += '<button type="button" class="remove-btn" onclick="removeFeatureRow(this, \'' + sectionKey + \'\', \'' + format + \'\')"><i class="fas fa-trash"></i> Remove</button>';
+        html += '</div>';
+        return html;
+    }
+
+    function addFeatureRow(sectionKey, format) {
+        var container = document.querySelector('#builder_' + sectionKey + ' .builder-rows');
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = createFeatureRow({}, format, sectionKey);
+        container.appendChild(tempDiv.firstChild);
+        syncFeatureToTextarea(sectionKey, format);
+    }
+
+    function removeFeatureRow(btn, sectionKey, format) {
+        var row = btn.closest('.builder-row');
+        if (row) { row.remove(); }
+        syncFeatureToTextarea(sectionKey, format);
+    }
+
+    function syncFeatureToTextarea(sectionKey, format) {
+        var builder = document.getElementById('builder_' + sectionKey);
+        var intro = builder.querySelector('.feature-intro').value.trim();
+        var rows = builder.querySelectorAll('.builder-row');
+        var lines = [];
+        if (intro) lines.push(intro);
+        rows.forEach(function(row) {
+            var inputs = row.querySelectorAll('input');
+            var icon = inputs[0].value.trim();
+            var text = inputs[1].value.trim();
+            var desc = '';
+            if (format === 'card' && inputs[2]) desc = inputs[2].value.trim();
+            if (icon && text) {
+                if (format === 'card' && desc) {
+                    lines.push(icon + '|' + text + '|' + desc);
+                } else {
+                    lines.push(icon + '|' + text);
+                }
+            }
+        });
+        document.getElementById('content_' + sectionKey).value = lines.join('\n');
+    }
+
+    function initFeatureBuilder(sectionKey, content, format) {
+        var builder = document.getElementById('builder_' + sectionKey);
+        if (!builder) return;
+        var parsed = parseFeatureContent(content, format);
+        builder.querySelector('.feature-intro').value = parsed.intro;
+        var container = builder.querySelector('.builder-rows');
+        container.innerHTML = '';
+        if (parsed.items.length === 0) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = createFeatureRow({}, format, sectionKey);
+            container.appendChild(tempDiv.firstChild);
+        } else {
+            parsed.items.forEach(function(item) {
+                var tempDiv = document.createElement('div');
+                tempDiv.innerHTML = createFeatureRow(item, format, sectionKey);
+                container.appendChild(tempDiv.firstChild);
+            });
+        }
+    }
+
+    // Initialize feature builders on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.feature-builder').forEach(function(builder) {
+            var sectionKey = builder.getAttribute('data-section-key');
+            var format = builder.getAttribute('data-format');
+            var content = document.getElementById('content_' + sectionKey).value;
+            initFeatureBuilder(sectionKey, content, format);
+        });
+    });
     </script>
 </body>
 </html>

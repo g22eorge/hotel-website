@@ -136,6 +136,7 @@ def api_content():
             'title': settings.hero_title,
             'subtitle': settings.hero_subtitle,
             'tagline': settings.hero_tagline,
+            'image': settings.hero_image,
         },
         'contact': {
             'whatsapp': settings.whatsapp,
@@ -287,6 +288,18 @@ def admin_settings():
         settings.address = request.form.get('address', '')
         settings.facebook = request.form.get('facebook', '')
         settings.instagram = request.form.get('instagram', '')
+
+        if 'hero_image' in request.files:
+            file = request.files['hero_image']
+            if file and file.filename:
+                allowed = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
+                ext = file.filename.rsplit('.', 1)[-1].lower()
+                if ext in allowed:
+                    filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
+                    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    file.save(filepath)
+                    settings.hero_image = f'/images/uploads/{filename}'
+
         db.session.commit()
         flash('Settings saved successfully.', 'success')
         return redirect(url_for('admin_settings'))

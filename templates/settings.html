@@ -113,6 +113,23 @@
                             <label>Hero Tagline</label>
                             <input type="text" name="hero_tagline" value="{{ settings.hero_tagline }}" placeholder="Short tagline line">
                         </div>
+                        <div class="form-group">
+                            <label>Hero Background Image</label>
+                            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                                <label class="upload-btn">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                    <input type="file" name="hero_image" accept="image/*" onchange="previewImage(this, 'hero_image_preview')">
+                                </label>
+                            </div>
+                            <input type="hidden" name="existing_hero_image" value="{{ settings.hero_image or '' }}" id="existing_hero_image">
+                            <div class="image-preview" id="hero_image_preview" style="margin-top:10px;">
+                                {% if settings.hero_image %}
+                                <img src="{{ settings.hero_image }}" alt="Current hero image">
+                                {% else %}
+                                <div class="placeholder"><i class="fas fa-image"></i>No image</div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-section">

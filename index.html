@@ -31,7 +31,7 @@
 
     <section class="hero">
         <div class="hero-carousel" id="heroCarousel">
-            <div class="hero-carousel-slide active" style="background-image: url('images/IMG_1025.png')"></div>
+            <div class="hero-carousel-slide active" id="heroSlide1" style="background-image: url('images/IMG_1025.png')"></div>
             <div class="hero-carousel-slide" style="background-image: url('images/Equator.png')"></div>
             <div class="hero-carousel-slide" style="background-image: url('images/IMG_1028.png')"></div>
             <div class="hero-carousel-slide" style="background-image: url('images/IMG_3386.jpeg')"></div>
@@ -398,6 +398,14 @@
                 if (titleEl && data.hero.title) titleEl.textContent = data.hero.title;
                 if (subtitleEl && data.hero.subtitle) subtitleEl.textContent = data.hero.subtitle;
                 if (taglineEl && data.hero.tagline) taglineEl.textContent = data.hero.tagline;
+                
+                // Update hero carousel first slide background image
+                if (data.hero.image) {
+                    var slide1 = document.getElementById('heroSlide1');
+                    if (slide1) {
+                        slide1.style.backgroundImage = 'url(' + data.hero.image + ')';
+                    }
+                }
             }
             if (data.contact) {
                 document.querySelectorAll('.hero-buttons .btn-secondary').forEach(function(el) {

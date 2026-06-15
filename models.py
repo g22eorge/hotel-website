@@ -49,3 +49,76 @@ class Booking(db.Model):
         if self.checkout and self.checkin:
             return (self.checkout - self.checkin).days
         return 0
+
+class SiteSettings(db.Model):
+    __tablename__ = 'site_settings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    hero_title = db.Column(db.String(200), default='Your Peaceful Stay Near Queen Elizabeth National Park')
+    hero_subtitle = db.Column(db.Text, default='')
+    hero_tagline = db.Column(db.String(300), default='')
+    whatsapp = db.Column(db.String(40), default='+256 700 629 083')
+    phone = db.Column(db.String(40), default='+256 700 629 083')
+    email = db.Column(db.String(120), default='info@latitudezero.ug')
+    address = db.Column(db.String(200), default='Kikorongo, near Queen Elizabeth National Park')
+    facebook = db.Column(db.String(200), default='')
+    instagram = db.Column(db.String(200), default='')
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    @classmethod
+    def get_settings(cls):
+        settings = cls.query.first()
+        if not settings:
+            settings = cls()
+            db.session.add(settings)
+            db.session.commit()
+        return settings
+
+class Testimonial(db.Model):
+    __tablename__ = 'testimonials'
+
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(120), nullable=False)
+    location = db.Column(db.String(120), default='')
+    rating = db.Column(db.Integer, default=5)
+    is_active = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @classmethod
+    def get_active(cls):
+        return cls.query.filter_by(is_active=True).order_by(cls.sort_order, cls.created_at.desc()).all()
+
+class Room(db.Model):
+    __tablename__ = 'rooms'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, default='')
+    price = db.Column(db.String(50), nullable=False)
+    image = db.Column(db.String(200), default='')
+    features = db.Column(db.Text, default='')
+    is_active = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @classmethod
+    def get_active(cls):
+        return cls.query.filter_by(is_active=True).order_by(cls.sort_order, cls.created_at).all()
+
+class FeaturedExperience(db.Model):
+    __tablename__ = 'featured_experiences'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, default='')
+    image = db.Column(db.String(200), default='')
+    experience_type = db.Column(db.String(50), default='Services')
+    is_active = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @classmethod
+    def get_active(cls):
+        return cls.query.filter_by(is_active=True).order_by(cls.sort_order, cls.created_at).all()

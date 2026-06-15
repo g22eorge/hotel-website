@@ -39,9 +39,9 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Your Peaceful Stay Near Queen Elizabeth National Park</h1>
-                <p>Welcome to Latitude Zero Cottages Kikorongo — a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo.</p>
-                <div class="hero-tagline">Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality.</div>
+                <h1 id="heroTitle">Your Peaceful Stay Near Queen Elizabeth National Park</h1>
+                <p id="heroSubtitle">Welcome to Latitude Zero Cottages Kikorongo — a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo.</p>
+                <div class="hero-tagline" id="heroTagline">Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality.</div>
                 <div class="hero-buttons">
                     <a href="pages/contact.html" class="btn btn-primary">Book Your Stay</a>
                     <a href="https://wa.me/256700629083" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
@@ -134,7 +134,7 @@
                 <h2>Our Rooms</h2>
                 <p>Spacious, comfortable rooms designed for rest and relaxation after a day of adventure.</p>
             </div>
-            <div class="rooms-section-grid">
+            <div class="rooms-section-grid" id="roomsGrid">
                 <div class="room-preview-card">
                     <img src="images/IMG_3384.jpeg" alt="Standard Room" loading="lazy">
                     <div class="room-preview-content">
@@ -312,7 +312,7 @@
                 <h2>What Our Guests Say</h2>
                 <p>Real experiences from real guests who have stayed with us.</p>
             </div>
-            <div class="testimonials-grid">
+            <div class="testimonials-grid" id="testimonialsGrid">
                 <div class="testimonial-card">
                     <div class="testimonial-text">A truly peaceful retreat after our safari in Queen Elizabeth. The rooms were clean and spacious, and the food was incredible. The staff went above and beyond.</div>
                     <div class="testimonial-author">Sarah & James</div>
@@ -387,6 +387,58 @@
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
-    <script src="script.js"></script>
+    <script>
+    fetch('/api/content/')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.hero) {
+                var titleEl = document.getElementById('heroTitle');
+                var subtitleEl = document.getElementById('heroSubtitle');
+                var taglineEl = document.getElementById('heroTagline');
+                if (titleEl && data.hero.title) titleEl.textContent = data.hero.title;
+                if (subtitleEl && data.hero.subtitle) subtitleEl.textContent = data.hero.subtitle;
+                if (taglineEl && data.hero.tagline) taglineEl.textContent = data.hero.tagline;
+            }
+            if (data.contact) {
+                document.querySelectorAll('.hero-buttons .btn-secondary').forEach(function(el) {
+                    el.href = 'https://wa.me/' + data.contact.whatsapp.replace(/\D/g, '');
+                });
+            }
+            if (data.rooms && data.rooms.length > 0) {
+                var roomsHtml = '';
+                data.rooms.forEach(function(r) {
+                    roomsHtml += '<div class="room-preview-card">' +
+                        '<img src="' + (r.image || 'images/IMG_3384.jpeg') + '" alt="' + r.name + '" loading="lazy">' +
+                        '<div class="room-preview-content">' +
+                        '<h4>' + r.name + '</h4>' +
+                        '<p>' + r.description + '</p>' +
+                        '<div class="room-price">' + r.price + '</div>' +
+                        '<a href="pages/contact.html" class="btn btn-primary">Book Now</a>' +
+                        '</div></div>';
+                });
+                var roomsGrid = document.getElementById('roomsGrid');
+                if (roomsGrid) roomsGrid.innerHTML = roomsHtml;
+            }
+            if (data.testimonials && data.testimonials.length > 0) {
+                var testHtml = '';
+                data.testimonials.forEach(function(t) {
+                    var stars = '';
+                    for (var i = 0; i < 5; i++) {
+                        stars += i < t.rating ? '★' : '☆';
+                    }
+                    testHtml += '<div class="testimonial-card">' +
+                        '<div class="testimonial-rating" style="color:#f59e0b;margin-bottom:10px;font-size:0.9rem;">' + stars + '</div>' +
+                        '<div class="testimonial-text">' + t.text + '</div>' +
+                        '<div class="testimonial-author">' + t.author + '</div>' +
+                        '<div class="testimonial-location">' + t.location + '</div>' +
+                        '</div>';
+                });
+                var testGrid = document.getElementById('testimonialsGrid');
+                if (testGrid) testGrid.innerHTML = testHtml;
+            }
+        })
+        .catch(function() {});
+</script>
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials | Latitude Zero Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f7f5f3; color: #231F20; min-height: 100vh; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #231F20; color: #fff; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header img { max-width: 140px; margin-bottom: 8px; }
+        .sidebar-header h2 { font-size: 0.85rem; font-weight: 600; color: #C9BDB5; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-nav a.active { background: rgba(201,189,181,0.1); color: #C9BDB5; border-left-color: #C9BDB5; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .sidebar-nav .nav-section-title { padding: 20px 20px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .sidebar-footer a:hover { color: #fff; }
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+        .page-header h1 { font-size: 1.8rem; font-weight: 700; }
+        .btn-add { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #231F20; color: #C9BDB5; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
+        .btn-add:hover { background: #4C4E4F; }
+        .flash-messages { margin-bottom: 20px; }
+        .flash { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; }
+        .flash.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .flash.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        .testimonial-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 24px; }
+        .testimonial-card .rating { color: #f59e0b; font-size: 0.9rem; margin-bottom: 12px; }
+        .testimonial-card .text { font-size: 0.95rem; color: #4C4E4F; line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+        .testimonial-card .author { font-weight: 700; color: #231F20; }
+        .testimonial-card .location { color: #9ca3af; font-size: 0.85rem; margin-top: 2px; }
+        .testimonial-card .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #f3f4f6; }
+        .testimonial-card .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .testimonial-card .badge.active { background: #dcfce7; color: #166534; }
+        .testimonial-card .badge.inactive { background: #f3f4f6; color: #4b5563; }
+        .testimonial-card .card-actions { display: flex; gap: 6px; }
+        .btn-sm { display: inline-block; padding: 6px 12px; background: #e8e4e1; color: #231F20; text-decoration: none; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: background 0.2s; }
+        .btn-sm:hover { background: #C9BDB5; }
+        .btn-sm-danger { display: inline-block; padding: 6px 12px; background: #fee2e2; color: #991b1b; text-decoration: none; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: background 0.2s; border: none; cursor: pointer; }
+        .btn-sm-danger:hover { background: #fecaca; }
+        .empty-state { text-align: center; padding: 60px 40px; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); }
+        .empty-state i { font-size: 3rem; color: #d4cfc9; margin-bottom: 16px; }
+        .empty-state p { color: #4C4E4F; margin-bottom: 20px; }
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+            .sidebar-header { padding: 12px 16px; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+            .sidebar-header h2, .sidebar-footer { display: none; }
+            .sidebar-header img { max-width: 100px; margin-bottom: 0; }
+            .sidebar-nav { display: flex; flex-direction: row; padding: 0; flex-shrink: 0; }
+            .sidebar-nav a { padding: 12px 16px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+            .sidebar-nav a.active { border-left-color: transparent; border-bottom-color: #C9BDB5; }
+            .main-content { padding: 20px; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/images/logos/secondary-logo.png" alt="Latitude Zero">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="/admin/bookings/"><i class="fas fa-calendar-check"></i> Bookings</a>
+                {% if current_user.is_superuser %}
+                <a href="/admin/users/"><i class="fas fa-users"></i> Users</a>
+                {% endif %}
+                <div class="nav-section-title">Content</div>
+                <a href="/admin/settings/"><i class="fas fa-cog"></i> Settings</a>
+                <a href="/admin/testimonials/" class="active"><i class="fas fa-quote-left"></i> Testimonials</a>
+                <a href="/admin/rooms/"><i class="fas fa-bed"></i> Rooms</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="page-header">
+                <h1>Testimonials</h1>
+                <a href="/admin/testimonials/create/" class="btn-add"><i class="fas fa-plus"></i> Add Testimonial</a>
+            </div>
+
+            {% if testimonials %}
+            <div class="card-grid">
+                {% for t in testimonials %}
+                <div class="testimonial-card">
+                    <div class="rating">
+                        {% for i in range(t.rating) %}★{% endfor %}{% for i in range(5 - t.rating) %}☆{% endfor %}
+                    </div>
+                    <div class="text">"{{ t.text }}"</div>
+                    <div class="author">{{ t.author }}</div>
+                    <div class="location">{{ t.location }}</div>
+                    <div class="card-footer">
+                        <span class="badge {{ 'active' if t.is_active else 'inactive' }}">{{ 'Active' if t.is_active else 'Inactive' }}</span>
+                        <div class="card-actions">
+                            <a href="/admin/testimonials/{{ t.id }}/edit/" class="btn-sm">Edit</a>
+                            <form method="POST" action="/admin/testimonials/{{ t.id }}/delete/" style="display:inline;" onsubmit="return confirm('Delete this testimonial?');">
+                                <button type="submit" class="btn-sm-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-quote-left"></i>
+                <p>No testimonials yet. Add guest reviews to build trust.</p>
+                <a href="/admin/testimonials/create/" class="btn-add"><i class="fas fa-plus"></i> Add First Testimonial</a>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

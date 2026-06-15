@@ -70,6 +70,7 @@
             width: 20px;
             text-align: center;
         }
+        .sidebar-nav .nav-section-title { padding: 20px 20px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); }
         .sidebar-footer {
             padding: 16px 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
@@ -315,6 +316,10 @@
                 {% if current_user.is_superuser %}
                 <a href="/admin/users/"><i class="fas fa-users"></i> Users</a>
                 {% endif %}
+                <div class="nav-section-title">Content</div>
+                <a href="/admin/settings/"><i class="fas fa-cog"></i> Settings</a>
+                <a href="/admin/testimonials/"><i class="fas fa-quote-left"></i> Testimonials</a>
+                <a href="/admin/rooms/"><i class="fas fa-bed"></i> Rooms</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>

@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from models import db, User, Booking
+from models import db, User, Booking, SiteSettings, Testimonial, Room, FeaturedExperience
 from datetime import datetime, date
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -10,6 +10,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'latitude-zero-secret-key-2026')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'images', 'uploads')
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 db.init_app(app)
 
@@ -123,6 +126,61 @@ def api_create_booking():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+@app.route('/api/content/')
+def api_content():
+    settings = SiteSettings.get_settings()
+    testimonials = Testimonial.get_active()
+    rooms = Room.get_active()
+    return jsonify({
+        'hero': {
+            'title': settings.hero_title,
+            'subtitle': settings.hero_subtitle,
+            'tagline': settings.hero_tagline,
+        },
+        'contact': {
+            'whatsapp': settings.whatsapp,
+            'phone': settings.phone,
+            'email': settings.email,
+            'address': settings.address,
+            'facebook': settings.facebook,
+            'instagram': settings.instagram,
+        },
+        'testimonials': [
+            {
+                'text': t.text,
+                'author': t.author,
+                'location': t.location,
+                'rating': t.rating,
+            } for t in testimonials
+        ],
+        'rooms': [
+            {
+                'name': r.name,
+                'description': r.description,
+                'price': r.price,
+                'image': r.image,
+                'features': r.features,
+            } for r in rooms
+        ]
+    })
+
+@app.route('/admin/upload/', methods=['POST'])
+@login_required
+def admin_upload():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    allowed = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    if ext not in allowed:
+        return jsonify({'error': 'File type not allowed'}), 400
+    filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(filepath)
+    return jsonify({'url': f'/images/uploads/{filename}'})
+
 # ===== User Management =====
 @app.route('/admin/users/')
 @login_required
@@ -201,7 +259,126 @@ def admin_delete_user(user_id):
     flash(f'User {user.username} deleted.', 'success')
     return redirect(url_for('admin_users'))
 
-# ===== Stats API =====
+# ===== Content Management: Settings =====
+@app.route('/admin/settings/', methods=['GET', 'POST'])
+@login_required
+def admin_settings():
+    settings = SiteSettings.get_settings()
+    if request.method == 'POST':
+        settings.hero_title = request.form.get('hero_title', '')
+        settings.hero_subtitle = request.form.get('hero_subtitle', '')
+        settings.hero_tagline = request.form.get('hero_tagline', '')
+        settings.whatsapp = request.form.get('whatsapp', '')
+        settings.phone = request.form.get('phone', '')
+        settings.email = request.form.get('email', '')
+        settings.address = request.form.get('address', '')
+        settings.facebook = request.form.get('facebook', '')
+        settings.instagram = request.form.get('instagram', '')
+        db.session.commit()
+        flash('Settings saved successfully.', 'success')
+        return redirect(url_for('admin_settings'))
+    return render_template('settings.html', settings=settings)
+
+# ===== Content Management: Testimonials =====
+@app.route('/admin/testimonials/')
+@login_required
+def admin_testimonials():
+    testimonials = Testimonial.query.order_by(Testimonial.sort_order, Testimonial.created_at.desc()).all()
+    return render_template('testimonials.html', testimonials=testimonials)
+
+@app.route('/admin/testimonials/create/', methods=['GET', 'POST'])
+@login_required
+def admin_create_testimonial():
+    if request.method == 'POST':
+        text = request.form.get('text', '').strip()
+        author = request.form.get('author', '').strip()
+        location = request.form.get('location', '').strip()
+        rating = int(request.form.get('rating', 5))
+        sort_order = int(request.form.get('sort_order', 0))
+        testimonial = Testimonial(text=text, author=author, location=location, rating=rating, sort_order=sort_order)
+        db.session.add(testimonial)
+        db.session.commit()
+        flash(f'Testimonial from {author} added.', 'success')
+        return redirect(url_for('admin_testimonials'))
+    return render_template('testimonial_edit.html', testimonial=None)
+
+@app.route('/admin/testimonials/<int:testimonial_id>/edit/', methods=['GET', 'POST'])
+@login_required
+def admin_edit_testimonial(testimonial_id):
+    testimonial = Testimonial.query.get_or_404(testimonial_id)
+    if request.method == 'POST':
+        testimonial.text = request.form.get('text', '').strip()
+        testimonial.author = request.form.get('author', '').strip()
+        testimonial.location = request.form.get('location', '').strip()
+        testimonial.rating = int(request.form.get('rating', 5))
+        testimonial.sort_order = int(request.form.get('sort_order', 0))
+        testimonial.is_active = request.form.get('is_active') == 'on'
+        db.session.commit()
+        flash('Testimonial updated.', 'success')
+        return redirect(url_for('admin_testimonials'))
+    return render_template('testimonial_edit.html', testimonial=testimonial)
+
+@app.route('/admin/testimonials/<int:testimonial_id>/delete/', methods=['POST'])
+@login_required
+def admin_delete_testimonial(testimonial_id):
+    testimonial = Testimonial.query.get_or_404(testimonial_id)
+    db.session.delete(testimonial)
+    db.session.commit()
+    flash('Testimonial deleted.', 'success')
+    return redirect(url_for('admin_testimonials'))
+
+# ===== Content Management: Rooms =====
+@app.route('/admin/rooms/')
+@login_required
+def admin_rooms():
+    rooms = Room.query.order_by(Room.sort_order, Room.created_at).all()
+    return render_template('rooms.html', rooms=rooms)
+
+@app.route('/admin/rooms/create/', methods=['GET', 'POST'])
+@login_required
+def admin_create_room():
+    if request.method == 'POST':
+        room = Room(
+            name=request.form.get('name', '').strip(),
+            description=request.form.get('description', ''),
+            price=request.form.get('price', ''),
+            image=request.form.get('image', ''),
+            features=request.form.get('features', ''),
+            sort_order=int(request.form.get('sort_order', 0))
+        )
+        db.session.add(room)
+        db.session.commit()
+        flash(f'Room "{room.name}" added.', 'success')
+        return redirect(url_for('admin_rooms'))
+    return render_template('room_edit.html', room=None)
+
+@app.route('/admin/rooms/<int:room_id>/edit/', methods=['GET', 'POST'])
+@login_required
+def admin_edit_room(room_id):
+    room = Room.query.get_or_404(room_id)
+    if request.method == 'POST':
+        room.name = request.form.get('name', '').strip()
+        room.description = request.form.get('description', '')
+        room.price = request.form.get('price', '')
+        room.image = request.form.get('image', '')
+        room.features = request.form.get('features', '')
+        room.sort_order = int(request.form.get('sort_order', 0))
+        room.is_active = request.form.get('is_active') == 'on'
+        db.session.commit()
+        flash(f'Room "{room.name}" updated.', 'success')
+        return redirect(url_for('admin_rooms'))
+    return render_template('room_edit.html', room=room)
+
+@app.route('/admin/rooms/<int:room_id>/delete/', methods=['POST'])
+@login_required
+def admin_delete_room(room_id):
+    room = Room.query.get_or_404(room_id)
+    db.session.delete(room)
+    db.session.commit()
+    flash('Room deleted.', 'success')
+    return redirect(url_for('admin_rooms'))
+
+# ===== Stats API ===
 @app.route('/admin/api/stats/')
 @login_required
 def admin_stats():
@@ -255,10 +432,39 @@ def init_db():
             superuser = User(username='admin', email='admin@latitudezero.ug', is_superuser=True)
             superuser.set_password('latitude2026')
             db.session.add(superuser)
-            db.session.commit()
-            print('Superuser created: admin / latitude2026')
-        else:
-            print('Admin user already exists.')
+
+        if not SiteSettings.query.first():
+            settings = SiteSettings(
+                hero_title='Your Peaceful Stay Near Queen Elizabeth National Park',
+                hero_subtitle='Welcome to Latitude Zero Cottages Kikorongo — a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo. Whether you are here for a safari, a romantic escape, or a quiet retreat, we offer warm hospitality, delicious meals, and a place to truly unwind.',
+                hero_tagline='Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality.',
+                whatsapp='+256 700 629 083',
+                phone='+256 700 629 083',
+                email='info@latitudezero.ug',
+                address='Kikorongo, near Queen Elizabeth National Park'
+            )
+            db.session.add(settings)
+
+        if not Testimonial.query.first():
+            testimonials = [
+                Testimonial(text='Absolutely wonderful stay! The staff were incredibly welcoming and the cottages are beautifully maintained. Woke up to birds singing and fell asleep to the sounds of nature. Will definitely come back!', author='Sarah M.', location='London, UK', rating=5, sort_order=1),
+                Testimonial(text='Best lodge experience in Uganda. Clean, comfortable, and the food was excellent. Very close to Queen Elizabeth National Park — perfect for our safari adventures.', author='James K.', location='Nairobi, Kenya', rating=5, sort_order=2),
+                Testimonial(text='A peaceful retreat with amazing hospitality. The team went above and beyond to make our anniversary special. Highly recommended for couples!', author='Anna & Peter', location='Amsterdam, NL', rating=5, sort_order=3),
+            ]
+            for t in testimonials:
+                db.session.add(t)
+
+        if not Room.query.first():
+            rooms = [
+                Room(name='Standard Room', description='A cozy room with comfortable bedding and all essential amenities for a restful stay. Perfect for solo travelers or couples looking for comfort in nature.', price='From $45/night', image='images/IMG_3384.jpeg', features='WiFi\nHot Shower\nBedroom\nMosquito Net\nAC Available', sort_order=1),
+                Room(name='Deluxe Room', description='Extra spacious room with premium furnishings and stunning views of the surrounding landscape. Ideal for those who want a little more space and luxury.', price='From $65/night', image='images/IMG_3385.jpeg', features='WiFi\nHot Shower\nSpacious Bedroom\nBalcony\nMosquito Net\nAC', sort_order=2),
+                Room(name='Family Cottage', description='Ideal for families and groups, offering generous space and a private cottage setting with separate sleeping areas.', price='From $85/night', image='images/IMG_3388.jpeg', features='WiFi\nHot Shower\n2 Bedrooms\nLiving Area\nPrivate Cottage\nKitchenette', sort_order=3),
+            ]
+            for r in rooms:
+                db.session.add(r)
+
+        db.session.commit()
+        print('Database initialized with seed content.')
 
 if __name__ == '__main__':
     init_db()

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Edit' if testimonial else 'Add' }} Testimonial | Latitude Zero Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f7f5f3; color: #231F20; min-height: 100vh; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #231F20; color: #fff; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header img { max-width: 140px; margin-bottom: 8px; }
+        .sidebar-header h2 { font-size: 0.85rem; font-weight: 600; color: #C9BDB5; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-nav a.active { background: rgba(201,189,181,0.1); color: #C9BDB5; border-left-color: #C9BDB5; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .sidebar-nav .nav-section-title { padding: 20px 20px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .sidebar-footer a:hover { color: #fff; }
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .page-header h1 { font-size: 1.6rem; font-weight: 700; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #fff; color: #231F20; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; }
+        .back-btn:hover { background: #C9BDB5; }
+        .form-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 32px; max-width: 640px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: #4C4E4F; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 14px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #C9BDB5; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-row { display: flex; gap: 16px; }
+        .form-row .form-group { flex: 1; }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .checkbox-item input { width: 18px; height: 18px; accent-color: #231F20; cursor: pointer; }
+        .checkbox-item label { font-weight: 500; text-transform: none; font-size: 0.9rem; cursor: pointer; margin: 0; }
+        .form-actions { display: flex; gap: 12px; margin-top: 28px; }
+        .btn-save { padding: 12px 28px; background: #231F20; color: #C9BDB5; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
+        .btn-save:hover { background: #4C4E4F; }
+        .btn-cancel { padding: 12px 20px; background: #e8e4e1; color: #231F20; text-decoration: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; transition: background 0.2s; }
+        .btn-cancel:hover { background: #d4cfc9; }
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+            .sidebar-header { padding: 12px 16px; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+            .sidebar-header h2, .sidebar-footer { display: none; }
+            .sidebar-header img { max-width: 100px; margin-bottom: 0; }
+            .sidebar-nav { display: flex; flex-direction: row; padding: 0; flex-shrink: 0; }
+            .sidebar-nav a { padding: 12px 16px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+            .sidebar-nav a.active { border-left-color: transparent; border-bottom-color: #C9BDB5; }
+            .main-content { padding: 20px; }
+            .form-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/images/logos/secondary-logo.png" alt="Latitude Zero">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="/admin/bookings/"><i class="fas fa-calendar-check"></i> Bookings</a>
+                {% if current_user.is_superuser %}
+                <a href="/admin/users/"><i class="fas fa-users"></i> Users</a>
+                {% endif %}
+                <div class="nav-section-title">Content</div>
+                <a href="/admin/settings/"><i class="fas fa-cog"></i> Settings</a>
+                <a href="/admin/testimonials/" class="active"><i class="fas fa-quote-left"></i> Testimonials</a>
+                <a href="/admin/rooms/"><i class="fas fa-bed"></i> Rooms</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h1>{{ 'Edit' if testimonial else 'Add' }} Testimonial</h1>
+                <a href="/admin/testimonials/" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+            </div>
+
+            <div class="form-card">
+                <form method="POST">
+                    <div class="form-group">
+                        <label>Quote Text *</label>
+                        <textarea name="text" required placeholder="What did the guest say?">{{ testimonial.text if testimonial else '' }}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Author Name *</label>
+                            <input type="text" name="author" required value="{{ testimonial.author if testimonial else '' }}" placeholder="Guest name">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="location" value="{{ testimonial.location if testimonial else '' }}" placeholder="City, Country">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Rating</label>
+                            <select name="rating">
+                                <option value="5" {% if testimonial and testimonial.rating == 5 %}selected{% endif %}>★★★★★ (5)</option>
+                                <option value="4" {% if testimonial and testimonial.rating == 4 %}selected{% endif %}>★★★★☆ (4)</option>
+                                <option value="3" {% if testimonial and testimonial.rating == 3 %}selected{% endif %}>★★★☆☆ (3)</option>
+                                <option value="2" {% if testimonial and testimonial.rating == 2 %}selected{% endif %}>★★☆☆☆ (2)</option>
+                                <option value="1" {% if testimonial and testimonial.rating == 1 %}selected{% endif %}>★☆☆☆☆ (1)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sort Order</label>
+                            <input type="number" name="sort_order" value="{{ testimonial.sort_order if testimonial else 0 }}" min="0" placeholder="Display order">
+                        </div>
+                    </div>
+                    {% if testimonial %}
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="is_active" id="is_active" {% if testimonial.is_active %}checked{% endif %}>
+                        <label for="is_active">Published (visible on website)</label>
+                    </div>
+                    {% endif %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save"><i class="fas fa-save"></i> {{ 'Update' if testimonial else 'Add' }} Testimonial</button>
+                        <a href="/admin/testimonials/" class="btn-cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

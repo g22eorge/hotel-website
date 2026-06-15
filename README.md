@@ -144,13 +144,43 @@ The website booking form sends guests to your WhatsApp and also saves the reques
 
 ---
 
-## 7. Important Reminders
+## 7. Cloudinary Setup (Image Storage)
+
+All uploaded images are stored in **Cloudinary** — a cloud image service. This ensures images survive server redeploys and load fast from a CDN.
+
+### Setup (one-time)
+
+1. Create a free Cloudinary account: https://cloudinary.com/users/register/free
+2. Go to your **Dashboard** and copy:
+   - Cloud Name
+   - API Key
+   - API Secret
+3. Add these as environment variables on your hosting (e.g. Railway):
+
+| Variable | Value |
+|----------|-------|
+| `CLOUDINARY_CLOUD_NAME` | your_cloud_name |
+| `CLOUDINARY_API_KEY` | your_api_key |
+| `CLOUDINARY_API_SECRET` | your_api_secret |
+
+4. Redeploy your app — uploads will now go to Cloudinary.
+
+### After Setup
+
+- Any image you upload via the admin panel goes to Cloudinary
+- Images are served globally via Cloudinary's CDN
+- **Existing local images** (in the repo, e.g. `images/IMG_3384.jpeg`) continue to work — these are committed to git and served locally
+
+---
+
+## 8. Important Reminders
 
 | Tip | Details |
 |-----|---------|
 | **Always click Save Changes** after editing |
 | **Only heroes and intro sections have image upload** | Other sections do not support images |
-| **Image files** | Stored in `images/uploads/` — do not delete from disk manually |
+| **Uploaded images** | Stored in Cloudinary (not local filesystem) |
+| **Default images** | Repo images like `images/IMG_*.jpeg` are local — committed to git |
 | **Database** | `latitude_zero.db` — keep backups regularly |
 | **Sort order** | In gallery and testimonials, lower numbers appear first. Use gaps (10, 20, 30) for easy insertion |
 | **Icons** | Use FontAwesome 6 Free classes. Format: `fas fa-xxx` |
@@ -158,7 +188,7 @@ The website booking form sends guests to your WhatsApp and also saves the reques
 
 ---
 
-## 8. If You Need a New Admin User
+## 9. If You Need a New Admin User
 
 1. Log in as the superuser (`admin`)
 2. Go to **Content → Users**
@@ -167,16 +197,18 @@ The website booking form sends guests to your WhatsApp and also saves the reques
 
 ---
 
-## 9. Technical Notes for Developer (if needed)
+## 10. Technical Notes for Developer (if needed)
 
 - **Framework:** Flask (Python 3)
 - **Database:** SQLite (`latitude_zero.db`)
+- **Image Storage:** Cloudinary (credentials via env vars)
 - **Server:** Runs on port 5001 by default
 - **Startup:** `python3 app.py`
 - **Environment:** Requires Python 3.10+, `pip3 install -r requirements.txt`
+- **Required env vars (Cloudinary):** `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
 
 ---
 
-## 10. Support
+## 11. Support
 
 For technical issues, code changes, or advanced customizations, contact the developer.

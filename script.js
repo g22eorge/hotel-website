@@ -1,3 +1,5 @@
+var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
+
 document.addEventListener('DOMContentLoaded', function() {
     // Navbar scroll effect
     var navbar = document.getElementById('navbar');
@@ -174,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
 
             // Save to backend API (async, don't block WhatsApp)
-            fetch('/api/bookings/', {
+            fetch(API_BASE + '/api/bookings/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(fields)

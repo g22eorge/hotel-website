@@ -100,85 +100,75 @@
 
     <script src="../script.js"></script>
     <script>
-    (function() {
-        var page = document.body.getAttribute('data-page');
-        if (!page) return;
-        fetch('/api/pages/' + page + '/')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (!data.sections) return;
-                
-                data.sections.forEach(function(s) {
-                    // Update hero title
-                    if (s.key === 'hero' && s.title) {
-                        var h = document.getElementById('heroTitle');
-                        if (h) h.textContent = s.title;
-                        document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
-                        var metaDesc = document.getElementById('metaDescription');
-                        if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
+    var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
+    var page = document.body.getAttribute('data-page');
+    if (!page) return;
+    fetch(API_BASE + '/api/pages/' + page + '/')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (!data.sections) return;
+
+            data.sections.forEach(function(s) {
+                if (s.key === 'hero' && s.title) {
+                    var h = document.getElementById('heroTitle');
+                    if (h) h.textContent = s.title;
+                    document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                    var metaDesc = document.getElementById('metaDescription');
+                    if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
+                }
+
+                if (s.key === 'hero' && s.image) {
+                    var heroSection = document.querySelector('[data-section-key="hero"]');
+                    if (heroSection) {
+                        heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
                     }
-                    
-                    // Update hero background image
-                    if (s.key === 'hero' && s.image) {
-                        var heroSection = document.querySelector('[data-section-key="hero"]');
-                        if (heroSection) {
-                            heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
+                }
+
+                var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
+                els.forEach(function(el) {
+                    if (s.title) {
+                        var heading = el.querySelector('h2') || el.querySelector('h4');
+                        if (heading && s.key !== 'hero') heading.textContent = s.title;
+                    }
+                    if (s.content) {
+                        var paragraphs = el.querySelectorAll('p');
+                        if (paragraphs.length > 0) {
+                            paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
                         }
                     }
-                    
-                    // Find all elements with this section key
-                    var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
-                    els.forEach(function(el) {
-                        // Update section title
-                        if (s.title) {
-                            var heading = el.querySelector('h2') || el.querySelector('h4');
-                            if (heading && s.key !== 'hero') heading.textContent = s.title;
-                        }
-                        
-                        // Update content (paragraph after heading)
-                        if (s.content) {
-                            var paragraphs = el.querySelectorAll('p');
-                            if (paragraphs.length > 0) {
-                                paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
-                            }
-                        }
-                    });
                 });
-            })
-            
-            // Fetch footer content
-            fetch('/api/content/')
-                .then(function(r) { return r.json(); })
-                .then(function(contentData) {
-                    if (contentData.footer) {
-                        document.querySelectorAll('.footer-tagline').forEach(function(el) {
-                            if (contentData.footer.tagline) el.textContent = contentData.footer.tagline;
-                        });
-                        document.querySelectorAll('.footer-copyright').forEach(function(el) {
-                            if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
-                        });
-                    }
-                })
-                .catch(function() {});
-            
-            // Load gallery images from API
-            fetch('/api/gallery/')
-                .then(function(r) { return r.json(); })
-                .then(function(galleryData) {
-                    var grid = document.getElementById('galleryGrid');
-                    if (!grid || !galleryData.images || galleryData.images.length === 0) return;
-                    
-                    var html = '';
-                    galleryData.images.forEach(function(img) {
-                        html += '<div class="gallery-item">' +
-                            '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '">' +
-                            '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
-                            '</div>';
-                    });
-                    grid.innerHTML = html;
-                })
-                .catch(function() {});
-    })();
+            });
+        });
+
+    fetch(API_BASE + '/api/content/')
+        .then(function(r) { return r.json(); })
+        .then(function(contentData) {
+            if (contentData.footer) {
+                document.querySelectorAll('.footer-tagline').forEach(function(el) {
+                    if (contentData.footer.tagline) el.textContent = contentData.footer.tagline;
+                });
+                document.querySelectorAll('.footer-copyright').forEach(function(el) {
+                    if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
+                });
+            }
+        })
+        .catch(function() {});
+
+    fetch(API_BASE + '/api/gallery/')
+        .then(function(r) { return r.json(); })
+        .then(function(galleryData) {
+            var grid = document.getElementById('galleryGrid');
+            if (!grid || !galleryData.images || galleryData.images.length === 0) return;
+            var html = '';
+            galleryData.images.forEach(function(img) {
+                html += '<div class="gallery-item">' +
+                    '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '">' +
+                    '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
+                    '</div>';
+            });
+            grid.innerHTML = html;
+        })
+        .catch(function() {});
     </script>
 </body>
 </html>

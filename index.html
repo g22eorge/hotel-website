@@ -388,7 +388,8 @@
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
     <script>
-    fetch('/api/content/')
+    var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
+    fetch(API_BASE + '/api/content/')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.hero) {

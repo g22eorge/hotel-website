@@ -99,87 +99,81 @@
 
     <script src="../script.js"></script>
     <script>
-    (function() {
-        var page = document.body.getAttribute('data-page');
-        if (!page) return;
-        fetch('/api/pages/' + page + '/')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (!data.sections) return;
-                
-                data.sections.forEach(function(s) {
-                    // Update hero title
-                    if (s.key === 'hero' && s.title) {
-                        var h = document.getElementById('heroTitle');
-                        if (h) h.textContent = s.title;
-                        document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
-                        var metaDesc = document.getElementById('metaDescription');
-                        if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
-                    }
-                    
-                    // Update hero background image
-                    if (s.key === 'hero' && s.image) {
-                        var heroSection = document.querySelector('[data-section-key="hero"]');
-                        if (heroSection) {
-                            heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
-                        }
-                    }
-                    
-                    // Find all elements with this section key
-                    var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
-                    els.forEach(function(el) {
-                        if (s.title) {
-                            var heading = el.querySelector('h2') || el.querySelector('h4');
-                            if (heading && s.key !== 'hero') heading.textContent = s.title;
-                        }
-                    });
+    var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
+    var page = document.body.getAttribute('data-page');
+    if (!page) return;
+    fetch(API_BASE + '/api/pages/' + page + '/')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (!data.sections) return;
 
-                    // Handle feature grids for promise and serve sections
-                    if (s.key === 'promise' || s.key === 'serve') {
-                        var introP = document.querySelector('[data-section-intro="' + s.key + '"]');
-                        var featuresDiv = document.getElementById('features-' + s.key);
-                        if (s.content && featuresDiv) {
-                            var lines = s.content.split('\n');
-                            var featureItems = [];
-                            lines.forEach(function(line) {
-                                line = line.trim();
-                                if (!line) return;
-                                if (line.indexOf('|') !== -1) {
-                                    var pipeIdx = line.indexOf('|');
-                                    var icon = line.substring(0, pipeIdx).trim();
-                                    var text = line.substring(pipeIdx + 1).trim();
-                                    featureItems.push({icon: icon, text: text});
-                                } else if (introP && featureItems.length === 0) {
-                                    introP.innerHTML = line;
-                                }
-                            });
-                            if (featureItems.length > 0) {
-                                var html = '';
-                                featureItems.forEach(function(item) {
-                                    html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
-                                });
-                                featuresDiv.innerHTML = html;
-                            }
-                        }
+            data.sections.forEach(function(s) {
+                if (s.key === 'hero' && s.title) {
+                    var h = document.getElementById('heroTitle');
+                    if (h) h.textContent = s.title;
+                    document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                    var metaDesc = document.getElementById('metaDescription');
+                    if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
+                }
+
+                if (s.key === 'hero' && s.image) {
+                    var heroSection = document.querySelector('[data-section-key="hero"]');
+                    if (heroSection) {
+                        heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
+                    }
+                }
+
+                var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
+                els.forEach(function(el) {
+                    if (s.title) {
+                        var heading = el.querySelector('h2') || el.querySelector('h4');
+                        if (heading && s.key !== 'hero') heading.textContent = s.title;
                     }
                 });
-            })
-            
-            // Fetch footer content
-            fetch('/api/content/')
-                .then(function(r) { return r.json(); })
-                .then(function(contentData) {
-                    if (contentData.footer) {
-                        document.querySelectorAll('.footer-tagline').forEach(function(el) {
-                            if (contentData.footer.tagline) el.textContent = contentData.footer.tagline;
+
+                if (s.key === 'promise' || s.key === 'serve') {
+                    var introP = document.querySelector('[data-section-intro="' + s.key + '"]');
+                    var featuresDiv = document.getElementById('features-' + s.key);
+                    if (s.content && featuresDiv) {
+                        var lines = s.content.split('\n');
+                        var featureItems = [];
+                        lines.forEach(function(line) {
+                            line = line.trim();
+                            if (!line) return;
+                            if (line.indexOf('|') !== -1) {
+                                var pipeIdx = line.indexOf('|');
+                                var icon = line.substring(0, pipeIdx).trim();
+                                var text = line.substring(pipeIdx + 1).trim();
+                                featureItems.push({icon: icon, text: text});
+                            } else if (introP && featureItems.length === 0) {
+                                introP.innerHTML = line;
+                            }
                         });
-                        document.querySelectorAll('.footer-copyright').forEach(function(el) {
-                            if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
-                        });
+                        if (featureItems.length > 0) {
+                            var html = '';
+                            featureItems.forEach(function(item) {
+                                html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
+                            });
+                            featuresDiv.innerHTML = html;
+                        }
                     }
-                })
-                .catch(function() {});
-    })();
+                }
+            });
+        });
+
+    fetch(API_BASE + '/api/content/')
+        .then(function(r) { return r.json(); })
+        .then(function(contentData) {
+            if (contentData.footer) {
+                document.querySelectorAll('.footer-tagline').forEach(function(el) {
+                    if (contentData.footer.tagline) el.textContent = contentData.footer.tagline;
+                });
+                document.querySelectorAll('.footer-copyright').forEach(function(el) {
+                    if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
+                });
+            }
+        })
+        .catch(function() {});
     </script>
 </body>
 </html>

@@ -137,6 +137,8 @@ def api_content():
             'subtitle': settings.hero_subtitle,
             'tagline': settings.hero_tagline,
             'image': settings.hero_image,
+            'meta_title': settings.meta_title,
+            'meta_description': settings.meta_description,
         },
         'contact': {
             'whatsapp': settings.whatsapp,
@@ -197,6 +199,8 @@ def api_page(page):
             'title': s.title,
             'content': s.content,
             'image': s.image,
+            'meta_title': s.meta_title,
+            'meta_description': s.meta_description,
         } for s in sections]
     })
 
@@ -296,6 +300,8 @@ def admin_settings():
         settings.footer_tagline = request.form.get('footer_tagline', '')
         settings.footer_description = request.form.get('footer_description', '')
         settings.footer_copyright = request.form.get('footer_copyright', '')
+        settings.meta_title = request.form.get('meta_title', '')
+        settings.meta_description = request.form.get('meta_description', '')
 
         if 'hero_image' in request.files:
             file = request.files['hero_image']
@@ -433,6 +439,16 @@ def admin_edit_page(page):
                 section = PageSection.query.filter_by(page=page, section_key=section_key).first()
                 if section:
                     section.title = value.strip()
+            elif key.startswith('meta_title_'):
+                section_key = key.replace('meta_title_', '')
+                section = PageSection.query.filter_by(page=page, section_key=section_key).first()
+                if section:
+                    section.meta_title = value.strip()
+            elif key.startswith('meta_description_'):
+                section_key = key.replace('meta_description_', '')
+                section = PageSection.query.filter_by(page=page, section_key=section_key).first()
+                if section:
+                    section.meta_description = value.strip()
             elif key.startswith('existing_image_'):
                 section_key = key.replace('existing_image_', '')
                 section = PageSection.query.filter_by(page=page, section_key=section_key).first()

@@ -133,7 +133,20 @@
 
                     <div class="form-group">
                         <label>Content</label>
-                        <textarea name="content_{{ section.section_key }}" rows="4" placeholder="Enter content...">{{ section.content }}</textarea>
+                        {% if section.section_key in ['promise', 'serve', 'safari'] %}
+                        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 14px;margin-bottom:8px;font-size:0.82rem;color:#92400e;">
+                            <strong><i class="fas fa-info-circle"></i> Feature list format:</strong> First line = intro text, then one feature per line as <code>icon-class|Feature text</code>. Example:<br>
+                            <code style="background:#fef3c7;padding:2px 6px;border-radius:3px;">fas fa-wifi|Reliable internet</code><br>
+                            <a href="https://fontawesome.com/v6/search?m=free" target="_blank" style="color:#92400e;text-decoration:underline;">Browse FontAwesome icons</a>
+                        </div>
+                        {% elif section.section_key == 'amenities' %}
+                        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 14px;margin-bottom:8px;font-size:0.82rem;color:#92400e;">
+                            <strong><i class="fas fa-info-circle"></i> Service card format:</strong> First line = intro text, then one card per line as <code>icon-class|Title|Description</code>. Example:<br>
+                            <code style="background:#fef3c7;padding:2px 6px;border-radius:3px;">fas fa-wifi|24/7 Internet|High-speed WiFi throughout.</code><br>
+                            <a href="https://fontawesome.com/v6/search?m=free" target="_blank" style="color:#92400e;text-decoration:underline;">Browse FontAwesome icons</a>
+                        </div>
+                        {% endif %}
+                        <textarea name="content_{{ section.section_key }}" rows="{% if section.section_key in ['promise', 'serve', 'safari', 'amenities'] %}10{% else %}4{% endif %}" placeholder="Enter content...">{{ section.content }}</textarea>
                     </div>
 
                     {% if section.section_key == 'hero' or section.section_key == 'intro' or section.section_key == 'gallery' %}
@@ -160,6 +173,20 @@
                                 No image
                             </div>
                             {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if section.section_key == 'hero' %}
+                    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:20px;margin-top:20px;">
+                        <h4 style="font-size:0.85rem;font-weight:700;color:#1e40af;margin-bottom:16px;"><i class="fas fa-search"></i> SEO Settings</h4>
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label>Page Title (meta title)</label>
+                            <input type="text" name="meta_title_{{ section.section_key }}" value="{{ section.meta_title or '' }}" placeholder="e.g. About - Latitude Zero Cottages Kikorongo">
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>Meta Description</label>
+                            <textarea name="meta_description_{{ section.section_key }}" rows="2" placeholder="e.g. Learn about Latitude Zero Cottages, a peaceful accommodation near Queen Elizabeth National Park.">{{ section.meta_description or '' }}</textarea>
                         </div>
                     </div>
                     {% endif %}

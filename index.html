@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Latitude Zero Cottages Kikorongo | Comfortable Rooms Near Queen Elizabeth National Park</title>
-    <meta name="description" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park.">
+    <meta name="description" id="metaDescription" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park.">
     <link rel="stylesheet" href="styles.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -398,6 +398,9 @@
                 if (titleEl && data.hero.title) titleEl.textContent = data.hero.title;
                 if (subtitleEl && data.hero.subtitle) subtitleEl.textContent = data.hero.subtitle;
                 if (taglineEl && data.hero.tagline) taglineEl.textContent = data.hero.tagline;
+                if (data.hero.meta_title) document.title = data.hero.meta_title;
+                var metaDesc = document.getElementById('metaDescription');
+                if (metaDesc && data.hero.meta_description) metaDesc.setAttribute('content', data.hero.meta_description);
                 
                 // Update hero carousel first slide background image
                 if (data.hero.image) {

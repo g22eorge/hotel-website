@@ -67,6 +67,8 @@ class SiteSettings(db.Model):
     footer_tagline = db.Column(db.String(300), default='')
     footer_description = db.Column(db.Text, default='')
     footer_copyright = db.Column(db.String(300), default='')
+    meta_title = db.Column(db.String(200), default='')
+    meta_description = db.Column(db.String(500), default='')
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     @classmethod
@@ -120,6 +122,8 @@ class PageSection(db.Model):
     title = db.Column(db.String(200), default='')
     content = db.Column(db.Text, default='')
     image = db.Column(db.String(200), default='')
+    meta_title = db.Column(db.String(200), default='')
+    meta_description = db.Column(db.String(500), default='')
     sort_order = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+latitude_zero.db
+server.log
+cookies.txt

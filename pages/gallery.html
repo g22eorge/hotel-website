@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery - Latitude Zero Cottages Kikorongo</title>
-    <meta name="description" content="Explore stunning photos of Latitude Zero Cottages Kikorongo: comfortable cottages, delicious meals, natural surroundings, and guest experiences near Queen Elizabeth National Park.">
+    <meta name="description" id="metaDescription" content="Explore stunning photos of Latitude Zero Cottages Kikorongo: comfortable cottages, delicious meals, natural surroundings, and guest experiences near Queen Elizabeth National Park.">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -113,6 +113,9 @@
                     if (s.key === 'hero' && s.title) {
                         var h = document.getElementById('heroTitle');
                         if (h) h.textContent = s.title;
+                        document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                        var metaDesc = document.getElementById('metaDescription');
+                        if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
                     }
                     
                     // Update hero background image

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services - Latitude Zero Cottages Kikorongo</title>
-    <meta name="description" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park.">
+    <meta name="description" id="metaDescription" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park.">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -127,14 +127,7 @@
             <div class="content-block">
                 <p>Latitude Zero Cottages Kikorongo is located near the breathtaking landscapes of Queen Elizabeth National Park, making it a convenient stay for guests who want to enjoy wildlife and safari experiences.</p>
             </div>
-            <div class="features-grid" style="margin-top: 30px;">
-                <div class="feature-item"><i class="fas fa-binoculars"></i> Game drives</div>
-                <div class="feature-item"><i class="fas fa-paw"></i> Wildlife viewing</div>
-                <div class="feature-item"><i class="fas fa-dove"></i> Bird watching</div>
-                <div class="feature-item"><i class="fas fa-camera"></i> Photography safaris</div>
-                <div class="feature-item"><i class="fas fa-leaf"></i> Nature walks</div>
-                <div class="feature-item"><i class="fas fa-ship"></i> Boat cruises</div>
-            </div>
+            <div class="features-grid" style="margin-top: 30px;" id="features-safari"></div>
             <div class="cta-center" style="margin-top: 30px;">
                 <a href="contact.html" class="btn btn-primary">Book a Safari</a>
             </div>
@@ -147,38 +140,7 @@
                 <h2>Amenities &amp; Other Services</h2>
                 <p>Everything you need for a comfortable and memorable stay.</p>
             </div>
-            <div class="features-grid">
-                <div class="service-card">
-                    <i class="fas fa-wifi"></i>
-                    <h5>24/7 Internet Connection</h5>
-                    <p>High-speed WiFi available throughout the property for staying connected.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-spa"></i>
-                    <h5>Wellness & Relaxation</h5>
-                    <p>Enjoy our spa services, massage therapy, and tranquil outdoor spaces for rejuvenation.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-users"></i>
-                    <h5>Event Support</h5>
-                    <p>We cater to weddings, meetings, and special events with customized packages.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h5>Flexible Booking</h5>
-                    <p>Flexible check-in/check-out times and reservation options to suit your travel plans.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h5>Secure & Reliable</h5>
-                    <p>Secure bookings with mobile money payments and instant confirmations.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h5>Tour Arrangements</h5>
-                    <p>We assist with booking guided tours, bird watching, and nature walks in the area.</p>
-                </div>
-            </div>
+            <div class="features-grid" id="features-amenities"></div>
             <div class="cta-center" style="margin-top: 30px;">
                 <a href="contact.html" class="btn btn-primary">Contact Us</a>
             </div>
@@ -237,13 +199,14 @@
                 if (!data.sections) return;
                 
                 data.sections.forEach(function(s) {
-                    // Update hero title
                     if (s.key === 'hero' && s.title) {
                         var h = document.getElementById('heroTitle');
                         if (h) h.textContent = s.title;
+                        document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                        var metaDesc = document.getElementById('metaDescription');
+                        if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
                     }
                     
-                    // Update hero background image
                     if (s.key === 'hero' && s.image) {
                         var heroSection = document.querySelector('[data-section-key="hero"]');
                         if (heroSection) {
@@ -251,27 +214,89 @@
                         }
                     }
                     
-                    // Find all elements with this section key
+                    // Update section titles and intro paragraphs
                     var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
                     els.forEach(function(el) {
-                        // Update section title
                         if (s.title) {
                             var heading = el.querySelector('h2') || el.querySelector('h4');
                             if (heading && s.key !== 'hero') heading.textContent = s.title;
                         }
-                        
-                        // Update content (paragraph after heading)
-                        if (s.content) {
-                            var paragraphs = el.querySelectorAll('p');
-                            if (paragraphs.length > 0) {
-                                paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
+                    });
+
+                    // Safari features (icon|text format)
+                    if (s.key === 'safari') {
+                        var featuresDiv = document.getElementById('features-safari');
+                        if (s.content && featuresDiv) {
+                            var lines = s.content.split('\n');
+                            var featureItems = [];
+                            lines.forEach(function(line) {
+                                line = line.trim();
+                                if (!line) return;
+                                if (line.indexOf('|') !== -1) {
+                                    var pipeIdx = line.indexOf('|');
+                                    var icon = line.substring(0, pipeIdx).trim();
+                                    var text = line.substring(pipeIdx + 1).trim();
+                                    featureItems.push({icon: icon, text: text});
+                                } else {
+                                    var introP = document.querySelector('[data-section-key="safari"] p');
+                                    if (introP && featureItems.length === 0) introP.innerHTML = line;
+                                }
+                            });
+                            if (featureItems.length > 0) {
+                                var html = '';
+                                featureItems.forEach(function(item) {
+                                    html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
+                                });
+                                featuresDiv.innerHTML = html;
                             }
                         }
-                    });
+                    }
+
+                    // Amenities service cards (icon|title|description format)
+                    if (s.key === 'amenities') {
+                        var cardsDiv = document.getElementById('features-amenities');
+                        if (s.content && cardsDiv) {
+                            var lines = s.content.split('\n');
+                            var cardItems = [];
+                            lines.forEach(function(line) {
+                                line = line.trim();
+                                if (!line) return;
+                                var parts = line.split('|');
+                                if (parts.length >= 3) {
+                                    cardItems.push({icon: parts[0].trim(), title: parts[1].trim(), desc: parts.slice(2).join('|').trim()});
+                                } else if (parts.length === 2) {
+                                    cardItems.push({icon: parts[0].trim(), title: parts[1].trim(), desc: ''});
+                                } else if (cardItems.length === 0) {
+                                    var introP = document.querySelector('[data-section-key="amenities"] p');
+                                    if (introP) introP.innerHTML = line;
+                                }
+                            });
+                            if (cardItems.length > 0) {
+                                var html = '';
+                                cardItems.forEach(function(item) {
+                                    html += '<div class="service-card">';
+                                    html += '<i class="' + item.icon + '"></i>';
+                                    html += '<h5>' + item.title + '</h5>';
+                                    if (item.desc) html += '<p>' + item.desc + '</p>';
+                                    html += '</div>';
+                                });
+                                cardsDiv.innerHTML = html;
+                            }
+                        }
+                    }
+
+                    // Regular sections (rooms, dining) - update intro paragraph
+                    if (s.key !== 'hero' && s.key !== 'safari' && s.key !== 'amenities') {
+                        els.forEach(function(el) {
+                            if (s.content) {
+                                var p = el.querySelector('p');
+                                if (p) p.innerHTML = s.content.replace(/\n/g, '<br>');
+                            }
+                        });
+                    }
                 });
             })
             
-            // Fetch footer content
             fetch('/api/content/')
                 .then(function(r) { return r.json(); })
                 .then(function(contentData) {

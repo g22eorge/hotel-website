@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Latitude Zero Cottages Kikorongo</title>
-    <meta name="description" content="Learn more about Latitude Zero Cottages Kikorongo, a peaceful accommodation destination near Queen Elizabeth National Park offering comfortable cottages, delicious meals, and warm hospitality.">
+    <meta name="description" id="metaDescription" content="Learn more about Latitude Zero Cottages Kikorongo, a peaceful accommodation destination near Queen Elizabeth National Park offering comfortable cottages, delicious meals, and warm hospitality.">
     <link rel="stylesheet" href="../styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -46,29 +46,12 @@
                 <p>Our goal is to give every guest a comfortable and memorable stay, whether they are visiting for adventure, relaxation, family time, or a peaceful retreat.</p>
 
                 <h4 data-section-key="promise">Our Promise</h4>
-                <p>We are committed to offering every guest:</p>
-                <div class="features-grid">
-                    <div class="feature-item"><i class="fas fa-bed"></i> A comfortable place to stay</div>
-                    <div class="feature-item"><i class="fas fa-leaf"></i> A peaceful natural environment</div>
-                    <div class="feature-item"><i class="fas fa-utensils"></i> Delicious meals and drinks</div>
-                    <div class="feature-item"><i class="fas fa-hands-helping"></i> Friendly and professional service</div>
-                    <div class="feature-item"><i class="fas fa-wifi"></i> Reliable internet connection</div>
-                    <div class="feature-item"><i class="fas fa-map-marked-alt"></i> A memorable experience near Queen Elizabeth National Park</div>
-                </div>
+                <p data-section-intro="promise">We are committed to offering every guest:</p>
+                <div class="features-grid" id="features-promise"></div>
 
                 <h4 data-section-key="serve">Who We Serve</h4>
-                <p>Latitude Zero Cottages Kikorongo welcomes:</p>
-                <div class="features-grid">
-                    <div class="feature-item"><i class="fas fa-globe"></i> Local and international tourists</div>
-                    <div class="feature-item"><i class="fas fa-binoculars"></i> Safari travelers</div>
-                    <div class="feature-item"><i class="fas fa-heart"></i> Couples</div>
-                    <div class="feature-item"><i class="fas fa-users"></i> Families</div>
-                    <div class="feature-item"><i class="fas fa-user-friends"></i> Groups</div>
-                    <div class="feature-item"><i class="fas fa-briefcase"></i> Business travelers</div>
-                    <div class="feature-item"><i class="fas fa-calendar-alt"></i> Weekend visitors</div>
-                    <div class="feature-item"><i class="fas fa-leaf"></i> Nature lovers</div>
-                    <div class="feature-item"><i class="fas fa-spa"></i> Guests seeking peace and relaxation</div>
-                </div>
+                <p data-section-intro="serve">Latitude Zero Cottages Kikorongo welcomes:</p>
+                <div class="features-grid" id="features-serve"></div>
             </div>
         </div>
     </section>
@@ -129,6 +112,9 @@
                     if (s.key === 'hero' && s.title) {
                         var h = document.getElementById('heroTitle');
                         if (h) h.textContent = s.title;
+                        document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                        var metaDesc = document.getElementById('metaDescription');
+                        if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
                     }
                     
                     // Update hero background image
@@ -142,27 +128,40 @@
                     // Find all elements with this section key
                     var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
                     els.forEach(function(el) {
-                        // Update section title (h2 within section-header, h4, etc.)
                         if (s.title) {
                             var heading = el.querySelector('h2') || el.querySelector('h4');
                             if (heading && s.key !== 'hero') heading.textContent = s.title;
                         }
-                        
-                        // Update content (first paragraph after the section header)
-                        if (s.content) {
-                            // For section-header, check if there's a p inside it
-                            var p = el.querySelector('p');
-                            if (p) {
-                                p.innerHTML = s.content.replace(/\n/g, '<br>');
-                            } else {
-                                // For elements like h4, their next sibling p
-                                var nextP = el.nextElementSibling;
-                                if (nextP && nextP.tagName === 'P') {
-                                    nextP.innerHTML = s.content.replace(/\n/g, '<br>');
+                    });
+
+                    // Handle feature grids for promise and serve sections
+                    if (s.key === 'promise' || s.key === 'serve') {
+                        var introP = document.querySelector('[data-section-intro="' + s.key + '"]');
+                        var featuresDiv = document.getElementById('features-' + s.key);
+                        if (s.content && featuresDiv) {
+                            var lines = s.content.split('\n');
+                            var featureItems = [];
+                            lines.forEach(function(line) {
+                                line = line.trim();
+                                if (!line) return;
+                                if (line.indexOf('|') !== -1) {
+                                    var pipeIdx = line.indexOf('|');
+                                    var icon = line.substring(0, pipeIdx).trim();
+                                    var text = line.substring(pipeIdx + 1).trim();
+                                    featureItems.push({icon: icon, text: text});
+                                } else if (introP && featureItems.length === 0) {
+                                    introP.innerHTML = line;
                                 }
+                            });
+                            if (featureItems.length > 0) {
+                                var html = '';
+                                featureItems.forEach(function(item) {
+                                    html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
+                                });
+                                featuresDiv.innerHTML = html;
                             }
                         }
-                    });
+                    }
                 });
             })
             

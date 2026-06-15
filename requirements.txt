@@ -3,4 +3,8 @@ Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
 Werkzeug==3.0.1
 email-validator==2.1.0
+<<<<<<< Updated upstream
 cloudinary==1.41.0
+=======
+cloudinary==1.44.2
+>>>>>>> Stashed changes

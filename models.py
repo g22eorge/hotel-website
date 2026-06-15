@@ -107,18 +107,35 @@ class Room(db.Model):
     def get_active(cls):
         return cls.query.filter_by(is_active=True).order_by(cls.sort_order, cls.created_at).all()
 
-class FeaturedExperience(db.Model):
-    __tablename__ = 'featured_experiences'
+class PageSection(db.Model):
+    __tablename__ = 'page_sections'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.Text, default='')
+    page = db.Column(db.String(50), nullable=False)
+    section_key = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(200), default='')
+    content = db.Column(db.Text, default='')
     image = db.Column(db.String(200), default='')
-    experience_type = db.Column(db.String(50), default='Services')
-    is_active = db.Column(db.Boolean, default=True)
     sort_order = db.Column(db.Integer, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_active = db.Column(db.Boolean, default=True)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(is_active=True).order_by(cls.sort_order, cls.created_at).all()
+    def get_for_page(cls, page):
+        return cls.query.filter_by(page=page, is_active=True).order_by(cls.sort_order).all()
+
+    @classmethod
+    def get_by_key(cls, page, section_key):
+        return cls.query.filter_by(page=page, section_key=section_key).first()
+
+    @classmethod
+    def upsert(cls, page, section_key, **kwargs):
+        section = cls.query.filter_by(page=page, section_key=section_key).first()
+        if not section:
+            section = cls(page=page, section_key=section_key)
+            db.session.add(section)
+        for key, value in kwargs.items():
+            if hasattr(section, key):
+                setattr(section, key, value)
+        db.session.commit()
+        return section

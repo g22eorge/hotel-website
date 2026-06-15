@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from models import db, User, Booking, SiteSettings, Testimonial, Room, FeaturedExperience
+from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection
 from datetime import datetime, date
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -180,6 +180,19 @@ def admin_upload():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(filepath)
     return jsonify({'url': f'/images/uploads/{filename}'})
+
+@app.route('/api/pages/<page>/')
+def api_page(page):
+    sections = PageSection.get_for_page(page)
+    return jsonify({
+        'page': page,
+        'sections': [{
+            'key': s.section_key,
+            'title': s.title,
+            'content': s.content,
+            'image': s.image,
+        } for s in sections]
+    })
 
 # ===== User Management =====
 @app.route('/admin/users/')
@@ -378,6 +391,28 @@ def admin_delete_room(room_id):
     flash('Room deleted.', 'success')
     return redirect(url_for('admin_rooms'))
 
+# ===== Content Management: Pages =====
+@app.route('/admin/pages/')
+@login_required
+def admin_pages():
+    return render_template('pages.html')
+
+@app.route('/admin/pages/<page>/', methods=['GET', 'POST'])
+@login_required
+def admin_edit_page(page):
+    if request.method == 'POST':
+        for key, value in request.form.items():
+            if key.startswith('content_'):
+                section_key = key.replace('content_', '')
+                section = PageSection.query.filter_by(page=page, section_key=section_key).first()
+                if section:
+                    section.content = value.strip()
+                    db.session.commit()
+        flash(f'{page.title()} page updated.', 'success')
+        return redirect(url_for('admin_edit_page', page=page))
+    sections = PageSection.get_for_page(page)
+    return render_template('page_edit.html', page_name=page, sections=sections)
+
 # ===== Stats API ===
 @app.route('/admin/api/stats/')
 @login_required
@@ -462,6 +497,23 @@ def init_db():
             ]
             for r in rooms:
                 db.session.add(r)
+
+        if not PageSection.query.first():
+            sections = [
+                PageSection(page='about', section_key='hero', title='About Us', content='Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park. We offer comfortable cottages, spacious rooms, delicious meals, refreshing drinks, beautiful natural surroundings, reliable 24/7 internet connection, and warm personalized hospitality.'),
+                PageSection(page='about', section_key='mission', title='Our Mission', content='Our goal is to give every guest a comfortable and memorable stay, whether they are visiting for adventure, relaxation, family time, or a peaceful retreat.'),
+                PageSection(page='about', section_key='story', title='Our Story', content='Established with a vision to offer visitors a serene home away from home near Queen Elizabeth National Park, Latitude Zero Cottages has grown into a beloved destination for nature enthusiasts, families, couples, and groups seeking authentic Ugandan hospitality.'),
+                PageSection(page='services', section_key='hero', title='Our Services', content='At Latitude Zero Cottages Kikorongo, we offer more than just a place to stay. Our goal is to provide a comprehensive experience that blends comfort, relaxation, and adventure in one of Uganda most beautiful regions.'),
+                PageSection(page='services', section_key='rooms', title='Comfortable Accommodation', content='Our cottages and rooms are designed for relaxation after a day of adventure. Each room offers modern amenities, comfortable bedding, and a peaceful atmosphere. Whether you prefer a standard room, a deluxe suite, or a family cottage, we have the perfect space for your stay.'),
+                PageSection(page='services', section_key='dining', title='Delicious Dining', content='Enjoy freshly prepared local and international meals at our dining area. Our menu features a blend of traditional Ugandan dishes and continental favorites, all prepared with fresh ingredients.'),
+                PageSection(page='services', section_key='safari', title='Safari Adventures', content='Located just 1km from Queen Elizabeth National Park, we offer easy access to wildlife safaris, game drives, boat cruises, and nature walks. Our team can help you plan the perfect safari adventure.'),
+                PageSection(page='services', section_key='amenities', title='Amenities', content='All rooms include: 24/7 WiFi, hot showers, comfortable bedding, mosquito nets, power backup, and room service. Our facilities are designed to ensure a relaxing and worry-free stay.'),
+                PageSection(page='gallery', section_key='hero', title='Gallery', content='Explore the beauty of Latitude Zero Cottages through our photo gallery. From the cottages and rooms to the stunning natural surroundings, see what awaits you.'),
+                PageSection(page='contact', section_key='hero', title='Contact Us', content='Ready to book your stay? Have a question? We are here to help. Reach out to us via phone, WhatsApp, or email, and we will get back to you within 24 hours.'),
+                PageSection(page='contact', section_key='intro', title='Book Your Stay', content='Fill out the form below and we will get back to you with availability and pricing. You can also reach out directly via WhatsApp for quick responses.'),
+            ]
+            for s in sections:
+                db.session.add(s)
 
         db.session.commit()
         print('Database initialized with seed content.')

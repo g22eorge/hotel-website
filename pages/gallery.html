@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body data-page="gallery">
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="../index.html" class="logo">
@@ -32,7 +32,7 @@
     <section class="page-hero" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('../images/IMG_3387.jpeg') center/cover;">
         <div class="page-hero-overlay"></div>
         <div class="page-hero-content">
-            <h1>Gallery</h1>
+            <h1 id="heroTitle">Gallery</h1>
         </div>
     </section>
 
@@ -146,5 +146,24 @@
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+    (function() {
+        var page = document.body.getAttribute('data-page');
+        if (!page) return;
+        fetch('/api/pages/' + page + '/')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.sections) {
+                    data.sections.forEach(function(s) {
+                        if (s.key === 'hero' && s.title) {
+                            var h = document.getElementById('heroTitle');
+                            if (h) h.textContent = s.title;
+                        }
+                    });
+                }
+            })
+            .catch(function() {});
+    })();
+    </script>
 </body>
 </html>

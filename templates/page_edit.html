@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rooms | Latitude Zero Admin</title>
+    <title>Edit {{ page_name.title() }} | Latitude Zero Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,33 +24,26 @@
         .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
         .sidebar-footer a:hover { color: #fff; }
         .main-content { flex: 1; padding: 32px; overflow-y: auto; }
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
         .page-header h1 { font-size: 1.8rem; font-weight: 700; }
-        .btn-add { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #231F20; color: #C9BDB5; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
-        .btn-add:hover { background: #4C4E4F; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #fff; color: #231F20; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; }
+        .back-btn:hover { background: #C9BDB5; }
         .flash-messages { margin-bottom: 20px; }
         .flash { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; }
         .flash.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .flash.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .room-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); overflow: hidden; }
-        .room-card img { width: 100%; height: 180px; object-fit: cover; }
-        .room-card .card-body { padding: 20px; }
-        .room-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-        .room-card p { font-size: 0.85rem; color: #4C4E4F; line-height: 1.5; margin-bottom: 12px; }
-        .room-card .price { font-size: 1rem; font-weight: 700; color: #231F20; }
-        .room-card .card-footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-top: 1px solid #f3f4f6; }
-        .room-card .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-        .room-card .badge.active { background: #dcfce7; color: #166534; }
-        .room-card .badge.inactive { background: #f3f4f6; color: #4b5563; }
-        .room-card .card-actions { display: flex; gap: 6px; }
-        .btn-sm { display: inline-block; padding: 6px 12px; background: #e8e4e1; color: #231F20; text-decoration: none; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: background 0.2s; }
-        .btn-sm:hover { background: #C9BDB5; }
-        .btn-sm-danger { display: inline-block; padding: 6px 12px; background: #fee2e2; color: #991b1b; text-decoration: none; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: background 0.2s; border: none; cursor: pointer; }
-        .btn-sm-danger:hover { background: #fecaca; }
-        .empty-state { text-align: center; padding: 60px 40px; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); }
-        .empty-state i { font-size: 3rem; color: #d4cfc9; margin-bottom: 16px; }
-        .empty-state p { color: #4C4E4F; margin-bottom: 20px; }
+        .section-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 28px; margin-bottom: 24px; }
+        .section-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: #231F20; display: flex; align-items: center; gap: 10px; }
+        .section-card .section-key { font-family: monospace; color: #4C4E4F; font-size: 0.8rem; margin-bottom: 20px; padding: 4px 8px; background: #faf8f6; border-radius: 4px; display: inline-block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: #4C4E4F; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #C9BDB5; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-actions { display: flex; justify-content: flex-end; margin-top: 32px; }
+        .btn-save { padding: 14px 32px; background: #231F20; color: #C9BDB5; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
+        .btn-save:hover { background: #4C4E4F; }
+        .empty-state { text-align: center; padding: 60px 40px; color: #4C4E4F; }
         @media (max-width: 768px) {
             .admin-layout { flex-direction: column; }
             .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
@@ -80,8 +73,8 @@
                 <div class="nav-section-title">Content</div>
                 <a href="/admin/settings/"><i class="fas fa-cog"></i> Settings</a>
                 <a href="/admin/testimonials/"><i class="fas fa-quote-left"></i> Testimonials</a>
-                <a href="/admin/rooms/" class="active"><i class="fas fa-bed"></i> Rooms</a>
-                <a href="/admin/pages/"><i class="fas fa-file-alt"></i> Pages</a>
+                <a href="/admin/rooms/"><i class="fas fa-bed"></i> Rooms</a>
+                <a href="/admin/pages/" class="active"><i class="fas fa-file-alt"></i> Pages</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -100,41 +93,35 @@
             {% endwith %}
 
             <div class="page-header">
-                <h1>Rooms</h1>
-                <a href="/admin/rooms/create/" class="btn-add"><i class="fas fa-plus"></i> Add Room</a>
+                <h1>Edit {{ page_name.title() }}</h1>
+                <a href="/admin/pages/" class="back-btn"><i class="fas fa-arrow-left"></i> All Pages</a>
             </div>
 
-            {% if rooms %}
-            <div class="card-grid">
-                {% for r in rooms %}
-                <div class="room-card">
-                    {% if r.image %}
-                    <img src="{{ r.image }}" alt="{{ r.name }}">
-                    {% else %}
-                    <img src="/images/IMG_3384.jpeg" alt="{{ r.name }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h3>{{ r.name }}</h3>
-                        <p>{{ r.description[:120] }}...</p>
-                        <div class="price">{{ r.price }}</div>
+            {% if sections %}
+            <form method="POST">
+                {% for section in sections %}
+                <div class="section-card">
+                    <h3><i class="fas fa-pen"></i> {{ section.title }}</h3>
+                    <div class="section-key">{{ section.section_key }}</div>
+                    <div class="form-group">
+                        <label>Section Title</label>
+                        <input type="text" name="title_{{ section.section_key }}" value="{{ section.title }}" placeholder="Section title" disabled style="background: #faf8f6; color: #999;">
                     </div>
-                    <div class="card-footer">
-                        <span class="badge {{ 'active' if r.is_active else 'inactive' }}">{{ 'Active' if r.is_active else 'Inactive' }}</span>
-                        <div class="card-actions">
-                            <a href="/admin/rooms/{{ r.id }}/edit/" class="btn-sm">Edit</a>
-                            <form method="POST" action="/admin/rooms/{{ r.id }}/delete/" style="display:inline;" onsubmit="return confirm('Delete this room?');">
-                                <button type="submit" class="btn-sm-danger">Delete</button>
-                            </form>
-                        </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea name="content_{{ section.section_key }}" rows="4" placeholder="Enter content for this section...">{{ section.content }}</textarea>
                     </div>
                 </div>
                 {% endfor %}
-            </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </form>
             {% else %}
             <div class="empty-state">
-                <i class="fas fa-bed"></i>
-                <p>No rooms yet. Add your room types to display on the website.</p>
-                <a href="/admin/rooms/create/" class="btn-add"><i class="fas fa-plus"></i> Add First Room</a>
+                <i class="fas fa-file-alt" style="font-size: 3rem; color: #d4cfc9; margin-bottom: 16px;"></i>
+                <p>No editable sections found for this page.</p>
             </div>
             {% endif %}
         </main>

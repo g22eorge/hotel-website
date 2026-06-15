@@ -64,6 +64,9 @@ class SiteSettings(db.Model):
     address = db.Column(db.String(200), default='')
     facebook = db.Column(db.String(200), default='')
     instagram = db.Column(db.String(200), default='')
+    footer_tagline = db.Column(db.String(300), default='')
+    footer_description = db.Column(db.Text, default='')
+    footer_copyright = db.Column(db.String(300), default='')
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     @classmethod
@@ -140,3 +143,17 @@ class PageSection(db.Model):
                 setattr(section, key, value)
         db.session.commit()
         return section
+
+class GalleryImage(db.Model):
+    __tablename__ = 'gallery_images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(200), default='')
+    caption = db.Column(db.String(200), default='')
+    sort_order = db.Column(db.Integer, default=0)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @classmethod
+    def get_active(cls):
+        return cls.query.filter_by(is_active=True).order_by(cls.sort_order).all()

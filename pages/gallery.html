@@ -42,55 +42,8 @@
                 <h2>Our Gallery</h2>
                 <p>Click any image to view in full size. Experience the beauty of Latitude Zero Cottages through our photo gallery.</p>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="../images/IMG_3382.jpeg" alt="Cottage Exterior">
-                    <div class="gallery-caption">Cozy Cottage Exterior</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3383.jpeg" alt="Dining Area">
-                    <div class="gallery-caption">Delicious Local Cuisine</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3384.jpeg" alt="Room Interior">
-                    <div class="gallery-caption">Spacious & Comfortable Rooms</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3386.jpeg" alt="Safari View">
-                    <div class="gallery-caption">Queen Elizabeth National Park Views</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3387.jpeg" alt="Natural Surroundings">
-                    <div class="gallery-caption">Beautiful Natural Surroundings</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3388.jpeg" alt="Guest Relaxation">
-                    <div class="gallery-caption">Relaxing in Nature</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3385.jpeg" alt="Peaceful Views">
-                    <div class="gallery-caption">Peaceful Views & Scenery</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3389.jpeg" alt="Sunset Views">
-                    <div class="gallery-caption">Stunning Sunset Views</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3391.jpeg" alt="Wildlife">
-                    <div class="gallery-caption">Wildlife & Nature</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3394.jpeg" alt="Landscape">
-                    <div class="gallery-caption">Breathtaking Landscapes</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3395.jpeg" alt="Cottage Life">
-                    <div class="gallery-caption">Cottage Life & Comfort</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../images/IMG_3396.jpeg" alt="Community">
-                    <div class="gallery-caption">Local Community & Culture</div>
-                </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images loaded dynamically from API -->
             </div>
         </div>
     </section>
@@ -139,8 +92,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
-                <p class="tagline">Where Comfort Meets Nature.</p>
+                <p class="footer-copyright">&copy; 2026 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
+                <p class="tagline footer-tagline">Where Comfort Meets Nature.</p>
             </div>
         </div>
     </footer>
@@ -189,9 +142,39 @@
                     });
                 });
             })
-            .catch(function(err) {
-                console.error('Error loading page content:', err);
-            });
+            
+            // Fetch footer content
+            fetch('/api/content/')
+                .then(function(r) { return r.json(); })
+                .then(function(contentData) {
+                    if (contentData.footer) {
+                        document.querySelectorAll('.footer-tagline').forEach(function(el) {
+                            if (contentData.footer.tagline) el.textContent = contentData.footer.tagline;
+                        });
+                        document.querySelectorAll('.footer-copyright').forEach(function(el) {
+                            if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
+                        });
+                    }
+                })
+                .catch(function() {});
+            
+            // Load gallery images from API
+            fetch('/api/gallery/')
+                .then(function(r) { return r.json(); })
+                .then(function(galleryData) {
+                    var grid = document.getElementById('galleryGrid');
+                    if (!grid || !galleryData.images || galleryData.images.length === 0) return;
+                    
+                    var html = '';
+                    galleryData.images.forEach(function(img) {
+                        html += '<div class="gallery-item">' +
+                            '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '">' +
+                            '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
+                            '</div>';
+                    });
+                    grid.innerHTML = html;
+                })
+                .catch(function() {});
     })();
     </script>
 </body>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Latitude Zero Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f7f5f3; color: #231F20; min-height: 100vh; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #231F20; color: #fff; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header img { max-width: 140px; margin-bottom: 8px; }
+        .sidebar-header h2 { font-size: 0.85rem; font-weight: 600; color: #C9BDB5; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-nav a.active { background: rgba(201,189,181,0.1); color: #C9BDB5; border-left-color: #C9BDB5; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .sidebar-nav .nav-section-title { padding: 20px 20px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .sidebar-footer a:hover { color: #fff; }
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .page-header h1 { font-size: 1.8rem; font-weight: 700; }
+        .flash-messages { margin-bottom: 20px; }
+        .flash { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; }
+        .flash.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .flash.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .upload-section { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 28px; margin-bottom: 32px; }
+        .upload-section h3 { font-size: 1rem; font-weight: 700; margin-bottom: 20px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: #4C4E4F; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; font-family: 'Inter', sans-serif; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #C9BDB5; }
+        .upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #231F20; color: #C9BDB5; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+        .btn-save { padding: 14px 32px; background: #231F20; color: #C9BDB5; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .gallery-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(35,31,32,0.06); }
+        .gallery-card img { width: 100%; height: 180px; object-fit: cover; }
+        .gallery-card .caption { padding: 16px; font-size: 0.9rem; }
+        .gallery-card .actions { padding: 0 16px 16px; }
+        .btn-danger { padding: 8px 16px; background: #dc2626; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; }
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+            .sidebar-header { padding: 12px 16px; }
+            .sidebar-header h2, .sidebar-footer { display: none; }
+            .main-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/images/logos/secondary-logo.png" alt="Latitude Zero">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="/admin/bookings/"><i class="fas fa-calendar-check"></i> Bookings</a>
+                {% if current_user.is_superuser %}
+                <a href="/admin/users/"><i class="fas fa-users"></i> Users</a>
+                {% endif %}
+                <div class="nav-section-title">Content</div>
+                <a href="/admin/settings/"><i class="fas fa-cog"></i> Settings</a>
+                <a href="/admin/testimonials/"><i class="fas fa-quote-left"></i> Testimonials</a>
+                <a href="/admin/rooms/"><i class="fas fa-bed"></i> Rooms</a>
+                <a href="/admin/pages/"><i class="fas fa-file-alt"></i> Pages</a>
+                <a href="/admin/gallery/" class="active"><i class="fas fa-images"></i> Gallery</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="page-header">
+                <h1>Photo Gallery</h1>
+            </div>
+
+            <div class="upload-section">
+                <h3><i class="fas fa-upload"></i> Add New Image</h3>
+                <form method="POST" action="/admin/gallery/add/" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Image File</label>
+                        <input type="file" name="image" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Caption (optional)</label>
+                        <input type="text" name="caption" placeholder="e.g., Beautiful sunset view">
+                    </div>
+                    <div class="form-group">
+                        <label>Sort Order (optional)</label>
+                        <input type="number" name="sort_order" value="0" min="0">
+                    </div>
+                    <button type="submit" class="upload-btn"><i class="fas fa-plus"></i> Add to Gallery</button>
+                </form>
+            </div>
+
+            {% if images %}
+            <div class="gallery-grid">
+                {% for img in images %}
+                <div class="gallery-card">
+                    <img src="{{ img.image }}" alt="{{ img.caption or 'Gallery image' }}">
+                    <div class="caption">{{ img.caption or 'No caption' }}</div>
+                    <div class="actions">
+                        <form method="POST" action="/admin/gallery/{{ img.id }}/delete/" onsubmit="return confirm('Delete this image?');">
+                            <button type="submit" class="btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="text-align:center;padding:60px;color:#999;">
+                <i class="fas fa-images" style="font-size:3rem;margin-bottom:16px;display:block;color:#d4cfc9;"></i>
+                <p>No images in gallery yet. Use the form above to add some.</p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

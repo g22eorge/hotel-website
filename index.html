@@ -379,8 +379,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
-                <p class="tagline">Where Comfort Meets Nature.</p>
+                <p class="footer-copyright">&copy; 2026 Latitude Zero Cottages Kikorongo. All rights reserved.</p>
+                <p class="tagline footer-tagline">Where Comfort Meets Nature.</p>
             </div>
         </div>
     </footer>
@@ -443,6 +443,14 @@
                 });
                 var testGrid = document.getElementById('testimonialsGrid');
                 if (testGrid) testGrid.innerHTML = testHtml;
+            }
+            if (data.footer) {
+                document.querySelectorAll('.footer-tagline').forEach(function(el) {
+                    if (data.footer.tagline) el.textContent = data.footer.tagline;
+                });
+                document.querySelectorAll('.footer-copyright').forEach(function(el) {
+                    if (data.footer.copyright) el.textContent = data.footer.copyright;
+                });
             }
         })
         .catch(function() {});

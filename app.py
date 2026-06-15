@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection
+from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection, GalleryImage
 from datetime import datetime, date
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -146,6 +146,11 @@ def api_content():
             'facebook': settings.facebook,
             'instagram': settings.instagram,
         },
+        'footer': {
+            'tagline': settings.footer_tagline,
+            'description': settings.footer_description,
+            'copyright': settings.footer_copyright,
+        },
         'testimonials': [
             {
                 'text': t.text,
@@ -288,6 +293,9 @@ def admin_settings():
         settings.address = request.form.get('address', '')
         settings.facebook = request.form.get('facebook', '')
         settings.instagram = request.form.get('instagram', '')
+        settings.footer_tagline = request.form.get('footer_tagline', '')
+        settings.footer_description = request.form.get('footer_description', '')
+        settings.footer_copyright = request.form.get('footer_copyright', '')
 
         if 'hero_image' in request.files:
             file = request.files['hero_image']
@@ -450,6 +458,53 @@ def admin_edit_page(page):
         return redirect(url_for('admin_edit_page', page=page))
     sections = PageSection.get_for_page(page)
     return render_template('page_edit.html', page_name=page, sections=sections)
+
+# ===== Gallery Admin =====
+@app.route('/admin/gallery/')
+@login_required
+def admin_gallery():
+    images = GalleryImage.get_active()
+    return render_template('gallery_admin.html', images=images)
+
+@app.route('/admin/gallery/add/', methods=['POST'])
+@login_required
+def admin_add_gallery_image():
+    if 'image' not in request.files:
+        flash('No image provided.', 'error')
+        return redirect(url_for('admin_gallery'))
+    file = request.files['image']
+    if file.filename == '':
+        flash('No file selected.', 'error')
+        return redirect(url_for('admin_gallery'))
+    allowed = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    if ext not in allowed:
+        flash('File type not allowed.', 'error')
+        return redirect(url_for('admin_gallery'))
+    filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(filepath)
+    caption = request.form.get('caption', '')
+    sort_order = int(request.form.get('sort_order', 0))
+    new_image = GalleryImage(image=f'/images/uploads/{filename}', caption=caption, sort_order=sort_order)
+    db.session.add(new_image)
+    db.session.commit()
+    flash('Image added to gallery.', 'success')
+    return redirect(url_for('admin_gallery'))
+
+@app.route('/admin/gallery/<int:image_id>/delete/', methods=['POST'])
+@login_required
+def admin_delete_gallery_image(image_id):
+    image = GalleryImage.query.get_or_404(image_id)
+    db.session.delete(image)
+    db.session.commit()
+    flash('Image deleted.', 'success')
+    return redirect(url_for('admin_gallery'))
+
+@app.route('/api/gallery/')
+def api_gallery():
+    images = GalleryImage.get_active()
+    return jsonify({'images': [{'id': img.id, 'image': img.image, 'caption': img.caption, 'sort_order': img.sort_order} for img in images]})
 
 # ===== Stats API ===
 @app.route('/admin/api/stats/')

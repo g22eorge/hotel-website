@@ -168,16 +168,12 @@
             if (!grid || !galleryData.images || galleryData.images.length === 0) return;
             var html = '';
             galleryData.images.forEach(function(img) {
-                html += '<div class="gallery-item fade-section fade-prepare">' +
+                html += '<div class="gallery-item fade-in">' +
                     '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '">' +
                     '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
                     '</div>';
             });
             grid.innerHTML = html;
-            document.querySelectorAll('.gallery-item.fade-section:not(.fade-in)').forEach(function(el) {
-                observer.observe(el);
-            });
-            document.querySelectorAll('.gallery-item.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
         })
         .catch(function() {});
     </script>

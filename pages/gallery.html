@@ -101,6 +101,19 @@
     <script src="../script.js"></script>
     <script>
     var API_BASE = 'https://latitudezero.up.railway.app';
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+            if (e.isIntersecting) {
+                e.target.classList.add('fade-in');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.section, .section-header').forEach(function(el) {
+        el.classList.add('fade-section', 'fade-prepare');
+        observer.observe(el);
+    });
+    document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     var page = document.body.getAttribute('data-page');
     if (!page) return;
     fetch(API_BASE + '/api/pages/' + page + '/')
@@ -177,23 +190,9 @@
             document.querySelectorAll('.gallery-item.fade-section:not(.fade-in)').forEach(function(el) {
                 observer.observe(el);
             });
-            document.querySelectorAll('.gallery-item.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); } });
+            document.querySelectorAll('.gallery-item.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
         })
         .catch(function() {});
-
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-            if (e.isIntersecting) {
-                e.target.classList.add('fade-in');
-                observer.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.section, .section-header').forEach(function(el) {
-        el.classList.add('fade-section', 'fade-prepare');
-        observer.observe(el);
-    });
-    document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     </script>
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>

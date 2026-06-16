@@ -161,6 +161,10 @@
                 if (s.key === 'intro' && s.image) {
                     var introImg = document.getElementById('intro-image');
                     if (introImg) { introImg.src = s.image; introImg.style.display = 'block'; }
+                    var contentBlock = introImg ? introImg.closest('.content-block') : null;
+                    if (contentBlock) contentBlock.classList.add('fade-in');
+                    var introSection = contentBlock ? contentBlock.closest('.section') : null;
+                    if (introSection) introSection.classList.add('fade-in');
                 }
 
                 if (s.key === 'promise' && s.image) {
@@ -197,6 +201,9 @@
                                 html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
                             });
                             featuresDiv.innerHTML = html;
+                            featuresDiv.classList.add('fade-in');
+                            var parentSection = featuresDiv.closest('.section');
+                            if (parentSection) parentSection.classList.add('fade-in');
                         }
                     }
                 }

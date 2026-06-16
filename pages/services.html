@@ -197,6 +197,13 @@
                                     html += '</div></div>';
                                 });
                                 roomsContainer.innerHTML = html;
+                                roomsContainer.classList.add('fade-in');
+                                roomsContainer.querySelectorAll('.room-preview-card').forEach(function(card) {
+                                    card.classList.add('fade-section', 'fade-prepare');
+                                    observer.observe(card);
+                                    var r = card.getBoundingClientRect();
+                                    if (r.top < window.innerHeight) { card.classList.add('fade-in'); observer.unobserve(card); }
+                                });
                             }
                         }
                     }
@@ -240,6 +247,13 @@
                                     html += '</div></div>';
                                 });
                                 diningContainer.innerHTML = html;
+                                diningContainer.classList.add('fade-in');
+                                diningContainer.querySelectorAll('.dining-card').forEach(function(card) {
+                                    card.classList.add('fade-section', 'fade-prepare');
+                                    observer.observe(card);
+                                    var r = card.getBoundingClientRect();
+                                    if (r.top < window.innerHeight) { card.classList.add('fade-in'); observer.unobserve(card); }
+                                });
                             }
                         }
                     }
@@ -276,6 +290,9 @@
                                 html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
                             });
                             featuresDiv.innerHTML = html;
+                            featuresDiv.classList.add('fade-in');
+                            var safariSection = featuresDiv.closest('.section');
+                            if (safariSection) safariSection.classList.add('fade-in');
                         }
                     }
                 }
@@ -308,6 +325,9 @@
                                 html += '</div>';
                             });
                             cardsDiv.innerHTML = html;
+                            cardsDiv.classList.add('fade-in');
+                            var amenitiesSection = cardsDiv.closest('.section');
+                            if (amenitiesSection) amenitiesSection.classList.add('fade-in');
                         }
                     }
                 }

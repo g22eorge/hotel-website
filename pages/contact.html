@@ -180,30 +180,26 @@
 
     <script src="../script.js"></script>
     <script>
-    var API_BASE = 'https://latitudezero.up.railway.app';
+    (function() {
     var page = document.body.getAttribute('data-page');
     if (!page) return;
-    fetch(API_BASE + '/api/pages/' + page + '/')
+
+    fetch('../data/pages-' + page + '.json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (!data.sections) return;
-
             data.sections.forEach(function(s) {
                 if (s.key === 'hero' && s.title) {
                     var h = document.getElementById('heroTitle');
                     if (h) h.textContent = s.title;
-                    document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                    if (s.meta_title) document.title = s.meta_title;
                     var metaDesc = document.getElementById('metaDescription');
                     if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
                 }
-
                 if (s.key === 'hero' && s.image) {
                     var heroSection = document.querySelector('[data-section-key="hero"]');
-                    if (heroSection) {
-                        heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
-                    }
+                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
                 }
-
                 var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
                 els.forEach(function(el) {
                     if (s.title) {
@@ -212,18 +208,16 @@
                     }
                     if (s.content) {
                         var paragraphs = el.querySelectorAll('p');
-                        if (paragraphs.length > 0) {
-                            paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
-                        }
+                        if (paragraphs.length > 0) paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
                     }
                 });
             });
         });
 
-    fetch(API_BASE + '/api/content/')
+    fetch('../data/content.json')
         .then(function(r) { return r.json(); })
         .then(function(contentData) {
-            if (contentData.contact) {
+            if (contentData.contact && contentData.contact.whatsapp) {
                 var num = contentData.contact.whatsapp.replace(/\D/g, '');
                 window.WHATSAPP_NUMBER = num;
                 document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
@@ -238,10 +232,8 @@
                     if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
                 });
             }
-        })
-        .catch(function() {});
+        });
 
-    // Scroll-triggered fade-in animations (contact-specific)
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.section, .section-header, .contact-card, .contact-form').forEach(function(el) {
             el.classList.add('fade-section', 'fade-prepare');
@@ -259,6 +251,7 @@
         });
         document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     });
+    })();
     </script>
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>

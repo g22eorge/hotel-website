@@ -1,0 +1,135 @@
+backend:
+  name: github
+  repo: g22eorge/hotel-website
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: /auth
+
+local_backend: true
+
+media_folder: images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: gallery
+    label: Gallery
+    files:
+      - file: data/gallery.json
+        label: Gallery Images
+        name: gallery
+        fields:
+          - label: Images
+            name: images
+            widget: list
+            fields:
+              - { label: Caption, name: caption, widget: string }
+              - { label: Image URL, name: image, widget: string, hint: "Paste Cloudinary URL or image path" }
+              - { label: Sort Order, name: sort_order, widget: number, value_type: int, min: 1 }
+
+  - name: content
+    label: Site Content
+    files:
+      - file: data/content.json
+        label: Site Settings & Content
+        name: content
+        fields:
+          - label: Hero Section
+            name: hero
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Subtitle, name: subtitle, widget: text }
+              - { label: Tagline, name: tagline, widget: string }
+              - { label: Hero Image URL, name: image, widget: string, required: false, hint: "Paste Cloudinary URL or leave empty for default" }
+              - { label: Meta Title, name: meta_title, widget: string, required: false }
+              - { label: Meta Description, name: meta_description, widget: text, required: false }
+          - label: Contact Info
+            name: contact
+            widget: object
+            fields:
+              - { label: WhatsApp, name: whatsapp, widget: string, hint: "e.g. +256 700 629 083" }
+              - { label: Phone, name: phone, widget: string }
+              - { label: Email, name: email, widget: string }
+              - { label: Address, name: address, widget: string }
+              - { label: Facebook URL, name: facebook, widget: string, required: false }
+              - { label: Instagram URL, name: instagram, widget: string, required: false }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Tagline, name: tagline, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Copyright, name: copyright, widget: string }
+          - label: Rooms
+            name: rooms
+            widget: list
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Price, name: price, widget: string }
+              - { label: Image, name: image, widget: string, hint: "Image path e.g. images/IMG_3384.jpeg" }
+              - { label: Features, name: features, widget: text, hint: "One feature per line" }
+          - label: Testimonials
+            name: testimonials
+            widget: list
+            fields:
+              - { label: Text, name: text, widget: text }
+              - { label: Author, name: author, widget: string }
+              - { label: Location, name: location, widget: string }
+              - { label: Rating, name: rating, widget: number, value_type: int, min: 1, max: 5 }
+
+  - name: pages
+    label: Page Sections
+    files:
+      - file: data/pages-about.json
+        label: About Page
+        name: about
+        fields:
+          - label: Sections
+            name: sections
+            widget: list
+            fields:
+              - { label: Section Key, name: key, widget: string, hint: "e.g. hero, intro, promise" }
+              - { label: Title, name: title, widget: string }
+              - { label: Content, name: content, widget: text }
+              - { label: Image URL, name: image, widget: string, required: false }
+              - { label: Meta Title, name: meta_title, widget: string, required: false }
+              - { label: Meta Description, name: meta_description, widget: text, required: false }
+      - file: data/pages-services.json
+        label: Services Page
+        name: services
+        fields:
+          - label: Sections
+            name: sections
+            widget: list
+            fields:
+              - { label: Section Key, name: key, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Content, name: content, widget: text, hint: "For rooms/dining: use --- separator then image|name|desc|price per line. For safari/amenities: icon|text per line" }
+              - { label: Image URL, name: image, widget: string, required: false }
+              - { label: Meta Title, name: meta_title, widget: string, required: false }
+              - { label: Meta Description, name: meta_description, widget: text, required: false }
+      - file: data/pages-gallery.json
+        label: Gallery Page
+        name: gallery
+        fields:
+          - label: Sections
+            name: sections
+            widget: list
+            fields:
+              - { label: Section Key, name: key, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Content, name: content, widget: text }
+              - { label: Image URL, name: image, widget: string, required: false }
+      - file: data/pages-contact.json
+        label: Contact Page
+        name: contact
+        fields:
+          - label: Sections
+            name: sections
+            widget: list
+            fields:
+              - { label: Section Key, name: key, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Content, name: content, widget: text }
+              - { label: Image URL, name: image, widget: string, required: false }

@@ -398,8 +398,8 @@
     </div>
 
     <script>
-    var API_BASE = 'https://latitudezero.up.railway.app';
-    fetch(API_BASE + '/api/content/')
+    (function() {
+    fetch('data/content.json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.hero) {
@@ -412,13 +412,9 @@
                 if (data.hero.meta_title) document.title = data.hero.meta_title;
                 var metaDesc = document.getElementById('metaDescription');
                 if (metaDesc && data.hero.meta_description) metaDesc.setAttribute('content', data.hero.meta_description);
-                
-                // Update hero carousel first slide background image
                 if (data.hero.image) {
                     var slide1 = document.getElementById('heroSlide1');
-                    if (slide1) {
-                        slide1.style.backgroundImage = 'url(' + data.hero.image + ')';
-                    }
+                    if (slide1) slide1.style.backgroundImage = 'url(' + data.hero.image + ')';
                 }
             }
             if (data.contact) {
@@ -468,8 +464,8 @@
                     if (data.footer.copyright) el.textContent = data.footer.copyright;
                 });
             }
-        })
-        .catch(function() {});
+        });
+    })();
 </script>
 <script src="script.js"></script>
 </body>

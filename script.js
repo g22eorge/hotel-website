@@ -1,4 +1,3 @@
-var API_BASE = 'https://latitudezero.up.railway.app';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Scroll-triggered fade-in animations
@@ -190,13 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fields.email) msg += 'Email: ' + fields.email + '\n';
             if (fields.phone) msg += 'Phone: ' + fields.phone + '\n';
             if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
-
-            // Save to backend API (async, don't block WhatsApp)
-            fetch(API_BASE + '/api/bookings/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(fields)
-            }).catch(function() {});
 
             var waNumber = window.WHATSAPP_NUMBER || '256700629083';
             var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);

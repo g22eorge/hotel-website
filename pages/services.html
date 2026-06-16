@@ -129,7 +129,7 @@
     <script src="../script.js"></script>
     <script>
     var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
-    document.querySelectorAll('.section, .section-header, .cards-grid, .rooms-section-grid').forEach(function(el) { el.classList.add('fade-section'); });
+    document.querySelectorAll('.section, .section-header, .cards-grid, .rooms-section-grid').forEach(function(el) { el.classList.add('fade-section', 'fade-prepare'); });
     var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('fade-in'); observer.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-section').forEach(function(el) { observer.observe(el); });
     var page = document.body.getAttribute('data-page');
@@ -340,6 +340,13 @@
                 });
                 document.querySelectorAll('.footer-copyright').forEach(function(el) {
                     if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
+                });
+            }
+            if (contentData.contact && contentData.contact.whatsapp) {
+                var num = contentData.contact.whatsapp.replace(/\D/g, '');
+                window.WHATSAPP_NUMBER = num;
+                document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
+                    el.href = 'https://wa.me/' + num;
                 });
             }
         })

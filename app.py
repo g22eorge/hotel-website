@@ -10,7 +10,9 @@ from datetime import datetime, date
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'latitude-zero-secret-key-2026')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+if not app.config['SECRET_KEY']:
+    raise RuntimeError('SECRET_KEY environment variable is not set. Aborting.')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
@@ -23,7 +25,7 @@ cloudinary.config(
 
 def upload_to_cloudinary(file, folder='latitude_zero'):
     if not os.environ.get('CLOUDINARY_CLOUD_NAME'):
-        return None
+        raise RuntimeError('CLOUDINARY_CLOUD_NAME is not configured. Set all CLOUDINARY_* environment variables.')
     result = cloudinary.uploader.upload(
         file,
         folder=folder,
@@ -34,6 +36,15 @@ def upload_to_cloudinary(file, folder='latitude_zero'):
     return result['secure_url']
 
 db.init_app(app)
+
+# ===== Error Handlers =====
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('error.html', code=404, message='Page not found'), 404
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('error.html', code=500, message='Something went wrong. Please try again later.'), 500
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -107,7 +118,7 @@ def admin_bookings():
 def admin_export_bookings():
     import csv
     from io import StringIO
-    bookings = Booking.query.order_by(Booking.created_at.desc()).all()
+    bookings = Booking.query.filter(Booking.checkin >= date(2024, 1, 1)).order_by(Booking.created_at.desc()).all()
     output = StringIO()
     writer = csv.writer(output)
     writer.writerow(['ID', 'Name', 'Email', 'Phone', 'Room', 'Check-in', 'Check-out', 'Guests', 'Status', 'Source', 'Requests', 'Created'])
@@ -232,11 +243,12 @@ def admin_upload():
     allowed = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
     ext = file.filename.rsplit('.', 1)[-1].lower()
     if ext not in allowed:
-        return jsonify({'error': 'File type not allowed'}), 400
-    url = upload_to_cloudinary(file, 'latitude_zero/admin')
-    if not url:
-        return jsonify({'error': 'Cloudinary not configured'}), 500
-    return jsonify({'url': url})
+        return jsonify({'error': 'File type not allowed. Use JPG, PNG, GIF, or WebP.'}), 400
+    try:
+        url = upload_to_cloudinary(file, 'latitude_zero/admin')
+        return jsonify({'url': url})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/pages/<page>/')
 def api_page(page):
@@ -542,11 +554,12 @@ def admin_add_gallery_image():
     allowed = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
     ext = file.filename.rsplit('.', 1)[-1].lower()
     if ext not in allowed:
-        flash('File type not allowed.', 'error')
+        flash('File type not allowed. Use JPG, PNG, GIF, or WebP.', 'error')
         return redirect(url_for('admin_gallery'))
-    url = upload_to_cloudinary(file, 'latitude_zero/gallery')
-    if not url:
-        flash('Cloudinary not configured.', 'error')
+    try:
+        url = upload_to_cloudinary(file, 'latitude_zero/gallery')
+    except Exception as e:
+        flash(str(e), 'error')
         return redirect(url_for('admin_gallery'))
     caption = request.form.get('caption', '')
     sort_order = int(request.form.get('sort_order', 0))
@@ -621,8 +634,12 @@ def init_db():
     with app.app_context():
         db.create_all()
         if not User.query.filter_by(username='admin').first():
-            superuser = User(username='admin', email='admin@latitudezero.ug', is_superuser=True)
-            superuser.set_password('latitude2026')
+            admin_user = os.environ.get('ADMIN_USERNAME', 'admin')
+            admin_pass = os.environ.get('ADMIN_PASSWORD')
+            if not admin_pass:
+                raise RuntimeError('ADMIN_PASSWORD environment variable is not set. Aborting.')
+            superuser = User(username=admin_user, email='admin@latitudezero.ug', is_superuser=True)
+            superuser.set_password(admin_pass)
             db.session.add(superuser)
 
         if not SiteSettings.query.first():

@@ -3,7 +3,7 @@ var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
 document.addEventListener('DOMContentLoaded', function() {
     // Scroll-triggered fade-in animations
     document.querySelectorAll('.section, .section-header, .cards-grid, .rooms-section-grid, .testimonial-card, .room-preview-card, .dining-card, .footer-grid').forEach(function(el) {
-        el.classList.add('fade-section');
+        el.classList.add('fade-section', 'fade-prepare');
     });
     var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
@@ -198,7 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(fields)
             }).catch(function() {});
 
-            var waUrl = 'https://wa.me/256700629083?text=' + encodeURIComponent(msg);
+            var waNumber = window.WHATSAPP_NUMBER || '256700629083';
+            var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);
             window.open(waUrl, '_blank');
         });
     }

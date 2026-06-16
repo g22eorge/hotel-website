@@ -14,12 +14,12 @@ This is a complete website for **Latitude Zero Cottages Kikorongo** with a built
 
 ### Access the Admin Panel
 ```
-http://localhost:5001/admin/
+https://latitude-zero-production-2183.up.railway.app/admin/
 ```
 
-**Login credentials:**
-- **Username:** `admin`
-- **Password:** `latitude2026`
+**Login credentials** (set these in Railway environment variables):
+- **Username:** set `ADMIN_USERNAME` env var
+- **Password:** set `ADMIN_PASSWORD` env var
 
 *(Only superusers can create or delete other users.)*
 
@@ -184,7 +184,7 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 | **Database** | `latitude_zero.db` — keep backups regularly |
 | **Sort order** | In gallery and testimonials, lower numbers appear first. Use gaps (10, 20, 30) for easy insertion |
 | **Icons** | Use FontAwesome 6 Free classes. Format: `fas fa-xxx` |
-| **Passwords** | Change the admin password after handover from Users page |
+| **Passwords** | Change the admin password via the Users page — set `ADMIN_PASSWORD` env var on Railway |
 
 ---
 
@@ -202,10 +202,37 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 - **Framework:** Flask (Python 3)
 - **Database:** SQLite (`latitude_zero.db`)
 - **Image Storage:** Cloudinary (credentials via env vars)
-- **Server:** Runs on port 5001 by default
-- **Startup:** `python3 app.py`
-- **Environment:** Requires Python 3.10+, `pip3 install -r requirements.txt`
-- **Required env vars (Cloudinary):** `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+- **WSGI Server:** gunicorn (production)
+- **Startup (local):** `python3 app.py`
+- **Startup (production):** `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
+
+### Railway Deployment
+
+1. Connect your GitHub repo to Railway
+2. Add these **Environment Variables** in Railway:
+
+| Variable | Value |
+|----------|-------|
+| `SECRET_KEY` | Generate a random 64-character secret (e.g. `openssl rand -hex 32`) |
+| `ADMIN_USERNAME` | Your admin login username (e.g. `admin`) |
+| `ADMIN_PASSWORD` | Your admin login password (keep this secret!) |
+| `CLOUDINARY_CLOUD_NAME` | From your Cloudinary dashboard |
+| `CLOUDINARY_API_KEY` | From your Cloudinary dashboard |
+| `CLOUDINARY_API_SECRET` | From your Cloudinary dashboard |
+
+3. **Start Command:** `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
+4. The database (`latitude_zero.db`) is in the repo — it will be used as-is. On first deploy, it will seed default content.
+5. After deploying, create the admin user by running in Railway's shell:
+   ```
+   railway run python3 -c "from app import app, db, User; app.app_context().push(); db.create_all(); u=User(username='admin',email='admin@latitudezero.ug',is_superuser=True); u.set_password('YOUR_PASSWORD'); db.session.add(u); db.session.commit()"
+   ```
+
+### Keeping the Database Safe
+
+The `latitude_zero.db` file is committed to git, but Railway's filesystem is ephemeral — if Railway recreates your volume, the local DB file will reset. To prevent data loss:
+- **Export bookings regularly** from the admin panel (`/admin/bookings/` — use Export button)
+- Consider switching to a managed PostgreSQL database on Railway for production use
+- The DB file is git-tracked so it survives code deployments, but not Railway infrastructure resets
 
 ---
 

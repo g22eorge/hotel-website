@@ -133,7 +133,7 @@
 
             <form method="POST" id="pageForm">
                 {% for section in sections %}
-                <div class="section-card {% if section.image or section.section_key == 'hero' %}has-image{% endif %}">
+                <div class="section-card {% if section.image %}has-image{% endif %}">
                     <h3><i class="fas fa-pen"></i> {{ section.title }}</h3>
                     <div class="section-key">{{ section.section_key }}</div>
 
@@ -159,7 +159,6 @@
                         {% endif %}
                     </div>
 
-                    {% if section.section_key == 'hero' or section.section_key == 'intro' or section.section_key == 'gallery' %}
                     <div class="image-upload-group">
                         <div class="form-group">
                             <label>Section Image</label>
@@ -185,7 +184,6 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% endif %}
 
                     {% if section.section_key == 'hero' %}
                     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:20px;margin-top:20px;">

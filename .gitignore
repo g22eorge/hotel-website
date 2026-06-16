@@ -4,3 +4,9 @@ latitude_zero.db
 server.log
 cookies.txt
 instance/
+.env
+.DS_Store
+*.db-journal
+images/uploads/
+venv/
+.venv/

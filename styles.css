@@ -2011,10 +2011,6 @@ body {
         height: 3px;
     }
 
-    .hamburger span {
-        height: 3px;
-    }
-
     .trust-badges-track {
         gap: 24px;
     }
@@ -2060,9 +2056,12 @@ body {
 
 /* Scroll-triggered fade-in for sections */
 .fade-section {
+    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.fade-section.fade-prepare {
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .fade-section.fade-in {

@@ -223,6 +223,13 @@
     fetch(API_BASE + '/api/content/')
         .then(function(r) { return r.json(); })
         .then(function(contentData) {
+            if (contentData.contact) {
+                var num = contentData.contact.whatsapp.replace(/\D/g, '');
+                window.WHATSAPP_NUMBER = num;
+                document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
+                    el.href = 'https://wa.me/' + num;
+                });
+            }
             if (contentData.footer) {
                 document.querySelectorAll('.footer-tagline').forEach(function(el) {
                     if (contentData.footer.tagline) el.textContent = contentData.footer.tagline;
@@ -237,7 +244,7 @@
     // Scroll-triggered fade-in animations (contact-specific)
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.section, .section-header, .contact-card, .contact-form').forEach(function(el) {
-            el.classList.add('fade-section');
+            el.classList.add('fade-section', 'fade-prepare');
         });
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(e) {

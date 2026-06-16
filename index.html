@@ -359,6 +359,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="pages/about.html">About</a></li>
                         <li><a href="pages/services.html">Services</a></li>
+                        <li><a href="pages/gallery.html">Gallery</a></li>
                         <li><a href="pages/contact.html">Contact</a></li>
                     </ul>
                 </div>
@@ -419,8 +420,10 @@
                 }
             }
             if (data.contact) {
-                document.querySelectorAll('.hero-buttons .btn-secondary').forEach(function(el) {
-                    el.href = 'https://wa.me/' + data.contact.whatsapp.replace(/\D/g, '');
+                var num = data.contact.whatsapp.replace(/\D/g, '');
+                window.WHATSAPP_NUMBER = num;
+                document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
+                    el.href = 'https://wa.me/' + num;
                 });
             }
             if (data.rooms && data.rooms.length > 0) {

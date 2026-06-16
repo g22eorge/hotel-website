@@ -129,10 +129,6 @@
     <script src="../script.js"></script>
     <script>
     var API_BASE = 'https://latitudezero.up.railway.app';
-    document.querySelectorAll('.section, .section-header, .cards-grid, .rooms-section-grid').forEach(function(el) { el.classList.add('fade-section', 'fade-prepare'); });
-    var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('fade-in'); observer.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.fade-section').forEach(function(el) { observer.observe(el); });
-    document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     var page = document.body.getAttribute('data-page');
     if (!page) return;
     fetch(API_BASE + '/api/pages/' + page + '/')
@@ -197,13 +193,13 @@
                                     html += '</div></div>';
                                 });
                                 roomsContainer.innerHTML = html;
+                                roomsContainer.classList.remove('fade-prepare');
                                 roomsContainer.classList.add('fade-in');
-                                roomsContainer.querySelectorAll('.room-preview-card').forEach(function(card) {
-                                    card.classList.add('fade-section', 'fade-prepare');
-                                    observer.observe(card);
-                                    var r = card.getBoundingClientRect();
-                                    if (r.top < window.innerHeight) { card.classList.add('fade-in'); observer.unobserve(card); }
-                                });
+                                var r = roomsContainer.getBoundingClientRect();
+                                if (r.top < window.innerHeight) {
+                                    roomsContainer.classList.add('fade-in');
+                                    roomsContainer.querySelectorAll('.room-preview-card').forEach(function(c) { c.classList.add('fade-in'); });
+                                }
                             }
                         }
                     }
@@ -247,13 +243,13 @@
                                     html += '</div></div>';
                                 });
                                 diningContainer.innerHTML = html;
+                                diningContainer.classList.remove('fade-prepare');
                                 diningContainer.classList.add('fade-in');
-                                diningContainer.querySelectorAll('.dining-card').forEach(function(card) {
-                                    card.classList.add('fade-section', 'fade-prepare');
-                                    observer.observe(card);
-                                    var r = card.getBoundingClientRect();
-                                    if (r.top < window.innerHeight) { card.classList.add('fade-in'); observer.unobserve(card); }
-                                });
+                                var dr = diningContainer.getBoundingClientRect();
+                                if (dr.top < window.innerHeight) {
+                                    diningContainer.classList.add('fade-in');
+                                    diningContainer.querySelectorAll('.dining-card').forEach(function(c) { c.classList.add('fade-in'); });
+                                }
                             }
                         }
                     }
@@ -290,9 +286,10 @@
                                 html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
                             });
                             featuresDiv.innerHTML = html;
+                            featuresDiv.classList.remove('fade-prepare');
                             featuresDiv.classList.add('fade-in');
                             var safariSection = featuresDiv.closest('.section');
-                            if (safariSection) safariSection.classList.add('fade-in');
+                            if (safariSection) { safariSection.classList.remove('fade-prepare'); safariSection.classList.add('fade-in'); }
                         }
                     }
                 }
@@ -325,9 +322,10 @@
                                 html += '</div>';
                             });
                             cardsDiv.innerHTML = html;
+                            cardsDiv.classList.remove('fade-prepare');
                             cardsDiv.classList.add('fade-in');
                             var amenitiesSection = cardsDiv.closest('.section');
-                            if (amenitiesSection) amenitiesSection.classList.add('fade-in');
+                            if (amenitiesSection) { amenitiesSection.classList.remove('fade-prepare'); amenitiesSection.classList.add('fade-in'); }
                         }
                     }
                 }

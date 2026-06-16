@@ -78,43 +78,9 @@
         <div class="container">
             <div class="section-header" data-section-key="dining">
                 <h2>Dining Experience</h2>
-                <p>A good stay deserves good food. Enjoy our locally sourced, freshly prepared meals.</p>
+                <p data-section-key="dining">A good stay deserves good food. Enjoy our locally sourced, freshly prepared meals.</p>
             </div>
-            <div class="cards-grid">
-                <div class="dining-card">
-                    <div class="dining-card-image">
-                        <img src="../images/IMG_3383.jpeg" alt="Local Cuisine">
-                    </div>
-                    <div class="dining-card-content">
-                        <h3>Local Ugandan Cuisine</h3>
-                        <p>Authentic Ugandan dishes prepared with fresh, locally sourced ingredients. Experience the rich flavours of Western Uganda.</p>
-                        <div class="card-price">Meals from $8/person</div>
-                        <a href="contact.html" class="btn btn-primary">Book a Table</a>
-                    </div>
-                </div>
-                <div class="dining-card">
-                    <div class="dining-card-image">
-                        <img src="../images/IMG_3389.jpeg" alt="International Cuisine">
-                    </div>
-                    <div class="dining-card-content">
-                        <h3>International Cuisine</h3>
-                        <p>A selection of international favourites to suit every palate, from continental breakfasts to hearty dinners.</p>
-                        <div class="card-price">Meals from $10/person</div>
-                        <a href="contact.html" class="btn btn-primary">Book a Table</a>
-                    </div>
-                </div>
-                <div class="dining-card">
-                    <div class="dining-card-image">
-                        <img src="../images/IMG_3392.jpeg" alt="Refreshments">
-                    </div>
-                    <div class="dining-card-content">
-                        <h3>Refreshments & Bar</h3>
-                        <p>Enjoy refreshing drinks, specialty cocktails, and a wide selection of beverages in our lounge and outdoor areas.</p>
-                        <div class="card-price">Drinks from $3</div>
-                        <a href="contact.html" class="btn btn-primary">Book a Table</a>
-                    </div>
-                </div>
-            </div>
+            <div class="cards-grid" id="dining-cards-container"></div>
         </div>
     </section>
 
@@ -213,6 +179,44 @@
                         heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
                     }
                 }
+
+                // Dining cards (image_url|Title|Description|Price)
+                    if (s.key === 'dining') {
+                        var diningContainer = document.getElementById('dining-cards-container');
+                        if (s.content && diningContainer) {
+                            var lines = s.content.split('\n');
+                            var cardItems = [];
+                            lines.forEach(function(line) {
+                                line = line.trim();
+                                if (!line) return;
+                                var parts = line.split('|');
+                                if (parts.length >= 4) {
+                                    cardItems.push({
+                                        image: parts[0].trim(),
+                                        title: parts[1].trim(),
+                                        desc: parts[2].trim(),
+                                        price: parts[3].trim()
+                                    });
+                                }
+                            });
+                            if (cardItems.length > 0) {
+                                var html = '';
+                                cardItems.forEach(function(card) {
+                                    html += '<div class="dining-card">';
+                                    html += '<div class="dining-card-image">';
+                                    html += '<img src="' + card.image + '" alt="' + card.title + '" loading="lazy">';
+                                    html += '</div>';
+                                    html += '<div class="dining-card-content">';
+                                    html += '<h3>' + card.title + '</h3>';
+                                    html += '<p>' + card.desc + '</p>';
+                                    html += '<div class="card-price">' + card.price + '</div>';
+                                    html += '<a href="contact.html" class="btn btn-primary">Book a Table</a>';
+                                    html += '</div></div>';
+                                });
+                                diningContainer.innerHTML = html;
+                            }
+                        }
+                    }
 
                 var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
                 els.forEach(function(el) {

@@ -45,6 +45,7 @@
             <div class="gallery-grid" id="galleryGrid">
                 <!-- Images loaded dynamically from API -->
             </div>
+            <div id="gallery-debug" style="padding:20px;background:#fee;border:2px solid red;color:#333;font-size:18px;margin:20px 0;"></div>
         </div>
     </section>
 
@@ -165,6 +166,8 @@
         .then(function(r) { return r.json(); })
         .then(function(galleryData) {
             var grid = document.getElementById('galleryGrid');
+            var debug = document.getElementById('gallery-debug');
+            if (debug) debug.textContent = 'Gallery fetch OK, images: ' + (galleryData.images ? galleryData.images.length : 0);
             if (!grid || !galleryData.images || galleryData.images.length === 0) return;
             var html = '';
             galleryData.images.forEach(function(img) {
@@ -178,7 +181,10 @@
             var gallerySection = grid.closest('.section');
             if (gallerySection) { gallerySection.classList.remove('fade-prepare'); gallerySection.classList.add('fade-in'); }
         })
-        .catch(function() {});
+        .catch(function(err) {
+            var debug = document.getElementById('gallery-debug');
+            if (debug) debug.textContent = 'Gallery fetch FAILED: ' + err;
+        });
     </script>
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>

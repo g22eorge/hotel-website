@@ -132,6 +132,7 @@
     document.querySelectorAll('.section, .section-header, .cards-grid, .rooms-section-grid').forEach(function(el) { el.classList.add('fade-section', 'fade-prepare'); });
     var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('fade-in'); observer.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-section').forEach(function(el) { observer.observe(el); });
+    document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     var page = document.body.getAttribute('data-page');
     if (!page) return;
     fetch(API_BASE + '/api/pages/' + page + '/')

@@ -257,6 +257,7 @@
         document.querySelectorAll('.fade-section').forEach(function(el) {
             observer.observe(el);
         });
+        document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     });
     </script>
 

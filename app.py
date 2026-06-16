@@ -4,7 +4,6 @@ import cloudinary.uploader
 import cloudinary.api
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_wtf import CSRFProtect
 from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection, GalleryImage
 from datetime import datetime, date
 
@@ -19,7 +18,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 
 # Initialize CSRF protection
-csrf = CSRFProtect(app)
 
 cloudinary.config(
     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', ''),

@@ -100,6 +100,9 @@
     <script src="../script.js"></script>
     <script>
     var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
+    document.querySelectorAll('.section, .section-header, .content-block, .features-grid').forEach(function(el) { el.classList.add('fade-section'); });
+    var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('fade-in'); observer.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-section').forEach(function(el) { observer.observe(el); });
     var page = document.body.getAttribute('data-page');
     if (!page) return;
     fetch(API_BASE + '/api/pages/' + page + '/')
@@ -175,5 +178,15 @@
         })
         .catch(function() {});
     </script>
+
+    <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+    <!-- Sticky booking CTA bar -->
+    <div class="sticky-booking-bar" id="stickyBookingBar">
+        <div class="bar-text">Ready to book? <span>Save 10%</span> when you book direct</div>
+        <a href="contact.html" class="btn btn-primary">Book Now</a>
+        <button class="bar-close" aria-label="Close">&times;</button>
+    </div>
+
 </body>
 </html>

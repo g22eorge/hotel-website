@@ -42,6 +42,8 @@
         .badge.archived { background: #f3f4f6; color: #4b5563; }
         .btn-sm { display: inline-block; padding: 6px 14px; background: #C9BDB5; color: #231F20; text-decoration: none; border-radius: 6px; font-size: 0.8rem; font-weight: 600; transition: background 0.2s; }
         .btn-sm:hover { background: #b5a89e; }
+        .btn-export { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #231F20; color: #C9BDB5; text-decoration: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
+        .btn-export:hover { background: #4C4E4F; }
         .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
         .pagination a { padding: 8px 14px; background: #fff; color: #231F20; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; }
         .pagination a:hover { background: #C9BDB5; }
@@ -93,7 +95,8 @@
         <main class="main-content">
             <div class="page-header">
                 <h1>Bookings</h1>
-                <div class="filters">
+                <a href="/admin/bookings/export/" class="btn-export"><i class="fas fa-download"></i> Export CSV</a>
+            </div>
                     <a href="/admin/bookings/" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
                     <a href="/admin/bookings/?status=pending" class="filter-btn {% if status_filter == 'pending' %}active{% endif %}">Pending</a>
                     <a href="/admin/bookings/?status=confirmed" class="filter-btn {% if status_filter == 'confirmed' %}active{% endif %}">Confirmed</a>

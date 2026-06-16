@@ -102,6 +102,36 @@ def admin_bookings():
                            pagination=pagination,
                            status_filter=status_filter)
 
+@app.route('/admin/bookings/export/')
+@login_required
+def admin_export_bookings():
+    import csv
+    from io import StringIO
+    bookings = Booking.query.order_by(Booking.created_at.desc()).all()
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow(['ID', 'Name', 'Email', 'Phone', 'Room', 'Check-in', 'Check-out', 'Guests', 'Status', 'Source', 'Requests', 'Created'])
+    for b in bookings:
+        writer.writerow([
+            b.id,
+            b.name,
+            b.email,
+            b.phone or '',
+            b.room,
+            b.checkin.strftime('%Y-%m-%d') if b.checkin else '',
+            b.checkout.strftime('%Y-%m-%d') if b.checkout else '',
+            b.guests,
+            b.status,
+            b.source or '',
+            b.requests or '',
+            b.created_at.strftime('%Y-%m-%d %H:%M') if b.created_at else ''
+        ])
+    output.seek(0)
+    return output.getvalue(), 200, {
+        'Content-Type': 'text/csv',
+        'Content-Disposition': 'attachment; filename=bookings_export.csv'
+    }
+
 @app.route('/admin/bookings/<int:booking_id>/', methods=['GET', 'POST'])
 @login_required
 def admin_booking_detail(booking_id):

@@ -1,6 +1,22 @@
 var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Scroll-triggered fade-in animations
+    document.querySelectorAll('.section, .section-header, .cards-grid, .rooms-section-grid, .testimonial-card, .room-preview-card, .dining-card, .footer-grid').forEach(function(el) {
+        el.classList.add('fade-section');
+    });
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-section').forEach(function(el) {
+        observer.observe(el);
+    });
+
     // Navbar scroll effect
     var navbar = document.getElementById('navbar');
     window.addEventListener('scroll', function() {
@@ -195,4 +211,34 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input[type="date"]').forEach(function(input) {
         input.setAttribute('min', today);
     });
+
+    // Sticky booking bar (scroll-triggered)
+    var bookingBar = document.getElementById('stickyBookingBar');
+    if (bookingBar) {
+        var closedAt = localStorage.getItem('bookingBarClosed');
+        if (!closedAt || (Date.now() - parseInt(closedAt)) > 24 * 60 * 60 * 1000) {
+            var shown = false;
+            function revealBar() {
+                if (shown) return;
+                bookingBar.classList.add('visible');
+                shown = true;
+            }
+            var onScroll = function() {
+                if (window.scrollY > 100) {
+                    revealBar();
+                    window.removeEventListener('scroll', onScroll);
+                }
+            };
+            window.addEventListener('scroll', onScroll);
+
+            var closeBtn = bookingBar.querySelector('.bar-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    bookingBar.classList.remove('visible');
+                    localStorage.setItem('bookingBarClosed', Date.now());
+                    window.removeEventListener('scroll', onScroll);
+                });
+            }
+        }
+    }
 });

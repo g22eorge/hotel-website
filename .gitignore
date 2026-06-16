@@ -3,3 +3,4 @@ __pycache__/
 latitude_zero.db
 server.log
 cookies.txt
+instance/

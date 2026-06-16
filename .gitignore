@@ -9,4 +9,4 @@ instance/
 *.db-journal
 images/uploads/
 venv/
-.venv/
+.venv/app.py.backup

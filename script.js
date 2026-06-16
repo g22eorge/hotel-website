@@ -1,4 +1,4 @@
-var API_BASE = 'https://latitude-zero-production-2183.up.railway.app';
+var API_BASE = 'https://latitudezero.up.railway.app';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Scroll-triggered fade-in animations

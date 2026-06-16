@@ -2181,10 +2181,7 @@ input:focus, select:focus, textarea:focus {
     margin: 16px auto;
 }
 
-/* Trust badges scroll animation */
-.trust-badges-track {
-    animation: scrollBounce 3s ease-in-out infinite;
-}
+/* Trust badges scroll animation — uses scrollBadges keyframes defined above */
 
 /* Testimonial card premium style */
 .testimonial-card {

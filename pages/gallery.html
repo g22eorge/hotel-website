@@ -168,33 +168,32 @@
             if (!grid || !galleryData.images || galleryData.images.length === 0) return;
             var html = '';
             galleryData.images.forEach(function(img) {
-                html += '<div class="gallery-item">' +
+                html += '<div class="gallery-item fade-section fade-prepare">' +
                     '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '">' +
                     '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
                     '</div>';
             });
             grid.innerHTML = html;
+            document.querySelectorAll('.gallery-item.fade-section:not(.fade-in)').forEach(function(el) {
+                observer.observe(el);
+            });
+            document.querySelectorAll('.gallery-item.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); } });
         })
         .catch(function() {});
 
-    // Scroll-triggered fade-in animations (gallery-specific)
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.section, .section-header, .gallery-item').forEach(function(el) {
-            el.classList.add('fade-section', 'fade-prepare');
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+            if (e.isIntersecting) {
+                e.target.classList.add('fade-in');
+                observer.unobserve(e.target);
+            }
         });
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add('fade-in');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.fade-section').forEach(function(el) {
-            observer.observe(el);
-        });
-        document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.section, .section-header').forEach(function(el) {
+        el.classList.add('fade-section', 'fade-prepare');
+        observer.observe(el);
     });
+    document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
     </script>
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>

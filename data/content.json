@@ -1,1 +1,66 @@
-{"contact":{"address":"Kikorongo, near Queen Elizabeth National Park","email":"info@latitudezero.ug","facebook":"","instagram":"","phone":"+256 700 629 083","whatsapp":"+256 700 629 083"},"footer":{"copyright":"© 2026 Latitude Zero Cottages Kikorongo. All rights reserved.","description":"Where Comfort Meets Nature. Your Peaceful Stay Near Queen Elizabeth National Park.","tagline":"Where Comfort Meets Nature."},"hero":{"image":"","meta_description":"","meta_title":"","subtitle":"Welcome to Latitude Zero Cottages Kikorongo — a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo.","tagline":"Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality.","title":"Your Peaceful Stay Near Queen Elizabeth National Park"},"rooms":[{"description":"A cozy room with comfortable bedding and all essential amenities for a restful stay.","features":"WiFi\\nHot Shower\\nBedroom\\nMosquito Net\\nAC Available","image":"images/IMG_3384.jpeg","name":"Standard Room","price":"From $45/night"},{"description":"Extra spacious room with premium furnishings and stunning views of the surrounding landscape.","features":"WiFi\\nHot Shower\\nSpacious Bedroom\\nBalcony\\nMosquito Net\\nAC","image":"images/IMG_3385.jpeg","name":"Deluxe Room","price":"From $65/night"},{"description":"Ideal for families and groups, offering generous space and a private cottage setting with separate sleeping areas.","features":"WiFi\\nHot Shower\\n2 Bedrooms\\nLiving Area\\nPrivate Cottage\\nKitchenette","image":"images/IMG_3388.jpeg","name":"Family Cottage","price":"From $85/night"}],"testimonials":[{"author":"Sarah M.","location":"London, UK","rating":5,"text":"Absolutely wonderful stay! The staff were incredibly welcoming and the cottages are beautifully maintained."},{"author":"James K.","location":"Nairobi, Kenya","rating":5,"text":"Best lodge experience in Uganda. Clean, comfortable, and the food was excellent."},{"author":"Anna & Peter","location":"Amsterdam, NL","rating":5,"text":"A peaceful retreat with amazing hospitality. The team went above and beyond to make our anniversary special."}]}
+{
+  "hero": {
+    "title": "Your Peaceful Stay Near Queen Elizabeth National Park",
+    "subtitle": "Welcome to Latitude Zero Cottages Kikorongo \u2014 a comfortable, relaxing getaway surrounded by the natural beauty of Kikorongo. Whether you are here for a safari, a romantic escape, or a quiet retreat, we offer warm hospitality, delicious meals, and a place to truly unwind.",
+    "tagline": "Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality.",
+    "image": "",
+    "meta_title": "Latitude Zero Cottages Kikorongo | Comfortable Rooms Near Queen Elizabeth National Park",
+    "meta_description": "Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park."
+  },
+  "contact": {
+    "whatsapp": "+256 700 629 083",
+    "phone": "+256 700 629 083",
+    "email": "info@latitudezero.ug",
+    "address": "Kikorongo, near Queen Elizabeth National Park",
+    "facebook": "https://facebook.com/latitudezerocottages",
+    "instagram": "https://instagram.com/latitudezerocottages"
+  },
+  "footer": {
+    "tagline": "Where Comfort Meets Nature.",
+    "description": "",
+    "copyright": "\u00a9 2026 Latitude Zero Cottages Kikorongo. All rights reserved."
+  },
+  "rooms": [
+    {
+      "name": "Standard Room",
+      "description": "A cozy room with comfortable bedding and all essential amenities for a restful stay. Perfect for solo travelers or couples looking for comfort in nature.",
+      "price": "From $45/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "features": "WiFi\nHot Shower\nBedroom\nMosquito Net\nAC Available"
+    },
+    {
+      "name": "Deluxe Room",
+      "description": "Extra spacious room with premium furnishings and stunning views of the surrounding landscape. Ideal for those who want a little more space and luxury.",
+      "price": "From $65/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
+      "features": "WiFi\nHot Shower\nSpacious Bedroom\nBalcony\nMosquito Net\nAC"
+    },
+    {
+      "name": "Family Cottage",
+      "description": "Ideal for families and groups, offering generous space and a private cottage setting with separate sleeping areas.",
+      "price": "From $85/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg",
+      "features": "WiFi\nHot Shower\n2 Bedrooms\nLiving Area\nPrivate Cottage\nKitchenette"
+    }
+  ],
+  "testimonials": [
+    {
+      "text": "Absolutely wonderful stay! The staff were incredibly welcoming and the cottages are beautifully maintained. Woke up to birds singing and fell asleep to the sounds of nature. Will definitely come back!",
+      "author": "Sarah M.",
+      "location": "London, UK",
+      "rating": 5
+    },
+    {
+      "text": "Best lodge experience in Uganda. Clean, comfortable, and the food was excellent. Very close to Queen Elizabeth National Park \u2014 perfect for our safari adventures.",
+      "author": "James K.",
+      "location": "Nairobi, Kenya",
+      "rating": 5
+    },
+    {
+      "text": "A peaceful retreat with amazing hospitality. The team went above and beyond to make our anniversary special. Highly recommended for couples!",
+      "author": "Anna & Peter",
+      "location": "Amsterdam, NL",
+      "rating": 5
+    }
+  ]
+}

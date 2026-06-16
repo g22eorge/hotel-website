@@ -1,1 +1,45 @@
-{"page":"services","sections":[{"content":"At Latitude Zero Cottages Kikorongo, we offer more than just a place to stay.","image":"","key":"hero","meta_description":"","meta_title":"","title":"Our Services"},{"content":"Our cottages and rooms are designed for relaxation after a day of adventure.\n---\nimages/IMG_3384.jpeg|Standard Room|A cozy room with comfortable bedding and all essential amenities.|From $45/night\nimages/IMG_3385.jpeg|Deluxe Room|Extra spacious room with premium furnishings and scenic views.|From $65/night\nimages/IMG_3388.jpeg|Family Cottage|Ideal for families, offering generous space and a private setting.|From $85/night","image":"","key":"rooms","title":"Comfortable Accommodation"},{"content":"Enjoy freshly prepared local and international meals at our dining area.\n---\nimages/IMG_3383.jpeg|Local Ugandan Cuisine|Freshly prepared traditional Ugandan dishes with local ingredients.|Meals from $8/person\nimages/IMG_3383.jpeg|International Favorites|A selection of continental dishes prepared to perfection.|Meals from $10/person\nimages/IMG_3383.jpeg|Refreshments & Drinks|Cool drinks, fresh juices, and beverages available all day.|From $3/drink","image":"","key":"dining","title":"Delicious Dining"},{"content":"Located just 1km from Queen Elizabeth National Park, we offer easy access to wildlife safaris.\nfas fa-binoculars | Game Drives — Morning & Evening\nfas fa-ship | Boat Cruises on Kazinga Channel\nfas fa-hiking | Nature Walks & Bird Watching\nfas fa-camera | Photographic Safaris\nfas fa-tree | Chimpanzee Tracking in Kyambura Gorge","image":"","key":"safari","title":"Safari Adventures"},{"content":"fas fa-wifi | 24/7 WiFi | Reliable high-speed internet throughout the property\nfas fa-shower | Hot Showers | Enjoy hot water anytime\nfas fa-bed | Comfortable Bedding | Quality mattresses and linens\nfas fa-mosque | Mosquito Nets | All beds equipped with mosquito nets\nfas fa-bolt | Power Backup | Generator available during outages\nfas fa-concierge-bell | Room Service | Available on request","image":"","key":"amenities","title":"Amenities"}]}
+{
+  "page": "services",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "Our Services",
+      "content": "At Latitude Zero Cottages Kikorongo, we offer more than just a place to stay. Our goal is to provide a comprehensive experience that blends comfort, relaxation, and adventure in one of Uganda most beautiful regions.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565901/latitude_zero/IMG_3391_wbpmpw.jpg",
+      "meta_title": "Services - Latitude Zero Cottages Kikorongo",
+      "meta_description": "Latitude Zero Cottages offers comfortable rooms, dining, safari adventures, and amenities near Queen Elizabeth National Park."
+    },
+    {
+      "key": "rooms",
+      "title": "Comfortable Accommodation",
+      "content": "Our cottages are designed for guests who value comfort, peace, and a natural environment. Each room offers modern amenities, comfortable bedding, and a peaceful atmosphere.\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Standard Room|A cozy room with comfortable bedding and all essential amenities for a restful stay. Perfect for solo travelers or couples.|From $45/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565896/latitude_zero/IMG_3385_msr32r.jpg|Deluxe Room|Extra spacious room with premium furnishings and scenic views of the surrounding landscape. Ideal for those who want more space.|From $65/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg|Family Cottage|Generous space and a private cottage setting with separate sleeping areas. Perfect for families and groups.|From $85/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "dining",
+      "title": "Delicious Dining",
+      "content": "A good stay deserves good food. Enjoy our locally sourced, freshly prepared meals. Our menu features a blend of traditional Ugandan dishes and continental favorites.\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg|Local Ugandan Cuisine|Authentic Ugandan dishes prepared with fresh, locally sourced ingredients. Experience the rich flavours of Western Uganda.|Meals from $8/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565893/latitude_zero/IMG_3389_th256l.jpg|International Cuisine|A selection of international favourites to suit every palate, from continental breakfasts to hearty dinners.|Meals from $10/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565891/latitude_zero/IMG_3392_pvjln4.jpg|Refreshments & Bar|Enjoy refreshing drinks, specialty cocktails, and a wide selection of beverages in our lounge and outdoor areas.|Drinks from $3",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "safari",
+      "title": "Safari Adventures",
+      "content": "Stay close to wildlife, nature and adventure at Queen Elizabeth National Park.\nfas fa-binoculars|Game drives\nfas fa-paw|Wildlife viewing\nfas fa-dove|Bird watching\nfas fa-camera|Photography safaris\nfas fa-leaf|Nature walks\nfas fa-ship|Boat cruises",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "amenities",
+      "title": "Amenities",
+      "content": "Everything you need for a comfortable and memorable stay.\nfas fa-wifi|24/7 Internet Connection|High-speed WiFi available throughout the property for staying connected.\nfas fa-spa|Wellness & Relaxation|Enjoy our spa services, massage therapy, and tranquil outdoor spaces for rejuvenation.\nfas fa-users|Event Support|We cater to weddings, meetings, and special events with customized packages.\nfas fa-calendar-alt|Flexible Booking|Flexible check-in/check-out times and reservation options to suit your travel plans.\nfas fa-shield-alt|Secure & Reliable|Secure bookings with mobile money payments and instant confirmations.\nfas fa-map-marker-alt|Tour Arrangements|We assist with booking guided tours, bird watching, and nature walks in the area.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}

@@ -1,1 +1,21 @@
-{"page":"contact","sections":[{"content":"Ready to book your stay? Have a question? We are here to help.","image":"","key":"hero","meta_description":"","meta_title":"","title":"Contact & Book"},{"content":"Fill out the form below and we will get back to you with availability and pricing.","image":"","key":"intro","title":"Book Your Stay"}]}
+{
+  "page": "contact",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "Contact Us",
+      "content": "Ready to book your stay? Have a question? We are here to help. Reach out to us via phone, WhatsApp, or email, and we will get back to you within 24 hours.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565893/latitude_zero/IMG_3389_th256l.jpg",
+      "meta_title": "Contact - Latitude Zero Cottages Kikorongo",
+      "meta_description": "Contact Latitude Zero Cottages Kikorongo for bookings, inquiries, and information. Reach us via WhatsApp, phone, or email."
+    },
+    {
+      "key": "intro",
+      "title": "Book Your Stay",
+      "content": "Fill out the form below and we will get back to you with availability and pricing. You can also reach out directly via WhatsApp for quick responses.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565893/latitude_zero/IMG_3389_th256l.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}

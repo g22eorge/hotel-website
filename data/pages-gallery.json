@@ -1,1 +1,13 @@
-{"page":"gallery","sections":[{"content":"Explore the beauty of Latitude Zero Cottages through our photo gallery.","image":"","key":"hero","meta_description":"","meta_title":"","title":"Gallery"},{"content":"Click any image to view in full size. Experience the beauty of Latitude Zero Cottages through our photo gallery.","image":"","key":"gallery","title":"Our Gallery"}]}
+{
+  "page": "gallery",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "Gallery",
+      "content": "Explore the beauty of Latitude Zero Cottages through our photo gallery. From the cottages and rooms to the stunning natural surroundings, see what awaits you.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565899/latitude_zero/IMG_3387_yko260.jpg",
+      "meta_title": "Gallery - Latitude Zero Cottages Kikorongo",
+      "meta_description": "Browse photos of Latitude Zero Cottages Kikorongo - our rooms, dining, surroundings, and wildlife near Queen Elizabeth National Park."
+    }
+  ]
+}

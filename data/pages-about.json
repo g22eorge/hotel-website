@@ -1,1 +1,37 @@
-{"page":"about","sections":[{"content":"Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park.","image":"","key":"hero","meta_description":"","meta_title":"","title":"About Us"},{"content":"Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park. We offer comfortable cottages, spacious rooms, delicious meals, refreshing drinks, beautiful natural surroundings, reliable 24/7 internet connection, and warm personalized hospitality.","image":"","key":"intro","title":"About Latitude Zero Cottages Kikorongo"},{"content":"We are committed to offering every guest:\nfas fa-bed | Comfortable & Spacious Cottages\nfas fa-utensils | Delicious Local & International Meals\nfas fa-wifi | Reliable 24/7 Internet\nfas fa-heart | Warm, Personalized Hospitality\nfas fa-leaf | Beautiful Natural Surroundings","image":"","key":"promise","title":"Our Promise"},{"content":"Latitude Zero Cottages Kikorongo welcomes:\nfas fa-binoculars | Safari & Wildlife Enthusiasts\nfas fa-users | Families & Groups\nfas fa-heart | Couples & Romantic Getaways\nfas fa-briefcase | Business Travelers\nfas fa-hiking | Adventure Seekers","image":"","key":"serve","title":"Who We Serve"}]}
+{
+  "page": "about",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "About Us",
+      "content": "Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park. We offer comfortable cottages, spacious rooms, delicious meals, refreshing drinks, beautiful natural surroundings, reliable 24/7 internet connection, and warm personalized hospitality.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg",
+      "meta_title": "About - Latitude Zero Cottages Kikorongo",
+      "meta_description": "Learn about Latitude Zero Cottages Kikorongo, a peaceful accommodation near Queen Elizabeth National Park offering comfort, nature, and warm hospitality."
+    },
+    {
+      "key": "promise",
+      "title": "Our Promise",
+      "content": "We are committed to offering every guest:\nfas fa-bed|A comfortable place to stay\nfas fa-leaf|A peaceful natural environment\nfas fa-utensils|Delicious meals and drinks\nfas fa-hands-helping|Friendly and professional service\nfas fa-wifi|Reliable internet connection\nfas fa-map-marked-alt|A memorable experience near Queen Elizabeth National Park",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "serve",
+      "title": "Who We Serve",
+      "content": "Latitude Zero Cottages Kikorongo welcomes:\nfas fa-globe|Local and international tourists\nfas fa-binoculars|Safari travelers\nfas fa-heart|Couples\nfas fa-users|Families\nfas fa-user-friends|Groups\nfas fa-briefcase|Business travelers\nfas fa-calendar-alt|Weekend visitors\nfas fa-leaf|Nature lovers\nfas fa-spa|Guests seeking peace and relaxation",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565903/latitude_zero/IMG_3396_qiukqh.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "intro",
+      "title": "About Latitude Zero Cottages Kikorongo",
+      "content": "Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park. We offer comfortable cottages, spacious rooms, delicious meals, refreshing drinks, beautiful natural surroundings, reliable 24/7 internet connection, and warm personalized hospitality.\n\nOur goal is to give every guest a comfortable and memorable stay, whether they are visiting for adventure, relaxation, family time, or a peaceful retreat.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}

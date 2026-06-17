@@ -80,9 +80,10 @@ exports.handler = async (event) => {
         statusCode: 200,
         headers: { "Content-Type": "text/html" },
         body: `<!DOCTYPE html><html><body><script>
+console.log('OAuth error:', '${errMsg}');
 window.opener.postMessage('authorization:github:success',{token:'${errMsg}'},'*');
-window.close();
-</script></body></html>`,
+setTimeout(function(){ window.close(); }, 2000);
+</script><p style="font-family:sans-serif;padding:20px;color:red;">Error: ${errMsg}</p></body></html>`,
       };
     }
 
@@ -90,9 +91,10 @@ window.close();
       statusCode: 200,
       headers: { "Content-Type": "text/html" },
       body: `<!DOCTYPE html><html><body><script>
+console.log('OAuth callback received. Token:', '${token}'.slice(0, 10) + '...');
 window.opener.postMessage('authorization:github:success',{token:'${token}'},'*');
-window.close();
-</script></body></html>`,
+setTimeout(function(){ window.close(); }, 1000);
+</script><p style="font-family:sans-serif;padding:20px;">Authentication successful. Closing...</p></body></html>`,
     };
   } catch (err) {
     return { statusCode: 500, body: `OAuth error: ${err.message}` };

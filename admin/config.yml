@@ -1,7 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
   repo: g22eorge/hotel-website
   branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: /auth
 
 site_url: https://latitude-zero.netlify.app
 
@@ -117,7 +119,7 @@ collections:
             fields:
               - { label: Section Key, name: key, widget: string }
               - { label: Title, name: title, widget: string }
-              - { label: Content, name: content, widget: text }
+              - { label: Content, name: content, widgetconfigured: text }
               - { label: Image URL, name: image, widget: string, required: false }
       - file: data/pages-contact.json
         label: Contact Page

@@ -125,6 +125,7 @@
                                 <a href="/admin/users/{{ user.id }}/edit/" class="btn-sm">Edit</a>
                                 {% if user.id != current_user.id %}
                                 <form method="POST" action="/admin/users/{{ user.id }}/delete/" style="display:inline;" onsubmit="return confirm('Delete user {{ user.username }}? This cannot be undone.');">
+                    {{ csrf_field() }}
                                     <button type="submit" class="btn-sm-danger">Delete</button>
                                 </form>
                                 {% endif %}

@@ -120,6 +120,7 @@
                         <div class="card-actions">
                             <a href="/admin/testimonials/{{ t.id }}/edit/" class="btn-sm">Edit</a>
                             <form method="POST" action="/admin/testimonials/{{ t.id }}/delete/" style="display:inline;" onsubmit="return confirm('Delete this testimonial?');">
+                    {{ csrf_field() }}
                                 <button type="submit" class="btn-sm-danger">Delete</button>
                             </form>
                         </div>

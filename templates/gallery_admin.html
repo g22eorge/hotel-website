@@ -96,6 +96,7 @@
             <div class="upload-section">
                 <h3><i class="fas fa-upload"></i> Add New Image</h3>
                 <form method="POST" action="/admin/gallery/add/" enctype="multipart/form-data">
+                    {{ csrf_field() }}
                     <div class="form-group">
                         <label>Image File</label>
                         <input type="file" name="image" accept="image/*" required>
@@ -120,6 +121,7 @@
                     <div class="caption">{{ img.caption or 'No caption' }}</div>
                     <div class="actions">
                         <form method="POST" action="/admin/gallery/{{ img.id }}/delete/" onsubmit="return confirm('Delete this image?');">
+                    {{ csrf_field() }}
                             <button type="submit" class="btn-danger"><i class="fas fa-trash"></i> Delete</button>
                         </form>
                     </div>

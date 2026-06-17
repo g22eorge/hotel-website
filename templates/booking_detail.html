@@ -157,14 +157,17 @@
                         <p style="font-size:0.85rem;color:#4C4E4F;margin-bottom:16px;">Update the booking status. This changes how the booking is tracked in your system.</p>
                         <div class="action-buttons">
                             <form method="POST" style="display:inline;">
+                    {{ csrf_field() }}
                                 <input type="hidden" name="action" value="approve">
                                 <button type="submit" class="btn-action btn-approve"><i class="fas fa-check"></i> Confirm</button>
                             </form>
                             <form method="POST" style="display:inline;">
+                    {{ csrf_field() }}
                                 <input type="hidden" name="action" value="reject">
                                 <button type="submit" class="btn-action btn-reject"><i class="fas fa-times"></i> Reject</button>
                             </form>
                             <form method="POST" style="display:inline;">
+                    {{ csrf_field() }}
                                 <input type="hidden" name="action" value="archive">
                                 <button type="submit" class="btn-action btn-archive"><i class="fas fa-archive"></i> Archive</button>
                             </form>

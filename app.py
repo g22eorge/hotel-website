@@ -1,11 +1,15 @@
 import os
+import secrets
+import time
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
+from urllib.parse import urljoin, urlparse
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection, GalleryImage
 from datetime import datetime, date
+from markupsafe import Markup
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,6 +23,13 @@ if database_url and database_url.startswith('postgres://'):
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+if os.environ.get('RAILWAY_ENVIRONMENT'):
+    app.config['SESSION_COOKIE_SECURE'] = True
+LOGIN_ATTEMPTS = {}
+LOGIN_WINDOW_SECONDS = 15 * 60
+LOGIN_MAX_ATTEMPTS = 10
 
 
 cloudinary.config(
@@ -39,7 +50,73 @@ def upload_to_cloudinary(file, folder='latitude_zero'):
     )
     return result['secure_url']
 
+def generate_csrf_token():
+    token = session.get('csrf_token')
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session['csrf_token'] = token
+    return token
+
+def csrf_field():
+    return Markup(f'<input type="hidden" name="csrf_token" value="{generate_csrf_token()}">')
+
+def is_safe_redirect_url(target):
+    if not target:
+        return False
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+def client_ip():
+    forwarded_for = request.headers.get('X-Forwarded-For', '')
+    if forwarded_for:
+        return forwarded_for.split(',')[0].strip()
+    return request.remote_addr or 'unknown'
+
+def login_rate_limited(ip):
+    now = time.time()
+    attempts = [ts for ts in LOGIN_ATTEMPTS.get(ip, []) if now - ts < LOGIN_WINDOW_SECONDS]
+    LOGIN_ATTEMPTS[ip] = attempts
+    return len(attempts) >= LOGIN_MAX_ATTEMPTS
+
+def record_failed_login(ip):
+    now = time.time()
+    attempts = [ts for ts in LOGIN_ATTEMPTS.get(ip, []) if now - ts < LOGIN_WINDOW_SECONDS]
+    attempts.append(now)
+    LOGIN_ATTEMPTS[ip] = attempts
+
+def clear_failed_logins(ip):
+    LOGIN_ATTEMPTS.pop(ip, None)
+
+def parse_int(value, default=0, min_value=None, max_value=None):
+    if value in (None, ''):
+        parsed = default
+    else:
+        parsed = int(value)
+    if min_value is not None and parsed < min_value:
+        raise ValueError(f'Must be at least {min_value}')
+    if max_value is not None and parsed > max_value:
+        raise ValueError(f'Must be at most {max_value}')
+    return parsed
+
 db.init_app(app)
+
+@app.context_processor
+def inject_csrf_helpers():
+    return {'csrf_token': generate_csrf_token, 'csrf_field': csrf_field}
+
+@app.before_request
+def protect_admin_posts():
+    if not request.path.startswith('/admin/') or request.method not in ('POST', 'PUT', 'PATCH', 'DELETE'):
+        return None
+    expected = session.get('csrf_token')
+    supplied = request.form.get('csrf_token') or request.headers.get('X-CSRFToken')
+    if not expected or not supplied or not secrets.compare_digest(expected, supplied):
+        if request.accept_mimetypes.best == 'application/json' or request.path == '/admin/upload/':
+            return jsonify({'error': 'Invalid security token. Refresh the page and try again.'}), 400
+        flash('Invalid security token. Refresh the page and try again.', 'error')
+        return redirect(request.referrer or url_for('admin_login'))
+    return None
 
 @app.after_request
 def add_cors_headers(response):
@@ -87,14 +164,20 @@ def admin_login():
     if current_user.is_authenticated:
         return redirect(url_for('admin_dashboard'))
     if request.method == 'POST':
+        ip = client_ip()
+        if login_rate_limited(ip):
+            flash('Too many login attempts. Please wait a few minutes and try again.', 'error')
+            return render_template('login.html'), 429
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '')
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password) and user.is_active:
+            clear_failed_logins(ip)
             login_user(user)
             next_page = request.args.get('next')
             flash(f'Welcome back, {user.username}!', 'success')
-            return redirect(next_page or url_for('admin_dashboard'))
+            return redirect(next_page if is_safe_redirect_url(next_page) else url_for('admin_dashboard'))
+        record_failed_login(ip)
         flash('Invalid username or password.', 'error')
     return render_template('login.html')
 
@@ -404,8 +487,12 @@ def admin_create_testimonial():
         text = request.form.get('text', '').strip()
         author = request.form.get('author', '').strip()
         location = request.form.get('location', '').strip()
-        rating = int(request.form.get('rating', 5))
-        sort_order = int(request.form.get('sort_order', 0))
+        try:
+            rating = parse_int(request.form.get('rating'), default=5, min_value=1, max_value=5)
+            sort_order = parse_int(request.form.get('sort_order'), default=0, min_value=0)
+        except ValueError:
+            flash('Rating and sort order must be valid numbers.', 'error')
+            return render_template('testimonial_edit.html', testimonial=None), 400
         testimonial = Testimonial(text=text, author=author, location=location, rating=rating, sort_order=sort_order)
         db.session.add(testimonial)
         db.session.commit()
@@ -421,8 +508,12 @@ def admin_edit_testimonial(testimonial_id):
         testimonial.text = request.form.get('text', '').strip()
         testimonial.author = request.form.get('author', '').strip()
         testimonial.location = request.form.get('location', '').strip()
-        testimonial.rating = int(request.form.get('rating', 5))
-        testimonial.sort_order = int(request.form.get('sort_order', 0))
+        try:
+            testimonial.rating = parse_int(request.form.get('rating'), default=5, min_value=1, max_value=5)
+            testimonial.sort_order = parse_int(request.form.get('sort_order'), default=0, min_value=0)
+        except ValueError:
+            flash('Rating and sort order must be valid numbers.', 'error')
+            return render_template('testimonial_edit.html', testimonial=testimonial), 400
         testimonial.is_active = request.form.get('is_active') == 'on'
         db.session.commit()
         flash('Testimonial updated.', 'success')
@@ -449,13 +540,18 @@ def admin_rooms():
 @login_required
 def admin_create_room():
     if request.method == 'POST':
+        try:
+            sort_order = parse_int(request.form.get('sort_order'), default=0, min_value=0)
+        except ValueError:
+            flash('Sort order must be a valid number.', 'error')
+            return render_template('room_edit.html', room=None), 400
         room = Room(
             name=request.form.get('name', '').strip(),
             description=request.form.get('description', ''),
             price=request.form.get('price', ''),
             image=request.form.get('image', ''),
             features=request.form.get('features', ''),
-            sort_order=int(request.form.get('sort_order', 0))
+            sort_order=sort_order
         )
         db.session.add(room)
         db.session.commit()
@@ -468,12 +564,17 @@ def admin_create_room():
 def admin_edit_room(room_id):
     room = Room.query.get_or_404(room_id)
     if request.method == 'POST':
+        try:
+            sort_order = parse_int(request.form.get('sort_order'), default=0, min_value=0)
+        except ValueError:
+            flash('Sort order must be a valid number.', 'error')
+            return render_template('room_edit.html', room=room), 400
         room.name = request.form.get('name', '').strip()
         room.description = request.form.get('description', '')
         room.price = request.form.get('price', '')
         room.image = request.form.get('image', '')
         room.features = request.form.get('features', '')
-        room.sort_order = int(request.form.get('sort_order', 0))
+        room.sort_order = sort_order
         room.is_active = request.form.get('is_active') == 'on'
         db.session.commit()
         flash(f'Room "{room.name}" updated.', 'success')
@@ -573,7 +674,11 @@ def admin_add_gallery_image():
         flash(str(e), 'error')
         return redirect(url_for('admin_gallery'))
     caption = request.form.get('caption', '')
-    sort_order = int(request.form.get('sort_order', 0))
+    try:
+        sort_order = parse_int(request.form.get('sort_order'), default=0, min_value=0)
+    except ValueError:
+        flash('Sort order must be a valid number.', 'error')
+        return redirect(url_for('admin_gallery'))
     new_image = GalleryImage(image=url, caption=caption, sort_order=sort_order)
     db.session.add(new_image)
     db.session.commit()

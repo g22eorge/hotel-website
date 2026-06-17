@@ -92,11 +92,12 @@
             <div class="form-card">
                 {% if not user %}
                 <div class="info-box">
-                    <strong>Note:</strong> Leave password blank to generate a temporary password. The user should change it after first login.
+                    <strong>Note:</strong> Set a strong initial password for the new user. Existing users keep their current password when the password field is left blank.
                 </div>
                 {% endif %}
 
                 <form method="POST">
+                    {{ csrf_field() }}
                     <div class="form-row">
                         <div class="form-group">
                             <label>Username</label>

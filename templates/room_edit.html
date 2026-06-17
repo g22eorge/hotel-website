@@ -91,6 +91,7 @@
 
             <div class="form-card">
                 <form method="POST">
+                    {{ csrf_field() }}
                     <div class="form-row">
                         <div class="form-group">
                             <label>Room Name *</label>
@@ -149,7 +150,11 @@
             if (!file) { alert('Select an image first'); return; }
             var formData = new FormData();
             formData.append('file', file);
-            fetch('/admin/upload/', { method: 'POST', body: formData })
+            fetch('/admin/upload/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
+                body: formData
+            })
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (data.url) {

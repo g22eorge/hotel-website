@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """End-to-end QA test for Latitude Zero CMS (uses stdlib only)"""
-import urllib.request, urllib.parse, urllib.error, http.cookiejar, json, sys, time, subprocess, os, signal
+import urllib.request, urllib.parse, urllib.error, http.cookiejar, json, sys, time, subprocess, os, signal, re
 
 BASE = "http://localhost:5001"
 
@@ -13,14 +13,19 @@ def urlopen(url, data=None, headers=None, opener=None):
 def login(opener):
     # Get login page
     try:
-        r = urlopen(f"{BASE}/admin/", opener=opener)
+        r = urlopen(f"{BASE}/admin/login/", opener=opener)
+        login_html = r.read().decode('utf-8', errors='replace')
     except urllib.error.HTTPError as e:
         print(f"✗ Admin login page failed: {e.code}")
         return False
     print("✓ Admin login page loads")
+    match = re.search(r'name="csrf_token" value="([^"]+)"', login_html)
+    if not match:
+        print("✗ Login failed: CSRF token not found")
+        return False
 
     # Post login
-    data = urllib.parse.urlencode({"username": "admin", "password": "latitude2026"}).encode()
+    data = urllib.parse.urlencode({"username": "admin", "password": "latitude2026", "csrf_token": match.group(1)}).encode()
     try:
         r = urlopen(f"{BASE}/admin/login/", data=data, headers={"Content-Type": "application/x-www-form-urlencoded"}, opener=opener)
         content = r.read()

@@ -33,48 +33,90 @@
         <div class="page-hero-overlay"></div>
         <div class="page-hero-content">
             <h1 id="heroTitle">About Us</h1>
+            <p class="page-hero-subtitle">Where Comfort Meets Nature</p>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section stats-strip">
         <div class="container">
-            <div class="section-header" data-section-key="intro">
-                <h2>About Latitude Zero Cottages Kikorongo</h2>
-            </div>
-            <div class="content-block">
-                <img id="intro-image" src="" alt="" style="width:100%;max-height:400px;object-fit:cover;border-radius:12px;margin-bottom:24px;display:none;">
-                <p>Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park. We offer comfortable cottages, spacious rooms, delicious meals, refreshing drinks, beautiful natural surroundings, reliable 24/7 internet connection, and warm personalized hospitality.</p>
-                <p>Our goal is to give every guest a comfortable and memorable stay, whether they are visiting for adventure, relaxation, family time, or a peaceful retreat.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" data-section-key="promise">
-        <div class="container">
-            <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
-                <div style="flex:1;min-width:280px;">
-                    <h4>Our Promise</h4>
-                    <p data-section-intro="promise">We are committed to offering every guest:</p>
-                    <div class="features-grid" id="features-promise"></div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>1km</h3>
+                    <p>From QENP Gate</p>
                 </div>
-                <div style="flex:1;min-width:280px;">
-                    <img id="promise-image" src="" alt="Our Promise" style="width:100%;border-radius:12px;object-fit:cover;max-height:350px;display:none;">
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Internet & Support</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Personalized</h3>
+                    <p>Service & Hospitality</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Newly</h3>
+                    <p>Established</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section bg-light" data-section-key="serve">
+    <section class="section" data-section-key="intro">
         <div class="container">
-            <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
-                <div style="flex:1;min-width:280px;">
-                    <h4>Who We Serve</h4>
-                    <p data-section-intro="serve">Latitude Zero Cottages Kikorongo welcomes:</p>
-                    <div class="features-grid" id="features-serve"></div>
+            <div class="about-intro-grid">
+                <div class="about-intro-image">
+                    <img id="intro-image" src="../images/IMG_3382.jpeg" alt="Latitude Zero Cottages">
+                    <div class="about-intro-badge">
+                        <i class="fas fa-map-marker-alt"></i> Kikorongo, Uganda
+                    </div>
                 </div>
-                <div style="flex:1;min-width:280px;">
-                    <img id="serve-image" src="" alt="Who We Serve" style="width:100%;border-radius:12px;object-fit:cover;max-height:350px;display:none;">
+                <div class="about-intro-content">
+                    <div class="section-header" style="text-align:left;margin-bottom:24px;">
+                        <h2 id="about-title">About Latitude Zero Cottages Kikorongo</h2>
+                    </div>
+                    <p class="about-intro-text">Latitude Zero Cottages Kikorongo is a peaceful accommodation destination located in Kikorongo, near the breathtaking landscapes of Queen Elizabeth National Park. We offer comfortable cottages, spacious rooms, delicious meals, refreshing drinks, beautiful natural surroundings, reliable 24/7 internet connection, and warm personalized hospitality.</p>
+                    <p class="about-intro-text">Our goal is to give every guest a comfortable and memorable stay, whether they are visiting for adventure, relaxation, family time, or a peaceful retreat.</p>
+                    <a href="contact.html" class="btn btn-primary" style="margin-top:16px;">Book Your Stay</a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-light" data-section-key="promise">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Promise</h2>
+                <p>We are committed to offering every guest a truly memorable experience near Uganda's most iconic national park.</p>
+            </div>
+            <div class="about-promise-grid" id="about-promise-grid">
+            </div>
+        </div>
+    </section>
+
+    <section class="about-image-band">
+        <img src="../images/IMG_3386.jpeg" alt="Queen Elizabeth National Park">
+        <div class="about-image-band-overlay">
+            <p>Located just 1km from Queen Elizabeth National Park — Uganda's most biodiverse wildlife sanctuary</p>
+        </div>
+    </section>
+
+    <section class="section" data-section-key="serve">
+        <div class="container">
+            <div class="section-header">
+                <h2>Who We Serve</h2>
+                <p>Latitude Zero Cottages Kikorongo welcomes all kinds of guests from around the world.</p>
+            </div>
+            <div class="about-serve-grid" id="about-serve-grid">
+            </div>
+        </div>
+    </section>
+
+    <section class="section cta-section">
+        <div class="container">
+            <h2>Ready to Experience Latitude Zero?</h2>
+            <p>Get in touch today and start planning your perfect Uganda adventure.</p>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:24px;">
+                <a href="contact.html" class="btn btn-primary">Book Now</a>
+                <a href="https://wa.me/256700629083" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
             </div>
         </div>
     </section>
@@ -123,10 +165,11 @@
     <script src="../script.js"></script>
     <script>
     (function() {
-    document.querySelectorAll('.section, .section-header, .content-block, .features-grid').forEach(function(el) { el.classList.add('fade-section', 'fade-prepare'); });
+    document.querySelectorAll('.section, .section-header').forEach(function(el) { el.classList.add('fade-section', 'fade-prepare'); });
     var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('fade-in'); observer.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-section').forEach(function(el) { observer.observe(el); });
     document.querySelectorAll('.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
+
     var page = document.body.getAttribute('data-page');
     if (!page) return;
 
@@ -146,57 +189,50 @@
                     var heroSection = document.querySelector('[data-section-key="hero"]');
                     if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
                 }
-                var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
-                els.forEach(function(el) {
-                    if (s.title) {
-                        var heading = el.querySelector('h2') || el.querySelector('h4');
-                        if (heading && s.key !== 'hero') heading.textContent = s.title;
-                    }
-                });
                 if (s.key === 'intro' && s.image) {
                     var introImg = document.getElementById('intro-image');
-                    if (introImg) { introImg.src = s.image; introImg.style.display = 'block'; }
-                    var contentBlock = introImg ? introImg.closest('.content-block') : null;
-                    if (contentBlock) contentBlock.classList.add('fade-in');
-                    var introSection = contentBlock ? contentBlock.closest('.section') : null;
-                    if (introSection) introSection.classList.add('fade-in');
+                    if (introImg) { introImg.src = s.image; }
                 }
-                if (s.key === 'promise' && s.image) {
-                    var promiseImg = document.getElementById('promise-image');
-                    if (promiseImg) { promiseImg.src = s.image; promiseImg.style.display = 'block'; }
+                if (s.key === 'intro' && s.title) {
+                    var t = document.getElementById('about-title');
+                    if (t) t.textContent = s.title;
                 }
-                if (s.key === 'serve' && s.image) {
-                    var serveImg = document.getElementById('serve-image');
-                    if (serveImg) { serveImg.src = s.image; serveImg.style.display = 'block'; }
-                }
-                if (s.key === 'promise' || s.key === 'serve') {
-                    var introP = document.querySelector('[data-section-intro="' + s.key + '"]');
-                    var featuresDiv = document.getElementById('features-' + s.key);
-                    if (s.content && featuresDiv) {
+                if (s.key === 'promise') {
+                    var grid = document.getElementById('about-promise-grid');
+                    if (s.content && grid) {
                         var lines = s.content.split('\n');
-                        var featureItems = [];
+                        var html = '';
                         lines.forEach(function(line) {
                             line = line.trim();
-                            if (!line) return;
-                            if (line.indexOf('|') !== -1) {
-                                var pipeIdx = line.indexOf('|');
-                                var icon = line.substring(0, pipeIdx).trim();
-                                var text = line.substring(pipeIdx + 1).trim();
-                                featureItems.push({icon: icon, text: text});
-                            } else if (introP && featureItems.length === 0) {
-                                introP.innerHTML = line;
-                            }
+                            if (!line || line.indexOf('|') === -1) return;
+                            var pipeIdx = line.indexOf('|');
+                            var icon = line.substring(0, pipeIdx).trim();
+                            var text = line.substring(pipeIdx + 1).trim();
+                            html += '<div class="about-feature-card fade-in">' +
+                                '<div class="about-feature-icon"><i class="' + icon + '"></i></div>' +
+                                '<p>' + text + '</p>' +
+                                '</div>';
                         });
-                        if (featureItems.length > 0) {
-                            var html = '';
-                            featureItems.forEach(function(item) {
-                                html += '<div class="feature-item"><i class="' + item.icon + '"></i> ' + item.text + '</div>';
-                            });
-                            featuresDiv.innerHTML = html;
-                            featuresDiv.classList.add('fade-in');
-                            var parentSection = featuresDiv.closest('.section');
-                            if (parentSection) parentSection.classList.add('fade-in');
-                        }
+                        grid.innerHTML = html;
+                    }
+                }
+                if (s.key === 'serve') {
+                    var grid = document.getElementById('about-serve-grid');
+                    if (s.content && grid) {
+                        var lines = s.content.split('\n');
+                        var html = '';
+                        lines.forEach(function(line) {
+                            line = line.trim();
+                            if (!line || line.indexOf('|') === -1) return;
+                            var pipeIdx = line.indexOf('|');
+                            var icon = line.substring(0, pipeIdx).trim();
+                            var text = line.substring(pipeIdx + 1).trim();
+                            html += '<div class="about-serve-card fade-in">' +
+                                '<i class="' + icon + '"></i>' +
+                                '<span>' + text + '</span>' +
+                                '</div>';
+                        });
+                        grid.innerHTML = html;
                     }
                 }
             });
@@ -226,12 +262,10 @@
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
-    <!-- Sticky booking CTA bar -->
     <div class="sticky-booking-bar" id="stickyBookingBar">
         <div class="bar-text">Ready to book? <span>Save 10%</span> when you book direct</div>
         <a href="contact.html" class="btn btn-primary">Book Now</a>
         <button class="bar-close" aria-label="Close">&times;</button>
     </div>
-
 </body>
 </html>

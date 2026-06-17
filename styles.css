@@ -1154,6 +1154,227 @@ body {
     }
 }
 
+/* ===== About Page Styles ===== */
+.stats-strip {
+    padding: 40px 0;
+    background: var(--primary);
+    color: #fff;
+}
+
+.stats-strip .stat-item h3 {
+    color: #fff;
+    font-size: 2rem;
+}
+
+.stats-strip .stat-item p {
+    color: rgba(255,255,255,0.85);
+}
+
+.about-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-intro-image {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.about-intro-image img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.about-intro-image:hover img {
+    transform: scale(1.03);
+}
+
+.about-intro-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255,255,255,0.95);
+    color: var(--dark);
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow);
+}
+
+.about-intro-badge i {
+    color: var(--accent);
+}
+
+.about-intro-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-intro-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.about-promise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.about-feature-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.about-feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.about-feature-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.about-feature-icon i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.about-feature-card p {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.about-serve-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.about-serve-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 22px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-serve-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.about-serve-card i {
+    font-size: 1.3rem;
+    color: var(--accent);
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.about-serve-card span {
+    font-weight: 500;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+.about-image-band {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+}
+
+.about-image-band img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-image-band-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-image-band-overlay p {
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    text-align: center;
+    max-width: 600px;
+    padding: 0 20px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .about-intro-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .about-intro-image img {
+        height: 280px;
+    }
+
+    .about-promise-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .about-feature-card {
+        padding: 24px 16px;
+    }
+
+    .about-serve-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-image-band {
+        height: 220px;
+    }
+
+    .about-image-band-overlay p {
+        font-size: 1.1rem;
+    }
+}
+
 /* ===== Testimonials ===== */
 .testimonials-grid {
     display: grid;

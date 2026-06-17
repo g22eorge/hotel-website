@@ -1,12 +1,14 @@
 # Latitude Zero Cottages — Website & CMS
 
-> **Status:** Ready for client handover. All website content is editable through the admin panel without touching any code.
+> **Status:** Ready for client handover after Railway environment variables are set. The Flask admin panel is the source of truth for website content.
 
 ---
 
 ## 1. What is this?
 
-This is a complete website for **Latitude Zero Cottages Kikorongo** with a built-in content management system (CMS). You can manage every piece of text, image, and SEO data from the admin panel — no developer needed.
+This is a complete website for **Latitude Zero Cottages Kikorongo** with a built-in Flask content management system (CMS). You can manage every piece of text, image, and SEO data from the Flask admin panel — no developer needed.
+
+The public pages read live content from the Flask APIs first. The JSON files in `data/` are kept as static fallback content only.
 
 ---
 
@@ -14,7 +16,7 @@ This is a complete website for **Latitude Zero Cottages Kikorongo** with a built
 
 ### Access the Admin Panel
 ```
-https://latitude-zero-production-2183.up.railway.app/admin/
+https://latitudezero.up.railway.app/admin/
 ```
 
 **Login credentials** (set these in Railway environment variables):
@@ -181,7 +183,7 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 | **Only heroes and intro sections have image upload** | Other sections do not support images |
 | **Uploaded images** | Stored in Cloudinary (not local filesystem) |
 | **Default images** | Repo images like `images/IMG_*.jpeg` are local — committed to git |
-| **Database** | `latitude_zero.db` — keep backups regularly |
+| **Database** | Use Railway PostgreSQL through `DATABASE_URL` in production; SQLite is the local fallback |
 | **Sort order** | In gallery and testimonials, lower numbers appear first. Use gaps (10, 20, 30) for easy insertion |
 | **Icons** | Use FontAwesome 6 Free classes. Format: `fas fa-xxx` |
 | **Passwords** | Change the admin password via the Users page — set `ADMIN_PASSWORD` env var on Railway |
@@ -200,7 +202,7 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 ## 10. Technical Notes for Developer (if needed)
 
 - **Framework:** Flask (Python 3)
-- **Database:** SQLite (`latitude_zero.db`)
+- **Database:** PostgreSQL via `DATABASE_URL` in production; SQLite (`latitude_zero.db`) locally
 - **Image Storage:** Cloudinary (credentials via env vars)
 - **WSGI Server:** gunicorn (production)
 - **Startup (local):** `python3 app.py`
@@ -216,23 +218,25 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 | `SECRET_KEY` | Generate a random 64-character secret (e.g. `openssl rand -hex 32`) |
 | `ADMIN_USERNAME` | Your admin login username (e.g. `admin`) |
 | `ADMIN_PASSWORD` | Your admin login password (keep this secret!) |
+| `DATABASE_URL` | Railway PostgreSQL connection URL |
 | `CLOUDINARY_CLOUD_NAME` | From your Cloudinary dashboard |
 | `CLOUDINARY_API_KEY` | From your Cloudinary dashboard |
 | `CLOUDINARY_API_SECRET` | From your Cloudinary dashboard |
 
 3. **Start Command:** `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
-4. The database (`latitude_zero.db`) is in the repo — it will be used as-is. On first deploy, it will seed default content.
-5. After deploying, create the admin user by running in Railway's shell:
-   ```
-   railway run python3 -c "from app import app, db, User; app.app_context().push(); db.create_all(); u=User(username='admin',email='admin@latitudezero.ug',is_superuser=True); u.set_password('YOUR_PASSWORD'); db.session.add(u); db.session.commit()"
-   ```
+4. Add a Railway PostgreSQL database and connect it to the service so `DATABASE_URL` is available.
+5. On first startup, the app creates tables and seeds default content. If no admin user exists, it creates one using `ADMIN_USERNAME` and `ADMIN_PASSWORD`.
 
 ### Keeping the Database Safe
 
-The `latitude_zero.db` file is committed to git, but Railway's filesystem is ephemeral — if Railway recreates your volume, the local DB file will reset. To prevent data loss:
-- **Export bookings regularly** from the admin panel (`/admin/bookings/` — use Export button)
-- Consider switching to a managed PostgreSQL database on Railway for production use
-- The DB file is git-tracked so it survives code deployments, but not Railway infrastructure resets
+Production should use Railway PostgreSQL, not Railway's local filesystem. To prevent data loss:
+- Keep `DATABASE_URL` connected to a managed Railway PostgreSQL database
+- Export bookings regularly from the admin panel (`/admin/bookings/` — use Export button)
+- Use the local `latitude_zero.db` file only for development and fallback seed data
+
+### Netlify / Static Fallback
+
+Netlify can still serve the static pages and `data/*.json` fallback content, but it is not the live CMS target. The live admin is the Flask admin at `/admin/` on Railway.
 
 ---
 

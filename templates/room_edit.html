@@ -107,8 +107,8 @@
                     </div>
                     <div class="form-group">
                         <label>Image Path</label>
-                        <input type="text" name="image" id="imagePath" value="{{ room.image if room else '' }}" placeholder="images/IMG_3384.jpeg">
-                        <small>Path to image in the images folder, e.g. images/IMG_3384.jpeg</small>
+                        <input type="text" name="image" id="imagePath" value="{{ room.image if room else '' }}" placeholder="https://res.cloudinary.com/.../room.jpg">
+                        <small>Use a Cloudinary URL for production images. Local images are only a fallback.</small>
                     </div>
                     <div class="form-group">
                         <label>Upload Image</label>

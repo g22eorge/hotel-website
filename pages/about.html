@@ -173,8 +173,14 @@
     var page = document.body.getAttribute('data-page');
     if (!page) return;
 
-    fetch('../data/pages-' + page + '.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/pages/' + page + '/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API page unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/pages-' + page + '.json').then(function(r) { return r.json(); });
+        })
         .then(function(data) {
             if (!data.sections) return;
             data.sections.forEach(function(s) {
@@ -187,11 +193,11 @@
                 }
                 if (s.key === 'hero' && s.image) {
                     var heroSection = document.querySelector('[data-section-key="hero"]');
-                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
+                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + window.optimizedImageUrl(s.image, { width: 1800 }) + ')';
                 }
                 if (s.key === 'intro' && s.image) {
                     var introImg = document.getElementById('intro-image');
-                    if (introImg) { introImg.src = s.image; }
+                    if (introImg) { introImg.src = window.optimizedImageUrl(s.image, { width: 900, height: 650, crop: 'fill' }); }
                 }
                 if (s.key === 'intro' && s.title) {
                     var t = document.getElementById('about-title');
@@ -238,8 +244,14 @@
             });
         });
 
-    fetch('../data/content.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/content/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API content unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/content.json').then(function(r) { return r.json(); });
+        })
         .then(function(contentData) {
             if (contentData.footer) {
                 document.querySelectorAll('.footer-tagline').forEach(function(el) {

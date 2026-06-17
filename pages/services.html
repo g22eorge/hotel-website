@@ -132,8 +132,14 @@
     var page = document.body.getAttribute('data-page');
     if (!page) return;
 
-    fetch('../data/pages-' + page + '.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/pages/' + page + '/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API page unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/pages-' + page + '.json').then(function(r) { return r.json(); });
+        })
         .then(function(data) {
             if (!data.sections) return;
             data.sections.forEach(function(s) {
@@ -146,7 +152,7 @@
                 }
                 if (s.key === 'hero' && s.image) {
                     var heroSection = document.querySelector('[data-section-key="hero"]');
-                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
+                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + window.optimizedImageUrl(s.image, { width: 1800 }) + ')';
                 }
 
                     if (s.key === 'rooms') {
@@ -170,7 +176,7 @@
                                 cardItems.forEach(function(card) {
                                     html += '<div class="room-preview-card">';
                                     html += '<div class="room-card-image">';
-                                    html += '<img src="' + card.image + '" alt="' + card.name + '" loading="lazy">';
+                                    html += '<img src="' + window.optimizedImageUrl(card.image, { width: 900, height: 650, crop: 'fill' }) + '" alt="' + card.name + '" loading="lazy">';
                                     html += '<div class="room-card-overlay">';
                                     html += '<span class="room-card-price">' + card.price + '</span>';
                                     html += '</div></div>';
@@ -210,7 +216,7 @@
                                 cardItems.forEach(function(card) {
                                     html += '<div class="dining-card">';
                                     html += '<div class="dining-card-image">';
-                                    html += '<img src="' + card.image + '" alt="' + card.title + '" loading="lazy">';
+                                    html += '<img src="' + window.optimizedImageUrl(card.image, { width: 900, height: 650, crop: 'fill' }) + '" alt="' + card.title + '" loading="lazy">';
                                     html += '<div class="dining-card-overlay">';
                                     html += '<span class="dining-card-price">' + card.price + '</span>';
                                     html += '</div></div>';
@@ -324,8 +330,14 @@
             });
         });
 
-    fetch('../data/content.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/content/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API content unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/content.json').then(function(r) { return r.json(); });
+        })
         .then(function(contentData) {
             if (contentData.footer) {
                 document.querySelectorAll('.footer-tagline').forEach(function(el) {

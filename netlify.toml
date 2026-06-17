@@ -2,16 +2,8 @@
   publish = "."
   functions = "netlify/functions"
 
-# Admin panel redirects
-[[redirects]]
-  from = "/admin"
-  to = "/admin/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/admin/"
-  to = "/admin/index.html"
-  status = 200
+# Netlify is only a static fallback target. The live CMS/admin runs in Flask
+# on Railway at /admin/ so it can write to the application database.
 
 # SPA-style redirects for pages
 [[redirects]]

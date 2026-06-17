@@ -1,3 +1,16 @@
+window.optimizedImageUrl = function(url, options) {
+    options = options || {};
+    if (!url || url.indexOf('res.cloudinary.com') === -1 || url.indexOf('/upload/') === -1) {
+        return url;
+    }
+
+    var transforms = ['f_auto', 'q_auto'];
+    if (options.crop) transforms.push('c_' + options.crop);
+    if (options.width) transforms.push('w_' + options.width);
+    if (options.height) transforms.push('h_' + options.height);
+
+    return url.replace('/upload/', '/upload/' + transforms.join(',') + '/');
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     // Scroll-triggered fade-in animations
@@ -92,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 4000);
     }
 
-    // Booking form WhatsApp + Netlify handler
+    // Booking form API + WhatsApp handler
     function handleBookingForm(formEl) {
         if (!formEl) return;
         formEl.addEventListener('submit', function(e) {
@@ -113,20 +126,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fields.phone) msg += 'Phone: ' + fields.phone + '\n';
             if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
 
-            // Send to Netlify Forms (email notification)
-            var params = new URLSearchParams();
-            data.forEach(function(value, key) {
-                params.append(key, value);
-            });
-
-            fetch(window.location.pathname, {
+            fetch('/api/bookings/', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(fields)
             }).then(function(response) {
-                console.log('Netlify form submitted', response.status);
+                if (!response.ok) throw new Error('Booking API returned ' + response.status);
+                return response.json();
             }).catch(function(err) {
-                console.error('Netlify form error:', err);
+                console.error('Booking API error:', err);
             });
 
             var waNumber = window.WHATSAPP_NUMBER || '256700629083';

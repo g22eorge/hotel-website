@@ -398,10 +398,17 @@
         <button class="bar-close" aria-label="Close">&times;</button>
     </div>
 
+    <script src="script.js"></script>
     <script>
     (function() {
-    fetch('data/content.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/content/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API content unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('data/content.json').then(function(r) { return r.json(); });
+        })
         .then(function(data) {
             if (data.hero) {
                 var titleEl = document.getElementById('heroTitle');
@@ -415,7 +422,7 @@
                 if (metaDesc && data.hero.meta_description) metaDesc.setAttribute('content', data.hero.meta_description);
                 if (data.hero.image) {
                     var slide1 = document.getElementById('heroSlide1');
-                    if (slide1) slide1.style.backgroundImage = 'url(' + data.hero.image + ')';
+                    if (slide1) slide1.style.backgroundImage = 'url(' + window.optimizedImageUrl(data.hero.image, { width: 1800 }) + ')';
                 }
             }
             if (data.contact) {
@@ -429,7 +436,7 @@
                 var roomsHtml = '';
                 data.rooms.forEach(function(r) {
                     roomsHtml += '<div class="room-preview-card">' +
-                        '<img src="' + (r.image || 'images/IMG_3384.jpeg') + '" alt="' + r.name + '" loading="lazy">' +
+                        '<img src="' + window.optimizedImageUrl((r.image || 'images/IMG_3384.jpeg'), { width: 900, height: 650, crop: 'fill' }) + '" alt="' + r.name + '" loading="lazy">' +
                         '<div class="room-preview-content">' +
                         '<h4>' + r.name + '</h4>' +
                         '<p>' + r.description + '</p>' +
@@ -468,6 +475,5 @@
         });
     })();
 </script>
-<script src="script.js"></script>
 </body>
 </html>

@@ -115,8 +115,14 @@
     var page = document.body.getAttribute('data-page');
     if (!page) return;
 
-    fetch('../data/pages-' + page + '.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/pages/' + page + '/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API page unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/pages-' + page + '.json').then(function(r) { return r.json(); });
+        })
         .then(function(data) {
             if (!data.sections) return;
             data.sections.forEach(function(s) {
@@ -129,7 +135,7 @@
                 }
                 if (s.key === 'hero' && s.image) {
                     var heroSection = document.querySelector('[data-section-key="hero"]');
-                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
+                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + window.optimizedImageUrl(s.image, { width: 1800 }) + ')';
                 }
                 var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
                 els.forEach(function(el) {
@@ -145,8 +151,14 @@
             });
         });
 
-    fetch('../data/content.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/content/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API content unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/content.json').then(function(r) { return r.json(); });
+        })
         .then(function(contentData) {
             if (contentData.contact && contentData.contact.whatsapp) {
                 var num = contentData.contact.whatsapp.replace(/\D/g, '');
@@ -189,7 +201,7 @@
         galleryItems.forEach(function(item, index) {
             var img = item.querySelector('img');
             if (img) {
-                gallerySrcs.push(img.src);
+                gallerySrcs.push(img.getAttribute('data-full') || img.src);
                 var captionEl = item.querySelector('.gallery-caption');
                 galleryCaptions.push(captionEl ? captionEl.textContent.trim() : '');
                 item.addEventListener('click', function() {
@@ -323,15 +335,21 @@
         });
     }
 
-    fetch('../data/gallery.json')
-        .then(function(r) { return r.json(); })
+    fetch('/api/gallery/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API gallery unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/gallery.json').then(function(r) { return r.json(); });
+        })
         .then(function(galleryData) {
             var grid = document.getElementById('galleryGrid');
             if (!grid || !galleryData.images || galleryData.images.length === 0) return;
             var html = '';
             galleryData.images.forEach(function(img) {
                 html += '<div class="gallery-item fade-in">' +
-                    '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '" loading="eager">' +
+                    '<img src="' + window.optimizedImageUrl(img.image, { width: 900, height: 650, crop: 'fill' }) + '" data-full="' + window.optimizedImageUrl(img.image, { width: 1800 }) + '" alt="' + (img.caption || 'Gallery image') + '" loading="lazy">' +
                     '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
                     '</div>';
             });

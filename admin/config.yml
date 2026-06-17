@@ -1,7 +1,10 @@
+# Legacy Decap CMS configuration.
+# The live CMS is the Flask admin at /admin/ and writes to the application
+# database. This file is kept only for reference/static fallback workflows.
 backend:
   name: github
   repo: g22eorge/hotel-website
-  branch: main
+  branch: updated
   base_url: https://latitude-zero.netlify.app
   auth_endpoint: /.netlify/functions/oauth
 

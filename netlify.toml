@@ -1,6 +1,7 @@
 [build]
   publish = "."
 
+# Admin panel redirects
 [[redirects]]
   from = "/admin"
   to = "/admin/index.html"
@@ -10,3 +11,24 @@
   from = "/admin/"
   to = "/admin/index.html"
   status = 200
+
+# SPA-style redirects for pages
+[[redirects]]
+  from = "/about"
+  to = "/pages/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/services"
+  to = "/pages/services.html"
+  status = 301
+
+[[redirects]]
+  from = "/gallery"
+  to = "/pages/gallery.html"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/pages/contact.html"
+  status = 301

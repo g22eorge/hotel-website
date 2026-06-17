@@ -92,19 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 4000);
     }
 
-    // Intersection Observer for fade-in animations
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.section').forEach(function(section) {
-        observer.observe(section);
-    });
-
     // Booking form WhatsApp handler
     function handleBookingForm(formEl) {
         if (!formEl) return;

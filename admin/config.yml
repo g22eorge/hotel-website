@@ -2,7 +2,6 @@ backend:
   name: github
   repo: g22eorge/hotel-website
   branch: main
-
 site_url: https://latitude-zero.netlify.app
 
 media_folder: images/uploads

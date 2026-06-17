@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 4000);
     }
 
-    // Booking form WhatsApp handler
+    // Booking form WhatsApp + Netlify handler
     function handleBookingForm(formEl) {
         if (!formEl) return;
         formEl.addEventListener('submit', function(e) {
@@ -112,6 +112,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fields.email) msg += 'Email: ' + fields.email + '\n';
             if (fields.phone) msg += 'Phone: ' + fields.phone + '\n';
             if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
+
+            // Send to Netlify Forms (email notification)
+            var params = new URLSearchParams();
+            data.forEach(function(value, key) {
+                params.append(key, value);
+            });
+
+            fetch(window.location.pathname, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: params.toString()
+            }).then(function(response) {
+                console.log('Netlify form submitted', response.status);
+            }).catch(function(err) {
+                console.error('Netlify form error:', err);
+            });
 
             var waNumber = window.WHATSAPP_NUMBER || '256700629083';
             var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);

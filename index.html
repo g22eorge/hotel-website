@@ -229,7 +229,8 @@
             </div>
             <div class="booking-form">
                 <h3>Make a Reservation</h3>
-                <form action="#" method="post" id="homepageBookingForm">
+                <form action="#" method="post" id="homepageBookingForm" data-netlify="true" netlify-honeypot="bot-field">
+                    <input type="hidden" name="form-name" value="homepage-booking">
                     <div class="booking-form-row">
                         <div class="form-group">
                             <label>Check-in Date</label>

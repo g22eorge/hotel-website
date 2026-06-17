@@ -1,9 +1,7 @@
 backend:
-  name: github
+  name: git-gateway
   repo: g22eorge/hotel-website
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: /auth
 
 site_url: https://latitude-zero.netlify.app
 
@@ -114,7 +112,7 @@ collections:
         name: gallery
         fields:
           - label: Sections
-            name: sections
+            name: gallery
             widget: list
             fields:
               - { label: Section Key, name: key, widget: string }

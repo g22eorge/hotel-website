@@ -51,12 +51,21 @@
     </section>
 
     <div class="lightbox" id="lightbox">
-        <div class="lightbox-content">
-            <button class="lightbox-close">&times;</button>
-            <button class="lightbox-nav lightbox-prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="lightbox-nav lightbox-next"><i class="fas fa-chevron-right"></i></button>
-            <img src="" alt="Gallery Image">
+        <div class="lightbox-header">
+            <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+            <div class="lightbox-controls">
+                <button class="lightbox-btn" id="lightboxZoomIn" title="Zoom in"><i class="fas fa-search-plus"></i></button>
+                <button class="lightbox-btn" id="lightboxZoomOut" title="Zoom out"><i class="fas fa-search-minus"></i></button>
+                <button class="lightbox-btn" id="lightboxFullscreen" title="Full screen"><i class="fas fa-expand"></i></button>
+                <button class="lightbox-close" id="lightboxCloseBtn">&times;</button>
+            </div>
         </div>
+        <div class="lightbox-content" id="lightboxContent">
+            <img src="" alt="" id="lightboxImg">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <footer class="footer">

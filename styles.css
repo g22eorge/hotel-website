@@ -19,6 +19,41 @@
     --transition-fast: all 0.25s ease;
     --border-radius: 12px;
     --border-radius-sm: 8px;
+
+    /* Dark mode colors via CSS custom properties (overridden below) */
+    --card-bg: #ffffff;
+    --border-color: rgba(0,0,0,0.03);
+    --input-bg: #fafafa;
+    --input-border: #eee;
+    --code-bg: #f4f4f4;
+}
+
+/* ===== Dark Mode via prefers-color-scheme ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #e0dcda;
+        --primary-light: #b5b0ac;
+        --accent: #a89c94;
+        --accent-light: #c5bdb5;
+        --accent-dark: #8e827a;
+        --text: #e8e4e1;
+        --text-light: #a8a5a2;
+        --bg: #1a1817;
+        --bg-light: #23211f;
+        --bg-warm: #201f1e;
+        --dark: #1a1817;
+        --card-bg: #252321;
+        --border-color: rgba(255,255,255,0.06);
+        --input-bg: #2d2a28;
+        --input-border: #3a3734;
+        --code-bg: #2d2a28;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+        --shadow: 0 4px 20px rgba(0,0,0,0.4);
+        --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+        --shadow-hover: 0 12px 50px rgba(0,0,0,0.6);
+
+        color-scheme: dark;
+    }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,6 +68,7 @@ body {
     background: var(--bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .container {
@@ -2743,5 +2779,357 @@ a:not(.btn):hover {
     .sticky-booking-bar .btn {
         padding: 8px 18px;
         font-size: 0.85rem;
+    }
+}
+/* ===== DARK MODE OVERRIDES FOR HARDCODED COLORS ===== */
+@media (prefers-color-scheme: dark) {
+    /* Hardcoded white backgrounds */
+    .feature-item,
+    .card,
+    .room-preview-card,
+    .about-feature-card,
+    .about-serve-card,
+    .testimonial-card,
+    .contact-card,
+    .service-card,
+    .dining-card,
+    .booking-form,
+    .trust-badge-item,
+    .sticky-booking-bar {
+        background: var(--card-bg) !important;
+    }
+
+    /* Navbar scrolled state */
+    .navbar.scrolled {
+        background: rgba(26, 24, 23, 0.97) !important;
+    }
+
+    /* Form inputs */
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    input,
+    select,
+    textarea {
+        background: var(--input-bg) !important;
+        border-color: var(--input-border) !important;
+        color: var(--text) !important;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        background: var(--input-bg) !important;
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 4px rgba(201, 189, 181, 0.15) !important;
+    }
+
+    /* Card content */
+    .card-content h3,
+    .room-preview-card h4,
+    .dining-card-content h3,
+    .testimonial-author,
+    .contact-card h4,
+    .service-card h5,
+    .about-serve-card span,
+    .card-price,
+    .room-price,
+    .stat-item h3 {
+        color: var(--text) !important;
+    }
+
+    /* Card descriptions */
+    .card-content p,
+    .room-preview-card p,
+    .dining-card-content p,
+    .testimonial-text,
+    .contact-card p,
+    .service-card p,
+    .about-intro-text {
+        color: var(--text-light) !important;
+    }
+
+    /* Star ratings and accents */
+    .stars {
+        color: var(--accent);
+    }
+
+    /* Price tags */
+    .room-price::before,
+    .card-price::before {
+        background: rgba(201,189,181,0.08);
+    }
+
+    /* Mobile nav menu */
+    .nav-links {
+        background: var(--bg) !important;
+    }
+    .nav-links a {
+        color: var(--text) !important;
+    }
+
+    /* Hamburger icon */
+    .hamburger span {
+        background: #1a1817;
+    }
+    .navbar.scrolled .hamburger span {
+        background: var(--text);
+    }
+
+    /* Trust badges gradient fade */
+    .trust-badges-wrapper::before {
+        background: linear-gradient(90deg, var(--bg), transparent) !important;
+    }
+    .trust-badges-wrapper::after {
+        background: linear-gradient(-90deg, var(--bg), transparent) !important;
+    }
+
+    /* Shimmer loading effect */
+    .shimmer {
+        background: linear-gradient(90deg, var(--bg-light) 25%, var(--bg-warm) 50%, var(--bg-light) 75%) !important;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar-track {
+        background: var(--bg-light) !important;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--accent-dark) !important;
+    }
+
+    /* Selection */
+    ::selection {
+        background: rgba(201,189,181,0.2) !important;
+        color: var(--text) !important;
+    }
+
+    /* Booking form section */
+    .booking-form-section {
+        background: var(--bg-light) !important;
+    }
+
+    /* CTA section gradient */
+    .cta-section {
+        background: linear-gradient(135deg, var(--bg) 0%, var(--bg-light) 100%) !important;
+    }
+
+    /* About page dark sections */
+    .stats-strip {
+        background: var(--dark) !important;
+    }
+    .stats-strip .stat-item h3 {
+        color: #fff !important;
+    }
+
+    /* Footer border top */
+    .footer-bottom {
+        border-top-color: rgba(255,255,255,0.08) !important;
+    }
+
+    /* Social links */
+    .social-links a {
+        background: rgba(255,255,255,0.08) !important;
+        color: #fff !important;
+    }
+
+    /* Contact card icon */
+    .contact-icon {
+        background: var(--accent-dark) !important;
+        color: var(--dark) !important;
+    }
+    .contact-card:hover .contact-icon {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* Service card icon */
+    .service-card i {
+        background: var(--accent-dark) !important;
+        color: var(--dark) !important;
+    }
+    .service-card:hover i {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* About feature icon */
+    .about-feature-icon {
+        background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%) !important;
+    }
+
+    /* Button secondary in dark */
+    .btn-secondary {
+        background: var(--bg-light) !important;
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+    .btn-secondary:hover {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* Button outline in dark */
+    .btn-outline {
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+    .btn-outline:hover {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* Card image gradient overlay */
+    .card-image::after {
+        background: linear-gradient(transparent, var(--card-bg)) !important;
+    }
+    .dining-card-image::after {
+        background: linear-gradient(transparent, var(--card-bg)) !important;
+    }
+
+    /* Lightbox close button */
+    .lightbox-close {
+        color: #fff !important;
+    }
+
+    /* Hero slider dots background */
+    .hero-slider-dots {
+        background: rgba(0,0,0,0.4) !important;
+    }
+    .hero-slider-dot {
+        background: rgba(255,255,255,0.25) !important;
+    }
+    .hero-slider-dot.active {
+        background: var(--accent) !important;
+    }
+
+    /* Ensure smooth theme transitions */
+    * {
+        transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+}
+
+
+/* ===== DARK MODE OVERRIDES FOR HARDCODED COLORS ===== */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1817;
+        color: #e8e4e1;
+    }
+
+    .navbar.scrolled {
+        background-color: rgba(26, 24, 23, 0.97) !important;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .bg-light {
+        background-color: #23211f !important;
+    }
+
+    .feature-item,
+    .card,
+    .room-preview-card,
+    .about-feature-card,
+    .about-serve-card,
+    .testimonial-card,
+    .contact-card,
+    .service-card,
+    .dining-card,
+    .booking-form,
+    .trust-badge-item,
+    .sticky-booking-bar {
+        background-color: #252321 !important;
+        border-color: rgba(255, 255, 255, 0.06) !important;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        background-color: #2d2a28 !important;
+        border-color: #3a3734 !important;
+        color: #e8e4e1 !important;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        background-color: #2d2a28 !important;
+        border-color: #a89c94 !important;
+        box-shadow: 0 0 0 4px rgba(201, 189, 181, 0.15) !important;
+    }
+
+    .card-content h3,
+    .room-preview-card h4,
+    .dining-card-content h3,
+    .testimonial-author,
+    .contact-card h4,
+    .service-card h5,
+    .about-serve-card span {
+        color: #e8e4e1 !important;
+    }
+
+    .card-content p,
+    .room-preview-card p,
+    .dining-card-content p,
+    .testimonial-text,
+    .contact-card p,
+    .service-card p,
+    .about-intro-text {
+        color: #a8a5a2 !important;
+    }
+
+    .nav-links {
+        background-color: #1a1817 !important;
+    }
+
+    .nav-links a {
+        color: #e8e4e1 !important;
+    }
+
+    .hamburger span {
+        background-color: #1a1817;
+    }
+
+    .navbar.scrolled .hamburger span {
+        background-color: #e8e4e1;
+    }
+
+    .trust-badges-wrapper::before {
+        background: linear-gradient(90deg, #1a1817, transparent) !important;
+    }
+    .trust-badges-wrapper::after {
+        background: linear-gradient(-90deg, #1a1817, transparent) !important;
+    }
+
+    .shimmer {
+        background: linear-gradient(90deg, #23211f 25%, #201f1e 50%, #23211f 75%) !important;
+        background-size: 200% auto !important;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #23211f !important;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #8e827a !important;
+    }
+
+    ::selection {
+        background-color: rgba(201, 189, 181, 0.2) !important;
+        color: #e8e4e1 !important;
+    }
+
+    .card-image::after,
+    .dining-card-image::after {
+        background: linear-gradient(transparent, #252321) !important;
+    }
+
+    .stars {
+        color: #a89c94;
+    }
+
+    .footer-bottom {
+        border-top-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .footer-bottom p {
+        color: rgba(255, 255, 255, 0.4) !important;
     }
 }

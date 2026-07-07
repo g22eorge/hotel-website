@@ -3132,4 +3132,14 @@ a:not(.btn):hover {
     .footer-bottom p {
         color: rgba(255, 255, 255, 0.4) !important;
     }
+
+.footer-links a { color: rgba(255, 255, 255, 0.65) !important; }
+.footer-contact p, .footer-contact a { color: rgba(255, 255, 255, 0.65) !important; }
+.footer-brand p { color: rgba(255, 255, 255, 0.65) !important; }
+.footer-links h4, .footer-contact h4, .footer-brand .logo { color: #fff !important; }
+.footer-logo-wrap { background: #252321 !important; border-color: rgba(201,189,181,0.3) !important; }
+.booking-cta { background: #1a1817 !important; color: #fff; }
+.page-hero-content h1 { color: #fff !important; }
+.hero-text h1 { color: #fff !important; }
+.showcase-caption { color: #fff !important; }
 }

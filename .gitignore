@@ -10,3 +10,6 @@ instance/
 images/uploads/
 venv/
 .venv/app.py.backup
+
+# Local Netlify folder
+.netlify

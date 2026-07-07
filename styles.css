@@ -2827,71 +2827,46 @@ a:not(.btn):hover {
     .booking-cta { background: #1a1817 !important; }
     .booking-cta h2 { color: #fff !important; }
     .booking-cta p { color: rgba(255,255,255,0.75) !important; }
-    .booking-cta-buttons .btn-primary { background: var(--accent); color: var(--dark); }
 
     .bg-dark { background: #1a1817 !important; }
     .bg-dark h2, .bg-dark h3 { color: #fff !important; }
     .bg-dark p { color: rgba(255,255,255,0.75) !important; }
 
     .footer-links a { color: rgba(255,255,255,0.65) !important; }
-    .footer-links a:hover { color: #a89c94 !important; padding-left: 6px !important; }
+    .footer-links a:hover { color: #a89c94 !important; }
     .footer-contact p, .footer-contact a { color: rgba(255,255,255,0.65) !important; }
     .footer-contact a:hover { color: #a89c94 !important; }
     .footer-brand p { color: rgba(255,255,255,0.65) !important; }
     .footer-links h4, .footer-contact h4, .footer-brand .logo { color: #fff !important; }
-    .footer-logo-wrap {
-        background: var(--card-bg) !important;
-        border-color: rgba(201,189,181,0.3) !important;
-    }
+    .footer-logo-wrap { background: var(--card-bg) !important; border-color: rgba(201,189,181,0.3) !important; }
     .footer-bottom p { color: rgba(255,255,255,0.4) !important; }
 
     .sticky-booking-bar { background: var(--card-bg) !important; }
     .sticky-booking-bar .bar-text { color: var(--text) !important; }
     .sticky-booking-bar .bar-text span { color: var(--accent) !important; }
     .sticky-booking-bar .bar-close { color: var(--text-light) !important; }
-    .sticky-booking-bar .bar-close:hover { color: #fff !important; }
 
-    .trust-badge-item {
-        background: var(--card-bg) !important;
-        border-color: rgba(255,255,255,0.06) !important;
-    }
+    .trust-badge-item { background: var(--card-bg) !important; border-color: rgba(255,255,255,0.06) !important; }
     .trust-badge-item img { filter: brightness(0.85) grayscale(30%); }
     .trust-badge-item:hover img { filter: none; }
-    .trust-badges-wrapper::before {
-        background: linear-gradient(90deg, var(--bg), transparent) !important;
-    }
-    .trust-badges-wrapper::after {
-        background: linear-gradient(-90deg, var(--bg), transparent) !important;
-    }
 
     .step-number { background: var(--accent-dark); color: var(--dark); }
     .step h4 { color: var(--text) !important; }
     .step p { color: var(--text-light) !important; }
 
-    .card-price, .room-price {
-        background: var(--bg-light) !important;
-        color: var(--text) !important;
-    }
-    .card-image::after, .dining-card-image::after {
-        background: linear-gradient(transparent, var(--card-bg)) !important;
-    }
+    .card-price, .room-price { background: var(--bg-light) !important; color: var(--text) !important; }
+    .card-image::after, .dining-card-image::after { background: linear-gradient(transparent, var(--card-bg)) !important; }
 
-    .contact-card .contact-icon { background: var(--accent-dark); color: var(--dark); }
-    .service-card i { background: var(--accent-dark); color: var(--dark); }
+    .contact-card .contact-icon, .service-card i { background: var(--accent-dark); color: var(--dark); }
     .service-card:hover i { background: var(--accent); color: var(--dark); }
 
-    .btn-secondary {
-        background: var(--bg-light) !important;
-        color: var(--accent) !important;
-        border-color: var(--accent) !important;
-    }
+    .btn-secondary { background: var(--bg-light) !important; color: var(--accent) !important; border-color: var(--accent) !important; }
     .btn-secondary:hover { background: var(--accent) !important; color: var(--dark) !important; }
     .btn-outline { color: var(--accent) !important; border-color: var(--accent) !important; }
     .btn-outline:hover { background: var(--accent) !important; color: var(--dark) !important; }
 
     .hamburger span { background: #1a1817; }
     .navbar.scrolled .hamburger span { background: #e8e4e1; }
-    .hamburger.active span { background: #e8e4e1; }
 
     ::selection { background: rgba(201,189,181,0.2); color: var(--text); }
     * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }

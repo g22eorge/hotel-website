@@ -2781,93 +2781,373 @@ a:not(.btn):hover {
         font-size: 0.85rem;
     }
 }
-/* ===== DARK MODE — system color scheme alignment ===== */
+/* ===== DARK MODE OVERRIDES FOR HARDCODED COLORS ===== */
 @media (prefers-color-scheme: dark) {
-    .feature-item, .card, .room-preview-card, .about-feature-card,
-    .about-serve-card, .testimonial-card, .contact-card, .service-card,
-    .dining-card, .booking-form, .trust-badge-item, .sticky-booking-bar,
-    .booking-form-section {
+    /* Hardcoded white backgrounds */
+    .feature-item,
+    .card,
+    .room-preview-card,
+    .about-feature-card,
+    .about-serve-card,
+    .testimonial-card,
+    .contact-card,
+    .service-card,
+    .dining-card,
+    .booking-form,
+    .trust-badge-item,
+    .sticky-booking-bar {
         background: var(--card-bg) !important;
     }
 
-    .card-content p, .room-preview-card p, .dining-card-content p,
-    .testimonial-text, .contact-card p, .service-card p,
-    .about-intro-text, .step p {
-        color: var(--text-light) !important;
+    /* Navbar scrolled state */
+    .navbar.scrolled {
+        background: rgba(26, 24, 23, 0.97) !important;
     }
 
-    .card-content h3, .room-preview-card h4, .dining-card-content h3,
-    .testimonial-author, .contact-card h4, .service-card h5,
-    .about-serve-card span, .card-price, .room-price, .stat-item h3, .step h4 {
-        color: var(--text) !important;
-    }
-
-    form input, form textarea, form select, .form-group input,
-    .form-group textarea, .form-group select {
+    /* Form inputs */
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    input,
+    select,
+    textarea {
         background: var(--input-bg) !important;
         border-color: var(--input-border) !important;
         color: var(--text) !important;
     }
 
-    .navbar.scrolled { background: rgba(26,24,23,0.97) !important; }
-    .nav-links { background: var(--bg) !important; }
-    .nav-links a { color: var(--text) !important; }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        background: var(--input-bg) !important;
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 4px rgba(201, 189, 181, 0.15) !important;
+    }
 
-    .hero-text h1, .page-hero-content h1 { color: #fff !important; }
-    .hero-text p { color: rgba(255,255,255,0.85) !important; }
-    .page-hero-content p { color: #fff !important; }
-    .hero-tagline { color: #a89c94 !important; }
-    .scroll-indicator i { color: rgba(255,255,255,0.5) !important; }
-    .showcase-caption { color: #fff !important; }
-    .about-image-band-overlay p { color: #fff !important; }
+    /* Card content */
+    .card-content h3,
+    .room-preview-card h4,
+    .dining-card-content h3,
+    .testimonial-author,
+    .contact-card h4,
+    .service-card h5,
+    .about-serve-card span,
+    .card-price,
+    .room-price,
+    .stat-item h3 {
+        color: var(--text) !important;
+    }
 
-    .stats-strip .stat-item h3 { color: #fff !important; }
-    .stats-strip .stat-item p { color: rgba(255,255,255,0.75) !important; }
+    /* Card descriptions */
+    .card-content p,
+    .room-preview-card p,
+    .dining-card-content p,
+    .testimonial-text,
+    .contact-card p,
+    .service-card p,
+    .about-intro-text {
+        color: var(--text-light) !important;
+    }
 
-    .booking-cta { background: #1a1817 !important; }
-    .booking-cta h2 { color: #fff !important; }
-    .booking-cta p { color: rgba(255,255,255,0.75) !important; }
+    /* Star ratings and accents */
+    .stars {
+        color: var(--accent);
+    }
 
-    .bg-dark { background: #1a1817 !important; }
-    .bg-dark h2, .bg-dark h3 { color: #fff !important; }
-    .bg-dark p { color: rgba(255,255,255,0.75) !important; }
+    /* Price tags */
+    .room-price::before,
+    .card-price::before {
+        background: rgba(201,189,181,0.08);
+    }
 
-    .footer-links a { color: rgba(255,255,255,0.65) !important; }
-    .footer-links a:hover { color: #a89c94 !important; }
-    .footer-contact p, .footer-contact a { color: rgba(255,255,255,0.65) !important; }
-    .footer-contact a:hover { color: #a89c94 !important; }
-    .footer-brand p { color: rgba(255,255,255,0.65) !important; }
-    .footer-links h4, .footer-contact h4, .footer-brand .logo { color: #fff !important; }
-    .footer-logo-wrap { background: var(--card-bg) !important; border-color: rgba(201,189,181,0.3) !important; }
-    .footer-bottom p { color: rgba(255,255,255,0.4) !important; }
+    /* Mobile nav menu */
+    .nav-links {
+        background: var(--bg) !important;
+    }
+    .nav-links a {
+        color: var(--text) !important;
+    }
 
-    .sticky-booking-bar { background: var(--card-bg) !important; }
-    .sticky-booking-bar .bar-text { color: var(--text) !important; }
-    .sticky-booking-bar .bar-text span { color: var(--accent) !important; }
-    .sticky-booking-bar .bar-close { color: var(--text-light) !important; }
+    /* Hamburger icon */
+    .hamburger span {
+        background: #1a1817;
+    }
+    .navbar.scrolled .hamburger span {
+        background: var(--text);
+    }
 
-    .trust-badge-item { background: var(--card-bg) !important; border-color: rgba(255,255,255,0.06) !important; }
-    .trust-badge-item img { filter: brightness(0.85) grayscale(30%); }
-    .trust-badge-item:hover img { filter: none; }
+    /* Trust badges gradient fade */
+    .trust-badges-wrapper::before {
+        background: linear-gradient(90deg, var(--bg), transparent) !important;
+    }
+    .trust-badges-wrapper::after {
+        background: linear-gradient(-90deg, var(--bg), transparent) !important;
+    }
 
-    .step-number { background: var(--accent-dark); color: var(--dark); }
-    .step h4 { color: var(--text) !important; }
-    .step p { color: var(--text-light) !important; }
+    /* Shimmer loading effect */
+    .shimmer {
+        background: linear-gradient(90deg, var(--bg-light) 25%, var(--bg-warm) 50%, var(--bg-light) 75%) !important;
+    }
 
-    .card-price, .room-price { background: var(--bg-light) !important; color: var(--text) !important; }
-    .card-image::after, .dining-card-image::after { background: linear-gradient(transparent, var(--card-bg)) !important; }
+    /* Scrollbar */
+    ::-webkit-scrollbar-track {
+        background: var(--bg-light) !important;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--accent-dark) !important;
+    }
 
-    .contact-card .contact-icon, .service-card i { background: var(--accent-dark); color: var(--dark); }
-    .service-card:hover i { background: var(--accent); color: var(--dark); }
+    /* Selection */
+    ::selection {
+        background: rgba(201,189,181,0.2) !important;
+        color: var(--text) !important;
+    }
 
-    .btn-secondary { background: var(--bg-light) !important; color: var(--accent) !important; border-color: var(--accent) !important; }
-    .btn-secondary:hover { background: var(--accent) !important; color: var(--dark) !important; }
-    .btn-outline { color: var(--accent) !important; border-color: var(--accent) !important; }
-    .btn-outline:hover { background: var(--accent) !important; color: var(--dark) !important; }
+    /* Booking form section */
+    .booking-form-section {
+        background: var(--bg-light) !important;
+    }
 
-    .hamburger span { background: #1a1817; }
-    .navbar.scrolled .hamburger span { background: #e8e4e1; }
+    /* CTA section gradient */
+    .cta-section {
+        background: linear-gradient(135deg, var(--bg) 0%, var(--bg-light) 100%) !important;
+    }
 
-    ::selection { background: rgba(201,189,181,0.2); color: var(--text); }
-    * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+    /* About page dark sections */
+    .stats-strip {
+        background: var(--dark) !important;
+    }
+    .stats-strip .stat-item h3 {
+        color: #fff !important;
+    }
+
+    /* Footer border top */
+    .footer-bottom {
+        border-top-color: rgba(255,255,255,0.08) !important;
+    }
+
+    /* Social links */
+    .social-links a {
+        background: rgba(255,255,255,0.08) !important;
+        color: #fff !important;
+    }
+
+    /* Contact card icon */
+    .contact-icon {
+        background: var(--accent-dark) !important;
+        color: var(--dark) !important;
+    }
+    .contact-card:hover .contact-icon {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* Service card icon */
+    .service-card i {
+        background: var(--accent-dark) !important;
+        color: var(--dark) !important;
+    }
+    .service-card:hover i {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* About feature icon */
+    .about-feature-icon {
+        background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%) !important;
+    }
+
+    /* Button secondary in dark */
+    .btn-secondary {
+        background: var(--bg-light) !important;
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+    .btn-secondary:hover {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* Button outline in dark */
+    .btn-outline {
+        color: var(--accent) !important;
+        border-color: var(--accent) !important;
+    }
+    .btn-outline:hover {
+        background: var(--accent) !important;
+        color: var(--dark) !important;
+    }
+
+    /* Card image gradient overlay */
+    .card-image::after {
+        background: linear-gradient(transparent, var(--card-bg)) !important;
+    }
+    .dining-card-image::after {
+        background: linear-gradient(transparent, var(--card-bg)) !important;
+    }
+
+    /* Lightbox close button */
+    .lightbox-close {
+        color: #fff !important;
+    }
+
+    /* Hero slider dots background */
+    .hero-slider-dots {
+        background: rgba(0,0,0,0.4) !important;
+    }
+    .hero-slider-dot {
+        background: rgba(255,255,255,0.25) !important;
+    }
+    .hero-slider-dot.active {
+        background: var(--accent) !important;
+    }
+
+    /* Ensure smooth theme transitions */
+    * {
+        transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+}
+
+
+/* ===== DARK MODE OVERRIDES FOR HARDCODED COLORS ===== */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1817;
+        color: #e8e4e1;
+    }
+
+    .navbar.scrolled {
+        background-color: rgba(26, 24, 23, 0.97) !important;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .bg-light {
+        background-color: #23211f !important;
+    }
+
+    .feature-item,
+    .card,
+    .room-preview-card,
+    .about-feature-card,
+    .about-serve-card,
+    .testimonial-card,
+    .contact-card,
+    .service-card,
+    .dining-card,
+    .booking-form,
+    .trust-badge-item,
+    .sticky-booking-bar {
+        background-color: #252321 !important;
+        border-color: rgba(255, 255, 255, 0.06) !important;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        background-color: #2d2a28 !important;
+        border-color: #3a3734 !important;
+        color: #e8e4e1 !important;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        background-color: #2d2a28 !important;
+        border-color: #a89c94 !important;
+        box-shadow: 0 0 0 4px rgba(201, 189, 181, 0.15) !important;
+    }
+
+    .card-content h3,
+    .room-preview-card h4,
+    .dining-card-content h3,
+    .testimonial-author,
+    .contact-card h4,
+    .service-card h5,
+    .about-serve-card span {
+        color: #e8e4e1 !important;
+    }
+
+    .card-content p,
+    .room-preview-card p,
+    .dining-card-content p,
+    .testimonial-text,
+    .contact-card p,
+    .service-card p,
+    .about-intro-text {
+        color: #a8a5a2 !important;
+    }
+
+    .nav-links {
+        background-color: #1a1817 !important;
+    }
+
+    .nav-links a {
+        color: #e8e4e1 !important;
+    }
+
+    .hamburger span {
+        background-color: #1a1817;
+    }
+
+    .navbar.scrolled .hamburger span {
+        background-color: #e8e4e1;
+    }
+
+    .trust-badges-wrapper::before {
+        background: linear-gradient(90deg, #1a1817, transparent) !important;
+    }
+    .trust-badges-wrapper::after {
+        background: linear-gradient(-90deg, #1a1817, transparent) !important;
+    }
+
+    .shimmer {
+        background: linear-gradient(90deg, #23211f 25%, #201f1e 50%, #23211f 75%) !important;
+        background-size: 200% auto !important;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #23211f !important;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #8e827a !important;
+    }
+
+    ::selection {
+        background-color: rgba(201, 189, 181, 0.2) !important;
+        color: #e8e4e1 !important;
+    }
+
+    .card-image::after,
+    .dining-card-image::after {
+        background: linear-gradient(transparent, #252321) !important;
+    }
+
+    .stars {
+        color: #a89c94;
+    }
+
+    .footer-bottom {
+        border-top-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .footer-bottom p {
+        color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+.footer-links a { color: rgba(255, 255, 255, 0.65) !important; }
+.footer-contact p, .footer-contact a { color: rgba(255, 255, 255, 0.65) !important; }
+.footer-brand p { color: rgba(255, 255, 255, 0.65) !important; }
+.footer-links h4, .footer-contact h4, .footer-brand .logo { color: #fff !important; }
+.footer-logo-wrap { background: #252321 !important; border-color: rgba(201,189,181,0.3) !important; }
+.booking-cta { background: #1a1817 !important; color: #fff; }
+.page-hero-content h1 { color: #fff !important; }
+.hero-text h1 { color: #fff !important; }
+.showcase-caption { color: #fff !important; }
+
+/* Section headers and feature items inside bg-light sections in dark mode */
+.section-header h2 { color: var(--text) !important; }
+.section-header p { color: var(--text-light) !important; }
+.feature-item { color: var(--text) !important; }
+.feature-item i { color: var(--accent) !important; }
+.feature-item:hover { background: var(--accent) !important; color: #fff !important; }
+.feature-item:hover i { color: #fff !important; }
 }

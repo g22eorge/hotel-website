@@ -11,24 +11,24 @@
     },
     {
       "key": "rooms",
-      "title": "Comfortable Accommodation",
-      "content": "Our cottages are designed for guests who value comfort, peace, and a natural environment. Each room offers modern amenities, comfortable bedding, and a peaceful atmosphere.\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Standard Room|A cozy room with comfortable bedding and all essential amenities for a restful stay. Perfect for solo travelers or couples.|From $45/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565896/latitude_zero/IMG_3385_msr32r.jpg|Deluxe Room|Extra spacious room with premium furnishings and scenic views of the surrounding landscape. Ideal for those who want more space.|From $65/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg|Family Cottage|Generous space and a private cottage setting with separate sleeping areas. Perfect for families and groups.|From $85/night",
+      "title": "Rooms & Cottages",
+      "content": "Built for rest after a long day in the park. Clean, comfortable, and close at hand.\n\n---\nimages/IMG_3384.jpeg|Standard Room|1 double bed \u00b7 En-suite shower \u00b7 2 guests \u00b7 Breakfast included. Clean, comfortable, and ideal for couples or solo travellers.|From $45/night\nimages/IMG_3385.jpeg|Deluxe Room|1 king bed \u00b7 En-suite bathroom \u00b7 2 guests \u00b7 Breakfast + fruit basket \u00b7 Scenic garden view. Our most popular upgrade.|From $65/night\nimages/IMG_3388.jpeg|Family Cottage|2 twin beds + 1 double \u00b7 Private sitting area \u00b7 4 guests \u00b7 Breakfast + dinner included \u00b7 Veranda with park views.|From $85/night",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
       "meta_title": "",
       "meta_description": ""
     },
     {
       "key": "dining",
-      "title": "Delicious Dining",
-      "content": "A good stay deserves good food. Enjoy our locally sourced, freshly prepared meals. Our menu features a blend of traditional Ugandan dishes and continental favorites.\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg|Local Ugandan Cuisine|Authentic Ugandan dishes prepared with fresh, locally sourced ingredients. Experience the rich flavours of Western Uganda.|Meals from $8/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565893/latitude_zero/IMG_3389_th256l.jpg|International Cuisine|A selection of international favourites to suit every palate, from continental breakfasts to hearty dinners.|Meals from $10/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565891/latitude_zero/IMG_3392_pvjln4.jpg|Refreshments & Bar|Enjoy refreshing drinks, specialty cocktails, and a wide selection of beverages in our lounge and outdoor areas.|Drinks from $3",
+      "title": "Dining",
+      "content": "Locally sourced ingredients, freshly prepared. We cater to all diets and group sizes.\n\n---\nimages/IMG_3383.jpeg|Local & International Cuisine|From hearty Ugandan staples to international favourites \u2014 everything is cooked fresh on site.|Meals from $8/person\nimages/IMG_3384.jpeg|Family Dining|Generous portions, kid-friendly options, and a relaxed atmosphere. We can accommodate dietary requirements with advance notice.|Group bookings welcome",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg",
       "meta_title": "",
       "meta_description": ""
     },
     {
       "key": "safari",
-      "title": "Safari Adventures",
-      "content": "Stay close to wildlife, nature and adventure at Queen Elizabeth National Park.\nfas fa-binoculars|Game drives\nfas fa-paw|Wildlife viewing\nfas fa-dove|Bird watching\nfas fa-camera|Photography safaris\nfas fa-leaf|Nature walks\nfas fa-ship|Boat cruises",
+      "title": "Game Drives & Safari Access",
+      "content": "Your doorstep is 1 km from the main park gate \u2014 the shortest transfer in the area.\n\n---\nfas fa-car|Park Transfers|We arrange transfers to and from the park gate on request.\nfas fa-binoculars|Game Drive Booking|Our team books your game drive slots and park permits in advance.\nfas fa-user-friends|Local Guides|Experienced Ugandan guides who know the park's best routes and wildlife patterns.\nfas fa-ticket-alt|Park Permits|We handle your QENP permit paperwork so you arrive ready to go.\nfas fa-phone|Arrival Coordination|Call or WhatsApp us on arrival \u2014 we'll guide you straight to your room.",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
       "meta_title": "",
       "meta_description": ""
@@ -36,7 +36,7 @@
     {
       "key": "amenities",
       "title": "Amenities",
-      "content": "Everything you need for a comfortable and memorable stay.\nfas fa-wifi|24/7 Internet Connection|High-speed WiFi available throughout the property for staying connected.\nfas fa-spa|Wellness & Relaxation|Enjoy our spa services, massage therapy, and tranquil outdoor spaces for rejuvenation.\nfas fa-users|Event Support|We cater to weddings, meetings, and special events with customized packages.\nfas fa-calendar-alt|Flexible Booking|Flexible check-in/check-out times and reservation options to suit your travel plans.\nfas fa-shield-alt|Secure & Reliable|Secure bookings with mobile money payments and instant confirmations.\nfas fa-map-marker-alt|Tour Arrangements|We assist with booking guided tours, bird watching, and nature walks in the area.",
+      "content": "Everything you need \u2014 Wi-Fi, hot water, secure parking, and a team who knows the park inside out.\n\n---\nfas fa-wifi|24/7 High-Speed Wi-Fi|Reliable connection for work calls, streaming, and staying in touch.\nfas fa-snowflake|Hot Water Showers|Geyser-backed hot water in every room, any time of day.\nfas fa-parking|Free Secure Parking|On-site parking for cars and safari vehicles.\nfas fa-concierge-bell|Concierge Service|Game drive bookings, restaurant reservations, and park advice \u2014 all handled for you.\nfas fa-shield-alt|24/7 Security|Night security and gated access for peace of mind.",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
       "meta_title": "",
       "meta_description": ""

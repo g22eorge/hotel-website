@@ -3151,4 +3151,15 @@ a:not(.btn):hover {
 .feature-item i { color: var(--accent) !important; }
 .feature-item:hover { background: var(--accent) !important; color: #fff !important; }
 .feature-item:hover i { color: #fff !important; }
+
+/* Footer and CTA dark bg fix — body::before blocks them in dark mode */
+.footer, footer, .site-footer { background: #1a1817 !important; }
+.booking-cta { background: #1a1817 !important; }
+.bg-dark { background: #1a1817 !important; }
+
+/* Sticky booking bar dark mode */
+.sticky-booking-bar { background: #252321 !important; border-color: #3a3734 !important; }
+.sticky-booking-bar .bar-text { color: #e0dcda !important; }
+.sticky-booking-bar .bar-text span { color: #a89c94 !important; }
+.sticky-booking-bar .bar-close { color: #a8a5a2 !important; }
 }

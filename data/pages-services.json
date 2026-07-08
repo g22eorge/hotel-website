@@ -12,7 +12,7 @@
     {
       "key": "rooms",
       "title": "Rooms & Cottages",
-      "content": "Built for rest after a long day in the park. Clean, comfortable, and close at hand.\n\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Standard Room|1 double bed \u00b7 En-suite shower \u00b7 2 guests \u00b7 Breakfast included. Clean, comfortable, and ideal for couples or solo travellers.|From $45/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg|Deluxe Room|1 king bed \u00b7 En-suite bathroom \u00b7 2 guests \u00b7 Breakfast + fruit basket \u00b7 Scenic garden view. Our most popular upgrade.|From $65/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg|Family Cottage|2 twin beds + 1 double \u00b7 Private sitting area \u00b7 4 guests \u00b7 Breakfast + dinner included \u00b7 Veranda with park views.|From $85/night",
+      "content": "Built for rest after a long day in the park. Clean, comfortable, and close at hand.\n\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Standard Room|1 double bed • En-suite shower • 2 guests • Breakfast included. Clean, comfortable, and ideal for couples or solo travellers.|From $45/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg|Deluxe Room|1 king bed • En-suite bathroom • 2 guests • Breakfast + fruit basket • Scenic garden view. Our most popular upgrade.|From $65/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg|Family Cottage|2 twin beds + 1 double • Private sitting area • 4 guests • Breakfast + dinner included • Veranda with park views.|From $85/night",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
       "meta_title": "",
       "meta_description": ""
@@ -20,7 +20,7 @@
     {
       "key": "dining",
       "title": "Dining",
-      "content": "Locally sourced ingredients, freshly prepared. We cater to all diets and group sizes.\n\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg|Local & International Cuisine|From hearty Ugandan staples to international favourites \u2014 everything is cooked fresh on site.|Meals from $8/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Family Dining|Generous portions, kid-friendly options, and a relaxed atmosphere. We can accommodate dietary requirements with advance notice.|Group bookings welcome",
+      "content": "Locally sourced ingredients, freshly prepared. We cater to all diets and group sizes.\n\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg|Local & International Cuisine|From hearty Ugandan staples to international favourites — everything is cooked fresh on site.|Meals from $8/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Family Dining|Generous portions, kid-friendly options, and a relaxed atmosphere. We can accommodate dietary requirements with advance notice.|Group bookings welcome",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg",
       "meta_title": "",
       "meta_description": ""
@@ -28,7 +28,7 @@
     {
       "key": "safari",
       "title": "Game Drives & Safari Access",
-      "content": "Your doorstep is 1 km from the main park gate \u2014 the shortest transfer in the area.\n\n---\nfas fa-car|Park Transfers|We arrange transfers to and from the park gate on request.\nfas fa-binoculars|Game Drive Booking|Our team books your game drive slots and park permits in advance.\nfas fa-user-friends|Local Guides|Experienced Ugandan guides who know the park's best routes and wildlife patterns.\nfas fa-ticket-alt|Park Permits|We handle your QENP permit paperwork so you arrive ready to go.\nfas fa-phone|Arrival Coordination|Call or WhatsApp us on arrival \u2014 we'll guide you straight to your room.",
+      "content": "Your doorstep is 1 km from the main park gate — the shortest transfer in the area.\n\n---\nfas fa-binoculars|Game Drive Booking|Our team books your game drive slots and park permits in advance.\nfas fa-user-friends|Local Guides|Experienced Ugandan guides who know the park's best routes and wildlife patterns.\nfas fa-ticket-alt|Park Permits|We handle your QENP permit paperwork so you arrive ready to go.",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
       "meta_title": "",
       "meta_description": ""
@@ -36,7 +36,7 @@
     {
       "key": "amenities",
       "title": "Amenities",
-      "content": "Everything you need \u2014 Wi-Fi, hot water, secure parking, and a team who knows the park inside out.\n\n---\nfas fa-wifi|24/7 High-Speed Wi-Fi|Reliable connection for work calls, streaming, and staying in touch.\nfas fa-snowflake|Hot Water Showers|Geyser-backed hot water in every room, any time of day.\nfas fa-parking|Free Secure Parking|On-site parking for cars and safari vehicles.\nfas fa-concierge-bell|Concierge Service|Game drive bookings, restaurant reservations, and park advice \u2014 all handled for you.\nfas fa-shield-alt|24/7 Security|Night security and gated access for peace of mind.",
+      "content": "Everything you need — Wi-Fi, hot water, secure parking, and a team who knows the park inside out.\n\n---\nfas fa-wifi|24/7 High-Speed Wi-Fi|Reliable connection for work calls, streaming, and staying in touch.\nfas fa-snowflake|Hot Water Showers|Geyser-backed hot water in every room, any time of day.\nfas fa-parking|Free Secure Parking|On-site parking for cars and safari vehicles.",
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
       "meta_title": "",
       "meta_description": ""

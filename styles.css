@@ -3138,6 +3138,7 @@ a:not(.btn):hover {
 .footer-brand p { color: rgba(255, 255, 255, 0.65) !important; }
 .footer-links h4, .footer-contact h4, .footer-brand .logo { color: #fff !important; }
 .footer-logo-wrap { background: #252321 !important; border-color: rgba(201,189,181,0.3) !important; }
+.footer, footer, .site-footer { background: #1a1817 !important; }
 .booking-cta { background: #1a1817 !important; color: #fff; }
 .page-hero-content h1 { color: #fff !important; }
 .hero-text h1 { color: #fff !important; }

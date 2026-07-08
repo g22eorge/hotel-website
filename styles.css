@@ -3028,6 +3028,7 @@ a:not(.btn):hover {
     .feature-item,
     .card,
     .room-preview-card,
+  .trust-badges-wrapper { background: #1a1817 !important; }
     .about-feature-card,
     .about-serve-card,
     .testimonial-card,

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error {{ code }} - Latitude Zero Cottages</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f6f3; color: #232120; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+        .error-container { max-width: 500px; padding: 40px; }
+        .error-code { font-size: 6rem; font-family: 'Playfair Display', serif; color: #c9bdb5; line-height: 1; margin-bottom: 16px; }
+        h1 { font-size: 1.5rem; margin-bottom: 12px; }
+        p { color: #6b6560; margin-bottom: 24px; line-height: 1.6; }
+        a { display: inline-block; background: #232120; color: #fff; padding: 12px 28px; text-decoration: none; border-radius: 4px; font-size: 0.9rem; transition: background 0.2s; }
+        a:hover { background: #3d3835; }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">{{ code }}</div>
+        <h1>{{ message }}</h1>
+        <p>Sorry, something unexpected happened. Please try going back to the homepage or contact us if this persists.</p>
+        <a href="/">Back to Homepage</a>
+    </div>
+</body>
+</html>

@@ -206,7 +206,7 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 - **Image Storage:** Cloudinary (credentials via env vars)
 - **WSGI Server:** gunicorn (production)
 - **Startup (local):** `python3 app.py`
-- **Startup (production):** `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
+- **Startup (production):** `gunicorn --preload -w 4 -b 0.0.0.0:$PORT app:app`
 
 ### Railway Deployment
 
@@ -223,7 +223,7 @@ All uploaded images are stored in **Cloudinary** — a cloud image service. This
 | `CLOUDINARY_API_KEY` | From your Cloudinary dashboard |
 | `CLOUDINARY_API_SECRET` | From your Cloudinary dashboard |
 
-3. **Start Command:** `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
+3. **Start Command:** `gunicorn --preload -w 4 -b 0.0.0.0:$PORT app:app`
 4. Add a Railway PostgreSQL database and connect it to the service so `DATABASE_URL` is available.
 5. On first startup, the app creates tables and seeds default content. If no admin user exists, it creates one using `ADMIN_USERNAME` and `ADMIN_PASSWORD`.
 

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {{ page_name.title() }} | Latitude Zero Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f7f5f3; color: #231F20; min-height: 100vh; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #231F20; color: #fff; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header img { max-width: 140px; margin-bottom: 8px; }
+        .sidebar-header h2 { font-size: 0.85rem; font-weight: 600; color: #C9BDB5; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-nav a.active { background: rgba(201,189,181,0.1); color: #C9BDB5; border-left-color: #C9BDB5; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .sidebar-nav .nav-section-title { padding: 20px 20px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .sidebar-footer a:hover { color: #fff; }
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .page-header h1 { font-size: 1.8rem; font-weight: 700; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #fff; color: #231F20; text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; }
+        .back-btn:hover { background: #C9BDB5; }
+        .flash-messages { margin-bottom: 20px; }
+        .flash { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; }
+        .flash.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .flash.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .section-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 28px; margin-bottom: 24px; }
+        .section-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: #231F20; display: flex; align-items: center; gap: 10px; }
+        .section-card .section-key { font-family: monospace; color: #4C4E4F; font-size: 0.75rem; margin-bottom: 20px; padding: 4px 8px; background: #faf8f6; border-radius: 4px; display: inline-block; }
+        .section-card.has-image { border: 2px solid #e8e4e1; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; color: #4C4E4F; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #C9BDB5; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .image-upload-group { display: flex; gap: 20px; align-items: flex-start; }
+        .image-upload-group .form-group { flex: 1; }
+        .image-preview { width: 200px; height: 130px; border-radius: 8px; border: 2px dashed #e8e4e1; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #faf8f6; flex-shrink: 0; }
+        .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .image-preview .placeholder { color: #999; font-size: 0.8rem; text-align: center; padding: 10px; }
+        .image-preview .placeholder i { font-size: 2rem; display: block; margin-bottom: 8px; color: #d4cfc9; }
+        .upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #231F20; color: #C9BDB5; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .upload-btn:hover { background: #4C4E4F; }
+        .upload-btn input { display: none; }
+        .remove-image { color: #dc2626; cursor: pointer; font-size: 0.8rem; margin-top: 8px; display: inline-block; }
+        .remove-image:hover { text-decoration: underline; }
+        .form-actions { display: flex; justify-content: flex-end; margin-top: 32px; }
+        .btn-save { padding: 14px 32px; background: #231F20; color: #C9BDB5; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
+        .btn-save:hover { background: #4C4E4F; }
+        .empty-state { text-align: center; padding: 60px 40px; color: #4C4E4F; }
+        .page-intro { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,31,32,0.06); padding: 28px; margin-bottom: 24px; }
+        .page-intro p { color: #666; font-size: 0.95rem; line-height: 1.6; }
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+            .sidebar-header { padding: 12px 16px; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+            .sidebar-header h2, .sidebar-footer { display: none; }
+            .sidebar-header img { max-width: 100px; margin-bottom: 0; }
+            .sidebar-nav { display: flex; flex-direction: row; padding: 0; flex-shrink: 0; }
+            .sidebar-nav a { padding: 12px 16px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+            .sidebar-nav a.active { border-left-color: transparent; border-bottom-color: #C9BDB5; }
+            .main-content { padding: 20px; }
+            .image-upload-group { flex-direction: column; }
+            .image-preview { width: 100%; height: 180px; }
+        }
+        /* Feature Builder */
+        .feature-builder { margin-bottom: 12px; }
+        .feature-builder .intro-field label { font-size: 0.75rem; font-weight: 700; color: #4C4E4F; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .feature-builder .intro-field input { width: 100%; padding: 10px 12px; border: 2px solid #e8e4e1; border-radius: 8px; font-size: 0.95rem; margin-bottom: 12px; }
+        .feature-builder .builder-row { display: flex; gap: 12px; align-items: center; padding: 12px; background: #faf8f6; border-radius: 8px; margin-bottom: 10px; border: 1px dashed #e8e4e1; flex-wrap: wrap; }
+        .feature-builder .builder-row input { flex: 1; padding: 10px 12px; border: 2px solid #e8e4e1; border-radius: 6px; font-size: 0.9rem; min-width: 120px; }
+        .feature-builder .builder-row input.icon-input { max-width: 180px; flex: 0 0 180px; }
+        .feature-builder .builder-row .remove-btn { color: #dc2626; cursor: pointer; font-size: 0.85rem; white-space: nowrap; padding: 8px 12px; border-radius: 4px; transition: background 0.2s; border: none; background: transparent; }
+        .feature-builder .builder-row .remove-btn:hover { background: rgba(220,38,38,0.1); }
+        .feature-builder .btn-add { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #231F20; color: #C9BDB5; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .feature-builder .btn-add:hover { background: #4C4E4F; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/images/logos/secondary-logo.png" alt="Latitude Zero">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="/admin/bookings/"><i class="fas fa-calendar-check"></i> Bookings</a>
+                {% if current_user.is_superuser %}
+                <a href="/admin/users/"><i class="fas fa-users"></i> Users</a>
+                {% endif %}
+                <div class="nav-section-title">Content</div>
+                <a href="/admin/settings/"><i class="fas fa-home"></i> Home Page</a>
+                <a href="/admin/testimonials/"><i class="fas fa-quote-left"></i> Testimonials</a>
+                <a href="/admin/rooms/"><i class="fas fa-bed"></i> Rooms</a>
+                <a href="/admin/gallery/"><i class="fas fa-images"></i> Gallery</a>
+                <a href="/admin/pages/" class="active"><i class="fas fa-file-alt"></i> Pages</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="page-header">
+                <h1>Edit {{ page_name.title() }}</h1>
+                <a href="/admin/gallery/"><i class="fas fa-images"></i> Gallery</a>
+                <a href="/admin/pages/" class="back-btn"><i class="fas fa-arrow-left"></i> All Pages</a>
+            </div>
+
+            {% if sections %}
+            <div class="page-intro">
+                <p><i class="fas fa-info-circle"></i> Edit the sections below. Changes are saved when you click "Save Changes". For sections with images, click "Choose Image" to upload a new photo.</p>
+            </div>
+
+            <form method="POST" id="pageForm">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {% for section in sections %}
+                <div class="section-card {% if section.image %}has-image{% endif %}">
+                    <h3><i class="fas fa-pen"></i> {{ section.title }}</h3>
+                    <div class="section-key">{{ section.section_key }}</div>
+
+                    <div class="form-group">
+                        <label>Section Title</label>
+                        <input type="text" name="title_{{ section.section_key }}" value="{{ section.title }}" placeholder="Section title">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Content</label>
+                        {% if section.section_key in ['promise', 'serve', 'safari', 'amenities'] %}
+                        <div class="feature-builder" id="builder_{{ section.section_key }}" data-section-key="{{ section.section_key }}" data-format="{% if section.section_key == 'amenities' %}card{% else %}simple{% endif %}">
+                            <div class="intro-field">
+                                <label>Intro Text</label>
+                                <input type="text" class="feature-intro" placeholder="e.g. We are committed to offering every guest:" value="">
+                            </div>
+                            <div class="builder-rows"></div>
+                            <button type="button" class="btn-add" onclick="addFeatureRow('{{ section.section_key }}', '{{ 'card' if section.section_key == 'amenities' else 'simple' }}')"><i class="fas fa-plus"></i> Add Item</button>
+                        </div>
+                        <textarea name="content_{{ section.section_key }}" style="display:none;" id="content_{{ section.section_key }}">{{ section.content }}</textarea>
+                        {% else %}
+                        <textarea name="content_{{ section.section_key }}" rows="4" placeholder="Enter content...">{{ section.content }}</textarea>
+                        {% endif %}
+                    </div>
+
+                    <div class="image-upload-group">
+                        <div class="form-group">
+                            <label>Section Image</label>
+                            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                                <label class="upload-btn">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                    <input type="file" name="image_{{ section.section_key }}" accept="image/*" onchange="previewImage(this, 'preview_{{ section.section_key }}')">
+                                </label>
+                                {% if section.image %}
+                                <span class="remove-image" onclick="removeImage('{{ section.section_key }}')"><i class="fas fa-trash"></i> Remove</span>
+                                {% endif %}
+                            </div>
+                            <input type="hidden" name="existing_image_{{ section.section_key }}" value="{{ section.image or '' }}" id="existing_image_{{ section.section_key }}">
+                        </div>
+                        <div class="image-preview" id="preview_{{ section.section_key }}">
+                            {% if section.image %}
+                            <img src="{{ section.image }}" alt="Current image">
+                            {% else %}
+                            <div class="placeholder">
+                                <i class="fas fa-image"></i>
+                                No image
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if section.section_key == 'hero' %}
+                    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:20px;margin-top:20px;">
+                        <h4 style="font-size:0.85rem;font-weight:700;color:#1e40af;margin-bottom:16px;"><i class="fas fa-search"></i> SEO Settings</h4>
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label>Page Title (meta title)</label>
+                            <input type="text" name="meta_title_{{ section.section_key }}" value="{{ section.meta_title or '' }}" placeholder="e.g. About - Latitude Zero Cottages Kikorongo">
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label>Meta Description</label>
+                            <textarea name="meta_description_{{ section.section_key }}" rows="2" placeholder="e.g. Learn about Latitude Zero Cottages, a peaceful accommodation near Queen Elizabeth National Park.">{{ section.meta_description or '' }}</textarea>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </form>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-file-alt" style="font-size: 3rem; color: #d4cfc9; margin-bottom: 16px;"></i>
+                <p>No editable sections found for this page.</p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+    function previewImage(input, previewId) {
+        var preview = document.getElementById(previewId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage(sectionKey) {
+        var preview = document.getElementById('preview_' + sectionKey);
+        var existingInput = document.getElementById('existing_image_' + sectionKey);
+        if (confirm('Remove this image?')) {
+            preview.innerHTML = '<div class="placeholder"><i class="fas fa-image"></i>No image</div>';
+            existingInput.value = '';
+        }
+    }
+
+    /* Feature Builder Functions */
+    function parseFeatureContent(content, format) {
+        var lines = (content || '').split('\n');
+        var intro = '';
+        var items = [];
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (!line) continue;
+            if (line.indexOf('|') !== -1) {
+                var parts = line.split('|');
+                if (format === 'card' && parts.length >= 3) {
+                    items.push({icon: parts[0].trim(), text: parts[1].trim(), desc: parts.slice(2).join('|').trim()});
+                } else if (parts.length >= 2) {
+                    items.push({icon: parts[0].trim(), text: parts.slice(1).join('|').trim()});
+                }
+            } else if (items.length === 0) {
+                intro = line;
+            }
+        }
+        return {intro: intro, items: items};
+    }
+
+    function createFeatureRow(item, format, sectionKey) {
+        var html = '<div class="builder-row">';
+        html += '<input type="text" class="icon-input" placeholder="fas fa-icon" value="' + (item.icon || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + '\', \'' + format + \'\')">';
+        if (format === 'card') {
+            html += '<input type="text" placeholder="Title" value="' + (item.text || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + \'\', \'' + format + \'\')">';
+            html += '<input type="text" placeholder="Description" value="' + (item.desc || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + \'\', \'' + format + \'\')">';
+        } else {
+            html += '<input type="text" placeholder="Feature text" value="' + (item.text || '') + '" onchange="syncFeatureToTextarea(\'' + sectionKey + \'\', \'' + format + \'\')">';
+        }
+        html += '<button type="button" class="remove-btn" onclick="removeFeatureRow(this, \'' + sectionKey + \'\', \'' + format + \'\')"><i class="fas fa-trash"></i> Remove</button>';
+        html += '</div>';
+        return html;
+    }
+
+    function addFeatureRow(sectionKey, format) {
+        var container = document.querySelector('#builder_' + sectionKey + ' .builder-rows');
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = createFeatureRow({}, format, sectionKey);
+        container.appendChild(tempDiv.firstChild);
+        syncFeatureToTextarea(sectionKey, format);
+    }
+
+    function removeFeatureRow(btn, sectionKey, format) {
+        var row = btn.closest('.builder-row');
+        if (row) { row.remove(); }
+        syncFeatureToTextarea(sectionKey, format);
+    }
+
+    function syncFeatureToTextarea(sectionKey, format) {
+        var builder = document.getElementById('builder_' + sectionKey);
+        var intro = builder.querySelector('.feature-intro').value.trim();
+        var rows = builder.querySelectorAll('.builder-row');
+        var lines = [];
+        if (intro) lines.push(intro);
+        rows.forEach(function(row) {
+            var inputs = row.querySelectorAll('input');
+            var icon = inputs[0].value.trim();
+            var text = inputs[1].value.trim();
+            var desc = '';
+            if (format === 'card' && inputs[2]) desc = inputs[2].value.trim();
+            if (icon && text) {
+                if (format === 'card' && desc) {
+                    lines.push(icon + '|' + text + '|' + desc);
+                } else {
+                    lines.push(icon + '|' + text);
+                }
+            }
+        });
+        document.getElementById('content_' + sectionKey).value = lines.join('\n');
+    }
+
+    function initFeatureBuilder(sectionKey, content, format) {
+        var builder = document.getElementById('builder_' + sectionKey);
+        if (!builder) return;
+        var parsed = parseFeatureContent(content, format);
+        builder.querySelector('.feature-intro').value = parsed.intro;
+        var container = builder.querySelector('.builder-rows');
+        container.innerHTML = '';
+        if (parsed.items.length === 0) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = createFeatureRow({}, format, sectionKey);
+            container.appendChild(tempDiv.firstChild);
+        } else {
+            parsed.items.forEach(function(item) {
+                var tempDiv = document.createElement('div');
+                tempDiv.innerHTML = createFeatureRow(item, format, sectionKey);
+                container.appendChild(tempDiv.firstChild);
+            });
+        }
+    }
+
+    // Initialize feature builders on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.feature-builder').forEach(function(builder) {
+            var sectionKey = builder.getAttribute('data-section-key');
+            var format = builder.getAttribute('data-format');
+            var content = document.getElementById('content_' + sectionKey).value;
+            initFeatureBuilder(sectionKey, content, format);
+        });
+    });
+    </script>
+</body>
+</html>

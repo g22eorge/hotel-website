@@ -198,6 +198,12 @@ body {
     width: auto;
     max-width: 160px;
     object-fit: contain;
+    /* The brand logo is dark-on-white, so it needs a light backing. Make that
+       backing an intentional rounded chip instead of a raw white rectangle. */
+    background: #fff;
+    padding: 5px 9px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
     transition: var(--transition);
 }
 
@@ -2860,9 +2866,13 @@ a:not(.btn):hover {
         background: rgba(201,189,181,0.08);
     }
 
-    /* Mobile nav menu */
-    .nav-links {
-        background: var(--bg) !important;
+    /* Mobile nav menu — only give the dropdown a solid backdrop on mobile.
+       On desktop the nav-links must stay transparent, otherwise a dark box
+       floats over the hero. */
+    @media (max-width: 768px) {
+        .nav-links {
+            background: var(--bg) !important;
+        }
     }
     .nav-links a {
         color: var(--text) !important;
@@ -3078,8 +3088,11 @@ a:not(.btn):hover {
         color: #a8a5a2 !important;
     }
 
-    .nav-links {
-        background-color: #1a1817 !important;
+    /* Solid backdrop only for the mobile dropdown, not the desktop header. */
+    @media (max-width: 768px) {
+        .nav-links {
+            background-color: #1a1817 !important;
+        }
     }
 
     .nav-links a {

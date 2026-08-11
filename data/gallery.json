@@ -24,6 +24,16 @@
       "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
       "caption": "Queen Elizabeth National Park",
       "sort_order": 5
+    },
+    {
+      "image": "images/property-view.jpg",
+      "caption": "Our Grounds & Savannah Views",
+      "sort_order": 6
+    },
+    {
+      "image": "images/guest-rooms.jpg",
+      "caption": "Comfortable Guest Rooms",
+      "sort_order": 7
     }
   ]
 }

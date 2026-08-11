@@ -64,6 +64,77 @@ before workers fork, avoiding a "table already exists" race on a fresh database.
 > Either way: **`DATABASE_URL` must point at Postgres, not the host's local disk.**
 > On ephemeral filesystems SQLite is wiped on every redeploy.
 
+## 2C. Deploy on a VPS (Ubuntu/Debian) — full runbook
+
+Config files live in [`deploy/`](deploy/): a systemd unit, an nginx site, and an
+env template. Run everything below as a sudo-capable user.
+
+**1. Packages**
+```bash
+sudo apt update
+sudo apt install -y python3-venv python3-pip nginx postgresql git
+```
+
+**2. App user + code**
+```bash
+sudo useradd --system --create-home --home-dir /opt/latitude-zero --shell /usr/sbin/nologin latitude
+sudo -u latitude git clone -b production https://github.com/g22eorge/hotel-website.git /opt/latitude-zero
+cd /opt/latitude-zero
+sudo -u latitude python3 -m venv .venv
+sudo -u latitude .venv/bin/pip install -r requirements.txt
+```
+
+**3. Postgres database**
+```bash
+sudo -u postgres psql -c "CREATE USER latitude WITH PASSWORD 'CHOOSE_A_DB_PASSWORD';"
+sudo -u postgres psql -c "CREATE DATABASE latitude_zero OWNER latitude;"
+```
+
+**4. Environment file** (secrets — root only)
+```bash
+sudo cp /opt/latitude-zero/deploy/latitude-zero.env.example /etc/latitude-zero.env
+sudo nano /etc/latitude-zero.env      # fill in SECRET_KEY (openssl rand -hex 32), ADMIN_*, DB password, CLOUDINARY_*
+sudo chmod 600 /etc/latitude-zero.env
+```
+
+**5. gunicorn service**
+```bash
+sudo cp /opt/latitude-zero/deploy/latitude-zero.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now latitude-zero
+sudo systemctl status latitude-zero      # should be active (running)
+curl -I http://127.0.0.1:8000/           # should return 200
+```
+
+**6. nginx**
+```bash
+sudo cp /opt/latitude-zero/deploy/nginx-latitude-zero.conf /etc/nginx/sites-available/latitude-zero
+sudo sed -i 's/yourdomain.com/REALDOMAIN.com/g' /etc/nginx/sites-available/latitude-zero
+sudo ln -s /etc/nginx/sites-available/latitude-zero /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+**7. Point the domain, then HTTPS**
+- At your DNS provider, add an `A` record for the domain → your VPS public IP
+  (and a `www` `A`/`CNAME` if you use it). Wait for it to resolve.
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d REALDOMAIN.com -d www.REALDOMAIN.com
+```
+Certbot installs the certificate and adds the HTTPS/redirect blocks automatically.
+
+**8. Updates later**
+```bash
+cd /opt/latitude-zero && sudo -u latitude git pull
+sudo -u latitude .venv/bin/pip install -r requirements.txt
+sudo systemctl restart latitude-zero
+```
+
+> `deploy/nginx-latitude-zero.conf` sets `client_max_body_size 12M` — required, or
+> nginx rejects the 10 MB admin image uploads with `413`. `TRUST_PROXY=true` +
+> `COOKIE_SECURE=true` in the env file are both needed behind nginx+HTTPS.
+
 ---
 
 ## 3. Push the branch

@@ -7,6 +7,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, jso
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import CSRFProtect
 from sqlalchemy.exc import OperationalError, ProgrammingError, IntegrityError
+from werkzeug.middleware.proxy_fix import ProxyFix
 from urllib.parse import urlparse
 from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection, GalleryImage
 from datetime import datetime, date, timedelta
@@ -50,6 +51,13 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = _env_bool('COOKIE_SECURE', True)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 app.config['WTF_CSRF_TIME_LIMIT'] = None  # token valid for the life of the session
+
+# ===== Behind a reverse proxy (nginx on a VPS, etc.) =====
+# Set TRUST_PROXY=true ONLY when the app sits behind a proxy you control, so it
+# reads the real client IP and https scheme from X-Forwarded-* headers. Leave it
+# off otherwise, or clients could spoof those headers.
+if _env_bool('TRUST_PROXY', False):
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 # ===== CSRF protection for all admin forms =====
 csrf = CSRFProtect(app)

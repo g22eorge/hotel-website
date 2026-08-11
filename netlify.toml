@@ -2,8 +2,20 @@
   publish = "."
   functions = "netlify/functions"
 
-# Netlify is only a static fallback target. The live CMS/admin runs in Flask
-# on Railway at /admin/ so it can write to the application database.
+# Architecture: Netlify serves the public static frontend; the Flask app on
+# Railway runs the admin/CMS + the live content APIs + Postgres.
+#
+# This rewrite makes the frontend's relative /api/* calls transparently proxy
+# to Railway, so edits made in the admin appear live on the Netlify site.
+# If Railway is unreachable, the frontend falls back to data/*.json (see the
+# fetch().catch() blocks in index.html / pages/*.html), so the site never breaks.
+#
+# ⚠️ Update this host if your Railway app URL is different from the one below.
+[[redirects]]
+  from = "/api/*"
+  to = "https://latitudezero.up.railway.app/api/:splat"
+  status = 200
+  force = true
 
 # SPA-style redirects for pages
 [[redirects]]

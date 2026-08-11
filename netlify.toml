@@ -17,6 +17,22 @@
   status = 200
   force = true
 
+# Send the admin straight to the Flask app on Railway (302 = temporary, so it's
+# easy to repoint later when you move to a private domain). force=true makes this
+# win over the static admin/index.html placeholder. Uploads/login/CSRF then all
+# happen same-origin on Railway. Update the host here if your Railway URL differs.
+[[redirects]]
+  from = "/admin/*"
+  to = "https://latitudezero.up.railway.app/admin/:splat"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "https://latitudezero.up.railway.app/admin/"
+  status = 302
+  force = true
+
 # SPA-style redirects for pages
 [[redirects]]
   from = "/about"

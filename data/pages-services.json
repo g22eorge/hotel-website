@@ -1,0 +1,45 @@
+{
+  "page": "services",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "Our Services",
+      "content": "At Latitude Zero Cottages Kikorongo, we offer more than just a place to stay. Our goal is to provide a comprehensive experience that blends comfort, relaxation, and adventure in one of Uganda most beautiful regions.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565901/latitude_zero/IMG_3391_wbpmpw.jpg",
+      "meta_title": "Services - Latitude Zero Cottages Kikorongo",
+      "meta_description": "Latitude Zero Cottages offers comfortable rooms, dining, safari adventures, and amenities near Queen Elizabeth National Park."
+    },
+    {
+      "key": "rooms",
+      "title": "Rooms & Cottages",
+      "content": "Built for rest after a long day in the park. Clean, comfortable, and close at hand.\n\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Standard Room|1 double bed • En-suite shower • 2 guests • Breakfast included. Clean, comfortable, and ideal for couples or solo travellers.|From $45/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg|Deluxe Room|1 king bed • En-suite bathroom • 2 guests • Breakfast + fruit basket • Scenic garden view. Our most popular upgrade.|From $65/night\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg|Family Cottage|2 twin beds + 1 double • Private sitting area • 4 guests • Breakfast + dinner included • Veranda with park views.|From $85/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "dining",
+      "title": "Dining",
+      "content": "Locally sourced ingredients, freshly prepared. We cater to all diets and group sizes.\n\n---\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg|Local & International Cuisine|From hearty Ugandan staples to international favourites — everything is cooked fresh on site.|Meals from $8/person\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg|Family Dining|Generous portions, kid-friendly options, and a relaxed atmosphere. We can accommodate dietary requirements with advance notice.|Group bookings welcome\nhttps://res.cloudinary.com/daoxmqexa/image/upload/v1781565901/latitude_zero/IMG_3391_wbpmpw.jpg|Safari Packed Lunches|Fresh, portable meals prepared before your game drive. Vegetarian and kid-friendly options available.|From $6/person",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "safari",
+      "title": "Game Drives & Safari Access",
+      "content": "Your doorstep is 1 km from the main park gate — the shortest transfer in the area.\n\n---\nfas fa-car|Park Transfers|We arrange transfers to and from the park gate on request.\nfas fa-binoculars|Game Drive Booking|Our team books your game drive slots and park permits in advance.\nfas fa-user-friends|Local Guides|Experienced Ugandan guides who know the park's best routes and wildlife patterns.\nfas fa-ticket-alt|Park Permits|We handle your QENP permit paperwork so you arrive ready to go.\nfas fa-phone|Arrival Coordination|Call or WhatsApp us on arrival — we'll guide you straight to your room.\nfas fa-camera|Photography Safaris|Guided photo sessions at sunrise and golden hour across the Kazinga Channel and the crater rim.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "amenities",
+      "title": "Amenities",
+      "content": "Everything you need — Wi-Fi, hot water, secure parking, and a team who knows the park inside out.\n\n---\nfas fa-wifi|24/7 High-Speed Wi-Fi|Reliable connection for work calls, streaming, and staying in touch.\nfas fa-snowflake|Hot Water Showers|Geyser-backed hot water in every room, any time of day.\nfas fa-parking|Free Secure Parking|On-site parking for cars and safari vehicles.\nfas fa-concierge-bell|Concierge Service|Game drive bookings, restaurant reservations, and park advice — all handled for you.\nfas fa-shield-alt|24/7 Security|Night security and gated access for peace of mind.\nfas fa-hiking|Walking & Cycling Trails|Self-guided trails around the cottage with views across the Kikorongo crater and the Kazinga Channel.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}

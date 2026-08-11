@@ -1,0 +1,23 @@
+# systemd unit for the Latitude Zero Flask CMS (gunicorn behind nginx).
+# Install:  sudo cp deploy/latitude-zero.service /etc/systemd/system/
+#           sudo systemctl daemon-reload && sudo systemctl enable --now latitude-zero
+# Logs:     journalctl -u latitude-zero -f
+
+[Unit]
+Description=Latitude Zero Cottages CMS (gunicorn)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=notify
+User=latitude
+Group=latitude
+WorkingDirectory=/opt/latitude-zero
+EnvironmentFile=/etc/latitude-zero.env
+ExecStart=/opt/latitude-zero/.venv/bin/gunicorn --preload -w 4 -b 127.0.0.1:8000 app:app
+Restart=always
+RestartSec=3
+# --preload runs the one-time DB init in the master before workers fork.
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,27 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Netlify is only a static fallback target. The live CMS/admin runs in Flask
+# on Railway at /admin/ so it can write to the application database.
+
+# SPA-style redirects for pages
+[[redirects]]
+  from = "/about"
+  to = "/pages/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/services"
+  to = "/pages/services.html"
+  status = 301
+
+[[redirects]]
+  from = "/gallery"
+  to = "/pages/gallery.html"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/pages/contact.html"
+  status = 301

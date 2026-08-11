@@ -1,4 +1,16 @@
-var API_BASE = 'https://latitudezero.up.railway.app';
+window.optimizedImageUrl = function(url, options) {
+    options = options || {};
+    if (!url || url.indexOf('res.cloudinary.com') === -1 || url.indexOf('/upload/') === -1) {
+        return url;
+    }
+
+    var transforms = ['f_auto', 'q_auto'];
+    if (options.crop) transforms.push('c_' + options.crop);
+    if (options.width) transforms.push('w_' + options.width);
+    if (options.height) transforms.push('h_' + options.height);
+
+    return url.replace('/upload/', '/upload/' + transforms.join(',') + '/');
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     // Scroll-triggered fade-in animations
@@ -93,84 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 4000);
     }
 
-    // Gallery lightbox
-    var galleryItems = document.querySelectorAll('.gallery-item');
-    var lightbox = document.getElementById('lightbox');
-
-    if (lightbox && galleryItems.length > 0) {
-        var lightboxImg = lightbox.querySelector('.lightbox-content img');
-        var lightboxClose = lightbox.querySelector('.lightbox-close');
-        var lightboxPrev = lightbox.querySelector('.lightbox-prev');
-        var lightboxNext = lightbox.querySelector('.lightbox-next');
-        var currentLightbox = 0;
-        var gallerySrcs = [];
-
-        galleryItems.forEach(function(item, index) {
-            var img = item.querySelector('img');
-            if (img) {
-                gallerySrcs.push(img.src);
-                item.addEventListener('click', function() {
-                    currentLightbox = index;
-                    if (lightboxImg) lightboxImg.src = gallerySrcs[currentLightbox];
-                    lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
-            }
-        });
-
-        if (lightboxClose) {
-            lightboxClose.addEventListener('click', closeLightbox);
-        }
-
-        if (lightboxPrev) {
-            lightboxPrev.addEventListener('click', function() {
-                currentLightbox = (currentLightbox - 1 + gallerySrcs.length) % gallerySrcs.length;
-                if (lightboxImg) lightboxImg.src = gallerySrcs[currentLightbox];
-            });
-        }
-
-        if (lightboxNext) {
-            lightboxNext.addEventListener('click', function() {
-                currentLightbox = (currentLightbox + 1) % gallerySrcs.length;
-                if (lightboxImg) lightboxImg.src = gallerySrcs[currentLightbox];
-            });
-        }
-
-        // Close on background click
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
-        });
-
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (!lightbox.classList.contains('active')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft' && lightboxPrev) lightboxPrev.click();
-            if (e.key === 'ArrowRight' && lightboxNext) lightboxNext.click();
-        });
-    }
-
-    // Intersection Observer for fade-in animations
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.section').forEach(function(section) {
-        observer.observe(section);
-    });
-
-    // Booking form WhatsApp handler
+    // Booking form API + WhatsApp handler
     function handleBookingForm(formEl) {
         if (!formEl) return;
         formEl.addEventListener('submit', function(e) {
@@ -191,12 +126,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fields.phone) msg += 'Phone: ' + fields.phone + '\n';
             if (fields.requests) msg += 'Requests: ' + fields.requests + '\n';
 
-            // Save to backend API (async, don't block WhatsApp)
-            fetch(API_BASE + '/api/bookings/', {
+            fetch('/api/bookings/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(fields)
-            }).catch(function() {});
+            }).then(function(response) {
+                if (!response.ok) throw new Error('Booking API returned ' + response.status);
+                return response.json();
+            }).catch(function(err) {
+                console.error('Booking API error:', err);
+            });
 
             var waNumber = window.WHATSAPP_NUMBER || '256700629083';
             var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(msg);

@@ -1,0 +1,13 @@
+{
+  "page": "gallery",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "Gallery",
+      "content": "A snapshot of life at Latitude Zero \u2014 cottages, cuisine, and the wild on your doorstep.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565899/latitude_zero/IMG_3387_yko260.jpg",
+      "meta_title": "Gallery \u2014 Latitude Zero Cottages",
+      "meta_description": "Browse photos of Latitude Zero Cottages \u2014 rooms, dining, park views, and the Equator experience near Queen Elizabeth National Park."
+    }
+  ]
+}

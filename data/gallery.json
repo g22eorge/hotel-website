@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3382_gaos8t.jpg",
+      "caption": "Cozy Cottage Exterior",
+      "sort_order": 1
+    },
+    {
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg",
+      "caption": "Delicious Local Cuisine",
+      "sort_order": 2
+    },
+    {
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "caption": "Spacious Rooms",
+      "sort_order": 3
+    },
+    {
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
+      "caption": "Peaceful Views",
+      "sort_order": 4
+    },
+    {
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
+      "caption": "Queen Elizabeth National Park",
+      "sort_order": 5
+    }
+  ]
+}

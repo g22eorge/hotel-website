@@ -1,21 +1,101 @@
 import os
+import time
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_wtf import CSRFProtect
+from sqlalchemy.exc import OperationalError, ProgrammingError, IntegrityError
+from werkzeug.middleware.proxy_fix import ProxyFix
+from urllib.parse import urlparse
 from models import db, User, Booking, SiteSettings, Testimonial, Room, PageSection, GalleryImage
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def _env_bool(name, default):
+    return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def _database_uri():
+    """Use DATABASE_URL (Postgres) in production; fall back to local SQLite for dev.
+
+    Railway/Heroku hand out a 'postgres://' scheme that SQLAlchemy 2.x no longer
+    accepts, so normalise it to 'postgresql://'.
+    """
+    url = os.environ.get('DATABASE_URL', '').strip()
+    if url:
+        if url.startswith('postgres://'):
+            url = url.replace('postgres://', 'postgresql://', 1)
+        return url
+    return 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 if not app.config['SECRET_KEY']:
     raise RuntimeError('SECRET_KEY environment variable is not set. Aborting.')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = _database_uri()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# pool_pre_ping avoids stale-connection errors when a managed Postgres drops idle links.
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
+
+# ===== Session / cookie hardening =====
+# SESSION_COOKIE_SECURE must be True in production (HTTPS). Set COOKIE_SECURE=false
+# only for local HTTP testing, otherwise the login cookie is never stored.
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = _env_bool('COOKIE_SECURE', True)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+app.config['WTF_CSRF_TIME_LIMIT'] = None  # token valid for the life of the session
+
+# ===== Behind a reverse proxy (nginx on a VPS, etc.) =====
+# Set TRUST_PROXY=true ONLY when the app sits behind a proxy you control, so it
+# reads the real client IP and https scheme from X-Forwarded-* headers. Leave it
+# off otherwise, or clients could spoof those headers.
+if _env_bool('TRUST_PROXY', False):
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+# ===== CSRF protection for all admin forms =====
+csrf = CSRFProtect(app)
+
+# ===== Simple in-memory login throttle =====
+# Locks an IP out after LOGIN_MAX_FAILS failures within the window. This is
+# per-process (each gunicorn worker keeps its own map), which is a deliberate
+# trade-off: it needs no extra infra and is ample for a small site. For a
+# hard, shared limit, put a rate limiter at the reverse proxy / host layer.
+LOGIN_MAX_FAILS = int(os.environ.get('LOGIN_MAX_FAILS', 8))
+LOGIN_LOCK_SECONDS = int(os.environ.get('LOGIN_LOCK_SECONDS', 300))
+_login_attempts = {}  # ip -> [count, first_attempt_ts]
+
+
+def _login_block_seconds(ip):
+    rec = _login_attempts.get(ip)
+    if not rec:
+        return 0
+    count, first_ts = rec
+    elapsed = time.time() - first_ts
+    if elapsed > LOGIN_LOCK_SECONDS:
+        _login_attempts.pop(ip, None)
+        return 0
+    if count >= LOGIN_MAX_FAILS:
+        return int(LOGIN_LOCK_SECONDS - elapsed)
+    return 0
+
+
+def _record_login_failure(ip):
+    rec = _login_attempts.get(ip)
+    if not rec or (time.time() - rec[1]) > LOGIN_LOCK_SECONDS:
+        _login_attempts[ip] = [1, time.time()]
+    else:
+        rec[0] += 1
+
+
+def _clear_login_attempts(ip):
+    _login_attempts.pop(ip, None)
 
 
 cloudinary.config(
@@ -40,9 +120,12 @@ db.init_app(app)
 
 @app.after_request
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    # Only the public read APIs are meant to be cross-origin (so the static
+    # Netlify fallback copy can read live content). Admin pages stay same-origin.
+    if request.path.startswith('/api/'):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
     return response
 
 # ===== Error Handlers =====
@@ -79,19 +162,37 @@ def admin_dashboard():
                            total_users=total_users,
                            now=today)
 
+def _is_safe_next(target):
+    """Only allow same-site relative redirects to avoid an open-redirect."""
+    if not target:
+        return False
+    parsed = urlparse(target)
+    return not parsed.netloc and not parsed.scheme and target.startswith('/')
+
+
 @app.route('/admin/login/', methods=['GET', 'POST'])
 def admin_login():
     if current_user.is_authenticated:
         return redirect(url_for('admin_dashboard'))
     if request.method == 'POST':
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr or 'unknown').split(',')[0].strip()
+        blocked_for = _login_block_seconds(ip)
+        if blocked_for:
+            flash(f'Too many failed attempts. Try again in {blocked_for} seconds.', 'error')
+            return render_template('login.html'), 429
+
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '')
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password) and user.is_active:
+            _clear_login_attempts(ip)
             login_user(user)
             next_page = request.args.get('next')
             flash(f'Welcome back, {user.username}!', 'success')
-            return redirect(next_page or url_for('admin_dashboard'))
+            if _is_safe_next(next_page):
+                return redirect(next_page)
+            return redirect(url_for('admin_dashboard'))
+        _record_login_failure(ip)
         flash('Invalid username or password.', 'error')
     return render_template('login.html')
 
@@ -169,6 +270,7 @@ def admin_booking_detail(booking_id):
     return render_template('booking_detail.html', booking=booking)
 
 @app.route('/api/bookings/', methods=['POST'])
+@csrf.exempt  # public endpoint called cross-origin by the booking form; no session/cookie involved
 def api_create_booking():
     try:
         data = request.get_json() or {}
@@ -191,8 +293,12 @@ def api_create_booking():
         db.session.add(booking)
         db.session.commit()
         return jsonify({'success': True, 'booking_id': booking.id}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+    except (ValueError, KeyError):
+        return jsonify({'error': 'Invalid booking data. Check dates (YYYY-MM-DD) and required fields.'}), 400
+    except Exception:
+        app.logger.exception('Booking creation failed')
+        db.session.rollback()
+        return jsonify({'error': 'Could not save booking. Please try again.'}), 500
 
 @app.route('/api/content/')
 def api_content():
@@ -640,7 +746,12 @@ def serve_static(filename):
 # ===== Initialize Database =====
 def init_db():
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+        except (OperationalError, ProgrammingError):
+            # Belt-and-suspenders: if several workers boot without --preload and
+            # race to create tables, the loser just backs off — tables now exist.
+            db.session.rollback()
         if not User.query.filter_by(username='admin').first():
             admin_user = os.environ.get('ADMIN_USERNAME', 'admin')
             admin_pass = os.environ.get('ADMIN_PASSWORD')
@@ -697,10 +808,17 @@ def init_db():
             for s in sections:
                 db.session.add(s)
 
-        db.session.commit()
-        print('Database initialized with seed content.')
+        try:
+            db.session.commit()
+            print('Database initialized with seed content.')
+        except (IntegrityError, OperationalError, ProgrammingError):
+            # Under gunicorn -w N, several workers may seed concurrently on the
+            # very first boot. Whoever loses the race just rolls back; the data
+            # is already there.
+            db.session.rollback()
+            app.logger.warning('init_db seed skipped (already initialized by another worker).')
 
 init_db()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5001)), debug=_env_bool('FLASK_DEBUG', False))

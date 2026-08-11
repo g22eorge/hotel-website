@@ -90,6 +90,7 @@
 
             <div class="form-card">
                 <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label>Quote Text *</label>
                         <textarea name="text" required placeholder="What did the guest say?">{{ testimonial.text if testimonial else '' }}</textarea>

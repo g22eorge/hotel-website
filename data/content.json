@@ -1,0 +1,66 @@
+{
+  "hero": {
+    "title": "Wake Up to the Wild \u2014 Just 1 km from Queen Elizabeth National Park",
+    "subtitle": "Your gateway to Uganda's most iconic safari destination. Stay in comfort, dine on fresh local flavours, and step into the park before breakfast.",
+    "tagline": "1 km from QENP Gate \u00b7 Fresh Meals \u00b7 24/7 Wi-Fi \u00b7 Warm Ugandan Hospitality",
+    "image": "",
+    "meta_title": "Latitude Zero Cottages Kikorongo | 1 km from Queen Elizabeth National Park",
+    "meta_description": "Latitude Zero Cottages \u2014 comfortable rooms, fresh meals, and 24/7 Wi-Fi just 1 km from Queen Elizabeth National Park gate. Book direct and save 10%."
+  },
+  "contact": {
+    "whatsapp": "+256 700 629 083",
+    "phone": "+256 700 629 083",
+    "email": "info@latitudezero.ug",
+    "address": "Kikorongo, near Queen Elizabeth National Park",
+    "facebook": "https://facebook.com/latitudezerocottages",
+    "instagram": "https://instagram.com/latitudezerocottages"
+  },
+  "footer": {
+    "tagline": "Where Comfort Meets Nature.",
+    "description": "",
+    "copyright": "\u00a9 2026 Latitude Zero Cottages Kikorongo. All rights reserved."
+  },
+  "rooms": [
+    {
+      "name": "Standard Room",
+      "description": "1 double bed \u00b7 En-suite shower \u00b7 2 guests \u00b7 Breakfast included. Clean, comfortable, and ideal for couples or solo travellers.",
+      "price": "From $45/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "features": "WiFi\nHot Shower\nEn-suite Bathroom\nMosquito Net\nBreakfast Included"
+    },
+    {
+      "name": "Deluxe Room",
+      "description": "1 king bed \u00b7 En-suite bathroom \u00b7 2 guests \u00b7 Breakfast + fruit basket \u00b7 Scenic garden view. Our most popular upgrade.",
+      "price": "From $65/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
+      "features": "WiFi\nHot Shower\nKing Bed\nPrivate Balcony\nMosquito Net\nFruit Basket"
+    },
+    {
+      "name": "Family Cottage",
+      "description": "2 twin beds + 1 double \u00b7 Private sitting area \u00b7 4 guests \u00b7 Breakfast + dinner included \u00b7 Veranda with park views.",
+      "price": "From $85/night",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg",
+      "features": "WiFi\nHot Shower\n2 Bedrooms\nLiving Area\nPrivate Cottage\nBreakfast + Dinner"
+    }
+  ],
+  "testimonials": [
+    {
+      "text": "Stayed 4 nights in the Deluxe Room, February 2026. The park is literally a 10-minute walk \u2014 we did three game drives and saw lions, elephants, and tree-climbing lions. The staff arranged everything for us.",
+      "author": "Sarah & James",
+      "location": "United Kingdom \u00b7 Deluxe Room",
+      "rating": 5
+    },
+    {
+      "text": "Worked remotely from the Family Cottage for a week. Wi-Fi held up for video calls, the meals were consistently fresh, and the grounds are beautiful. Best value for the area.",
+      "author": "Michael O.",
+      "location": "Kampala, Uganda \u00b7 Family Cottage \u00b7 Jan 2026",
+      "rating": 5
+    },
+    {
+      "text": "Weekend safari stopover, December 2025. The cottage was spotless, the staff booked our game drive, and dinner on the terrace was a highlight. Already planning the return.",
+      "author": "Amina K.",
+      "location": "Nairobi, Kenya \u00b7 Standard Room",
+      "rating": 5
+    }
+  ]
+}

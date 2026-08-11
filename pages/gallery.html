@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery - Latitude Zero Cottages Kikorongo</title>
-    <meta name="description" id="metaDescription" content="Explore stunning photos of Latitude Zero Cottages Kikorongo: comfortable cottages, delicious meals, natural surroundings, and guest experiences near Queen Elizabeth National Park.">
-    <link rel="stylesheet" href="../styles.css">
+    <meta name="description" content="Browse photos of Latitude Zero Cottages — rooms, dining, park views, and the Equator experience near Queen Elizabeth National Park.">
+    <link rel="stylesheet" href="../styles.css?v=4">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body data-page="gallery">
+    <div id="top-debug" style="display:none;"></div>
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="../index.html" class="logo">
@@ -45,16 +46,26 @@
             <div class="gallery-grid" id="galleryGrid">
                 <!-- Images loaded dynamically from API -->
             </div>
+            <div id="gallery-debug" style="display:none;"></div>
         </div>
     </section>
 
     <div class="lightbox" id="lightbox">
-        <div class="lightbox-content">
-            <button class="lightbox-close">&times;</button>
-            <button class="lightbox-nav lightbox-prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="lightbox-nav lightbox-next"><i class="fas fa-chevron-right"></i></button>
-            <img src="" alt="Gallery Image">
+        <div class="lightbox-header">
+            <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+            <div class="lightbox-controls">
+                <button class="lightbox-btn" id="lightboxZoomIn" title="Zoom in"><i class="fas fa-search-plus"></i></button>
+                <button class="lightbox-btn" id="lightboxZoomOut" title="Zoom out"><i class="fas fa-search-minus"></i></button>
+                <button class="lightbox-btn" id="lightboxFullscreen" title="Full screen"><i class="fas fa-expand"></i></button>
+                <button class="lightbox-close" id="lightboxCloseBtn">&times;</button>
+            </div>
         </div>
+        <div class="lightbox-content" id="lightboxContent">
+            <img src="" alt="" id="lightboxImg">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <footer class="footer">
@@ -98,32 +109,34 @@
         </div>
     </footer>
 
-    <script src="../script.js"></script>
+    <script src="../script.js?v=20260617"></script>
     <script>
-    var API_BASE = 'https://latitudezero.up.railway.app';
+    (function() {
     var page = document.body.getAttribute('data-page');
     if (!page) return;
-    fetch(API_BASE + '/api/pages/' + page + '/')
-        .then(function(r) { return r.json(); })
+
+    fetch('/api/pages/' + page + '/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API page unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/pages-' + page + '.json').then(function(r) { return r.json(); });
+        })
         .then(function(data) {
             if (!data.sections) return;
-
             data.sections.forEach(function(s) {
                 if (s.key === 'hero' && s.title) {
                     var h = document.getElementById('heroTitle');
                     if (h) h.textContent = s.title;
-                    document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                    if (s.meta_title) document.title = s.meta_title;
                     var metaDesc = document.getElementById('metaDescription');
                     if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
                 }
-
                 if (s.key === 'hero' && s.image) {
                     var heroSection = document.querySelector('[data-section-key="hero"]');
-                    if (heroSection) {
-                        heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
-                    }
+                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + window.optimizedImageUrl(s.image, { width: 1800 }) + ')';
                 }
-
                 var els = document.querySelectorAll('[data-section-key="' + s.key + '"]');
                 els.forEach(function(el) {
                     if (s.title) {
@@ -132,18 +145,22 @@
                     }
                     if (s.content) {
                         var paragraphs = el.querySelectorAll('p');
-                        if (paragraphs.length > 0) {
-                            paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
-                        }
+                        if (paragraphs.length > 0) paragraphs[0].innerHTML = s.content.replace(/\n/g, '<br>');
                     }
                 });
             });
         });
 
-    fetch(API_BASE + '/api/content/')
-        .then(function(r) { return r.json(); })
+    fetch('/api/content/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API content unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/content.json').then(function(r) { return r.json(); });
+        })
         .then(function(contentData) {
-            if (contentData.contact) {
+            if (contentData.contact && contentData.contact.whatsapp) {
                 var num = contentData.contact.whatsapp.replace(/\D/g, '');
                 window.WHATSAPP_NUMBER = num;
                 document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
@@ -158,28 +175,191 @@
                     if (contentData.footer.copyright) el.textContent = contentData.footer.copyright;
                 });
             }
-        })
-        .catch(function() {});
+        });
 
-    fetch(API_BASE + '/api/gallery/')
-        .then(function(r) { return r.json(); })
+    function setupLightbox() {
+        var galleryItems = document.querySelectorAll('.gallery-item');
+        var lightbox = document.getElementById('lightbox');
+        if (!lightbox || galleryItems.length === 0) return;
+
+        var lightboxImg = document.getElementById('lightboxImg');
+        var lightboxClose = document.getElementById('lightboxCloseBtn');
+        var lightboxPrev = document.getElementById('lightboxPrev');
+        var lightboxNext = document.getElementById('lightboxNext');
+        var lightboxContent = document.getElementById('lightboxContent');
+        var lightboxCaption = document.getElementById('lightboxCaption');
+        var lightboxCounter = document.getElementById('lightboxCounter');
+        var currentLightbox = 0;
+        var gallerySrcs = [];
+        var galleryCaptions = [];
+        var zoomLevel = 1;
+        var panX = 0, panY = 0;
+        var isDragging = false;
+        var startX = 0, startY = 0;
+        var isPanning = false;
+
+        galleryItems.forEach(function(item, index) {
+            var img = item.querySelector('img');
+            if (img) {
+                gallerySrcs.push(img.getAttribute('data-full') || img.src);
+                var captionEl = item.querySelector('.gallery-caption');
+                galleryCaptions.push(captionEl ? captionEl.textContent.trim() : '');
+                item.addEventListener('click', function() {
+                    openLightbox(index);
+                });
+            }
+        });
+
+        function openLightbox(index) {
+            currentLightbox = index;
+            zoomLevel = 1;
+            panX = 0;
+            panY = 0;
+            applyTransform();
+            if (lightboxImg) lightboxImg.src = gallerySrcs[currentLightbox];
+            if (lightboxCaption) lightboxCaption.textContent = galleryCaptions[currentLightbox] || '';
+            if (lightboxCounter) lightboxCounter.textContent = (currentLightbox + 1) + ' / ' + gallerySrcs.length;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            zoomLevel = 1;
+            panX = 0;
+            panY = 0;
+        }
+
+        function applyTransform() {
+            if (!lightboxImg) return;
+            lightboxImg.style.transform = 'scale(' + zoomLevel + ') translate(' + panX + 'px, ' + panY + 'px)';
+            lightboxContent.classList.toggle('zoomed', zoomLevel > 1);
+        }
+
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+        if (lightboxPrev) {
+            lightboxPrev.addEventListener('click', function() {
+                currentLightbox = (currentLightbox - 1 + gallerySrcs.length) % gallerySrcs.length;
+                zoomLevel = 1; panX = 0; panY = 0;
+                openLightbox(currentLightbox);
+            });
+        }
+        if (lightboxNext) {
+            lightboxNext.addEventListener('click', function() {
+                currentLightbox = (currentLightbox + 1) % gallerySrcs.length;
+                zoomLevel = 1; panX = 0; panY = 0;
+                openLightbox(currentLightbox);
+            });
+        }
+
+        // Zoom buttons
+        var zoomInBtn = document.getElementById('lightboxZoomIn');
+        var zoomOutBtn = document.getElementById('lightboxZoomOut');
+        var fullscreenBtn = document.getElementById('lightboxFullscreen');
+
+        if (zoomInBtn) zoomInBtn.addEventListener('click', function() {
+            zoomLevel = Math.min(zoomLevel + 0.5, 4);
+            applyTransform();
+        });
+        if (zoomOutBtn) zoomOutBtn.addEventListener('click', function() {
+            zoomLevel = Math.max(zoomLevel - 0.5, 1);
+            if (zoomLevel === 1) { panX = 0; panY = 0; }
+            applyTransform();
+        });
+        if (fullscreenBtn) fullscreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                lightbox.requestFullscreen ? lightbox.requestFullscreen() : lightbox.webkitRequestFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        });
+
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement && fullscreenBtn) {
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        });
+
+        // Mouse wheel zoom
+        lightbox.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) zoomLevel = Math.min(zoomLevel + 0.15, 4);
+            else zoomLevel = Math.max(zoomLevel - 0.15, 1);
+            if (zoomLevel === 1) { panX = 0; panY = 0; }
+            applyTransform();
+        }, { passive: false });
+
+        // Drag to pan
+        lightboxContent.addEventListener('mousedown', function(e) {
+            if (zoomLevel <= 1) return;
+            isDragging = true;
+            startX = e.clientX - panX;
+            startY = e.clientY - panY;
+            lightboxContent.style.cursor = 'grabbing';
+        });
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging || zoomLevel <= 1) return;
+            isPanning = true;
+            panX = e.clientX - startX;
+            panY = e.clientY - startY;
+            applyTransform();
+        });
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            setTimeout(function() { isPanning = false; }, 50);
+            if (lightboxContent) lightboxContent.style.cursor = 'grab';
+        });
+
+        // Click image to zoom
+        lightboxContent.addEventListener('click', function(e) {
+            if (isPanning) return;
+            if (zoomLevel > 1) { zoomLevel = 1; panX = 0; panY = 0; }
+            else { zoomLevel = 2; }
+            applyTransform();
+        });
+
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft' && lightboxPrev) lightboxPrev.click();
+            if (e.key === 'ArrowRight' && lightboxNext) lightboxNext.click();
+            if (e.key === '+' || e.key === '=') { zoomLevel = Math.min(zoomLevel + 0.5, 4); applyTransform(); }
+            if (e.key === '-') { zoomLevel = Math.max(zoomLevel - 0.5, 1); if (zoomLevel === 1) { panX = 0; panY = 0; } applyTransform(); }
+        });
+    }
+
+    fetch('/api/gallery/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API gallery unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/gallery.json').then(function(r) { return r.json(); });
+        })
         .then(function(galleryData) {
             var grid = document.getElementById('galleryGrid');
             if (!grid || !galleryData.images || galleryData.images.length === 0) return;
             var html = '';
             galleryData.images.forEach(function(img) {
-                html += '<div class="gallery-item fade-section fade-prepare">' +
-                    '<img src="' + img.image + '" alt="' + (img.caption || 'Gallery image') + '">' +
+                html += '<div class="gallery-item fade-in">' +
+                    '<img src="' + window.optimizedImageUrl(img.image, { width: 900, height: 650, crop: 'fill' }) + '" data-full="' + window.optimizedImageUrl(img.image, { width: 1800 }) + '" alt="' + (img.caption || 'Gallery image') + '" loading="lazy">' +
                     '<div class="gallery-caption">' + (img.caption || '') + '</div>' +
                     '</div>';
             });
             grid.innerHTML = html;
-            document.querySelectorAll('.gallery-item.fade-section:not(.fade-in)').forEach(function(el) {
-                observer.observe(el);
-            });
-            document.querySelectorAll('.gallery-item.fade-section').forEach(function(el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) { el.classList.add('fade-in'); observer.unobserve(el); } });
-        })
-        .catch(function() {});
+            grid.classList.add('fade-in');
+            var gallerySection = grid.closest('.section');
+            if (gallerySection) { gallerySection.classList.remove('fade-prepare'); gallerySection.classList.add('fade-in'); }
+            setupLightbox();
+        });
+    })();
     </script>
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>

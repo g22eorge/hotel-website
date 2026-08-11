@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Services - Latitude Zero Cottages Kikorongo</title>
     <meta name="description" id="metaDescription" content="Latitude Zero Cottages Kikorongo offers comfortable accommodation, spacious rooms, delicious local and international meals, refreshing drinks, 24/7 internet connection, and warm hospitality near Queen Elizabeth National Park.">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles.css?v=4">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -50,7 +51,7 @@
         <div class="container">
             <div class="section-header" data-section-key="dining">
                 <h2>Dining Experience</h2>
-                <p data-section-key="dining">A good stay deserves good food. Enjoy our locally sourced, freshly prepared meals.</p>
+                <p data-section-key="dining">From hearty breakfasts before your game drive to relaxed dinners under the stars. Enjoy our locally sourced, freshly prepared meals.</p>
             </div>
             <div class="cards-grid" id="dining-cards-container"></div>
         </div>
@@ -63,11 +64,11 @@
                 <p>Stay close to wildlife, nature &amp; adventure at Queen Elizabeth National Park.</p>
             </div>
             <div class="content-block">
-                <p>Latitude Zero Cottages Kikorongo is located near the breathtaking landscapes of Queen Elizabeth National Park, making it a convenient stay for guests who want to enjoy wildlife and safari experiences.</p>
+                <p>We coordinate game drives, park permits, and knowledgeable guides — so you can focus on the wildlife, not the logistics.</p>
             </div>
             <div class="features-grid" style="margin-top: 30px;" id="features-safari"></div>
             <div class="cta-center" style="margin-top: 30px;">
-                <a href="contact.html" class="btn btn-primary">Book a Safari</a>
+                <a href="../pages/contact.html" class="btn btn-primary">Plan Your Safari</a>
             </div>
         </div>
     </section>
@@ -126,33 +127,35 @@
         </div>
     </footer>
 
-    <script src="../script.js"></script>
+    <script src="../script.js?v=20260617"></script>
     <script>
-    var API_BASE = 'https://latitudezero.up.railway.app';
+    (function() {
     var page = document.body.getAttribute('data-page');
     if (!page) return;
-    fetch(API_BASE + '/api/pages/' + page + '/')
-        .then(function(r) { return r.json(); })
+
+    fetch('/api/pages/' + page + '/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API page unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/pages-' + page + '.json').then(function(r) { return r.json(); });
+        })
         .then(function(data) {
             if (!data.sections) return;
-
             data.sections.forEach(function(s) {
                 if (s.key === 'hero' && s.title) {
                     var h = document.getElementById('heroTitle');
                     if (h) h.textContent = s.title;
-                    document.title = s.meta_title || s.title + ' - Latitude Zero Cottages Kikorongo';
+                    if (s.meta_title) document.title = s.meta_title;
                     var metaDesc = document.getElementById('metaDescription');
                     if (metaDesc && s.meta_description) metaDesc.setAttribute('content', s.meta_description);
                 }
-
                 if (s.key === 'hero' && s.image) {
                     var heroSection = document.querySelector('[data-section-key="hero"]');
-                    if (heroSection) {
-                        heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + s.image + ')';
-                    }
+                    if (heroSection) heroSection.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(' + window.optimizedImageUrl(s.image, { width: 1800 }) + ')';
                 }
 
-                // Rooms cards (image_url|Name|Description|Price, separated by ---)
                     if (s.key === 'rooms') {
                         var roomsContainer = document.getElementById('rooms-cards-container');
                         if (s.content && roomsContainer) {
@@ -161,20 +164,12 @@
                             var parsingCards = false;
                             lines.forEach(function(line) {
                                 line = line.trim();
-                                if (line === '---') {
-                                    parsingCards = true;
-                                    return;
-                                }
+                                if (line === '---') { parsingCards = true; return; }
                                 if (!line) return;
                                 if (!parsingCards) return;
                                 var parts = line.split('|');
                                 if (parts.length >= 4) {
-                                    cardItems.push({
-                                        image: parts[0].trim(),
-                                        name: parts[1].trim(),
-                                        desc: parts[2].trim(),
-                                        price: parts[3].trim()
-                                    });
+                                    cardItems.push({ image: parts[0].trim(), name: parts[1].trim(), desc: parts[2].trim(), price: parts[3].trim() });
                                 }
                             });
                             if (cardItems.length > 0) {
@@ -182,7 +177,7 @@
                                 cardItems.forEach(function(card) {
                                     html += '<div class="room-preview-card">';
                                     html += '<div class="room-card-image">';
-                                    html += '<img src="' + card.image + '" alt="' + card.name + '" loading="lazy">';
+                                    html += '<img src="' + window.optimizedImageUrl(card.image, { width: 900, height: 650, crop: 'fill' }) + '" alt="' + card.name + '" loading="lazy">';
                                     html += '<div class="room-card-overlay">';
                                     html += '<span class="room-card-price">' + card.price + '</span>';
                                     html += '</div></div>';
@@ -195,16 +190,13 @@
                                 roomsContainer.innerHTML = html;
                                 roomsContainer.classList.remove('fade-prepare');
                                 roomsContainer.classList.add('fade-in');
-                                var r = roomsContainer.getBoundingClientRect();
-                                if (r.top < window.innerHeight) {
-                                    roomsContainer.classList.add('fade-in');
-                                    roomsContainer.querySelectorAll('.room-preview-card').forEach(function(c) { c.classList.add('fade-in'); });
-                                }
+                                var roomsSection = roomsContainer.closest('.section');
+                                if (roomsSection) { roomsSection.classList.remove('fade-prepare'); roomsSection.classList.add('fade-in'); }
+                                roomsContainer.querySelectorAll('.room-preview-card').forEach(function(c) { c.classList.add('fade-in'); });
                             }
                         }
                     }
 
-                    // Dining cards (image_url|Title|Description|Price, separated by ---)
                     if (s.key === 'dining') {
                         var diningContainer = document.getElementById('dining-cards-container');
                         if (s.content && diningContainer) {
@@ -213,19 +205,11 @@
                             var parsingCards = false;
                             lines.forEach(function(line) {
                                 line = line.trim();
-                                if (line === '---') {
-                                    parsingCards = true;
-                                    return;
-                                }
+                                if (line === '---') { parsingCards = true; return; }
                                 if (!line) return;
                                 var parts = line.split('|');
                                 if (parts.length >= 4) {
-                                    cardItems.push({
-                                        image: parts[0].trim(),
-                                        title: parts[1].trim(),
-                                        desc: parts[2].trim(),
-                                        price: parts[3].trim()
-                                    });
+                                    cardItems.push({ image: parts[0].trim(), title: parts[1].trim(), desc: parts[2].trim(), price: parts[3].trim() });
                                 }
                             });
                             if (cardItems.length > 0) {
@@ -233,7 +217,7 @@
                                 cardItems.forEach(function(card) {
                                     html += '<div class="dining-card">';
                                     html += '<div class="dining-card-image">';
-                                    html += '<img src="' + card.image + '" alt="' + card.title + '" loading="lazy">';
+                                    html += '<img src="' + window.optimizedImageUrl(card.image, { width: 900, height: 650, crop: 'fill' }) + '" alt="' + card.title + '" loading="lazy">';
                                     html += '<div class="dining-card-overlay">';
                                     html += '<span class="dining-card-price">' + card.price + '</span>';
                                     html += '</div></div>';
@@ -245,11 +229,9 @@
                                 diningContainer.innerHTML = html;
                                 diningContainer.classList.remove('fade-prepare');
                                 diningContainer.classList.add('fade-in');
-                                var dr = diningContainer.getBoundingClientRect();
-                                if (dr.top < window.innerHeight) {
-                                    diningContainer.classList.add('fade-in');
-                                    diningContainer.querySelectorAll('.dining-card').forEach(function(c) { c.classList.add('fade-in'); });
-                                }
+                                var diningSection = diningContainer.closest('.section');
+                                if (diningSection) { diningSection.classList.remove('fade-prepare'); diningSection.classList.add('fade-in'); }
+                                diningContainer.querySelectorAll('.dining-card').forEach(function(c) { c.classList.add('fade-in'); });
                             }
                         }
                     }
@@ -339,7 +321,6 @@
                     });
                 }
 
-                // Section-header intro text for rooms and dining (only lines before ---)
                 if (s.key === 'rooms' || s.key === 'dining') {
                     var introP = document.querySelector('[data-section-key="' + s.key + '"] p');
                     if (introP && s.content) {
@@ -350,8 +331,14 @@
             });
         });
 
-    fetch(API_BASE + '/api/content/')
-        .then(function(r) { return r.json(); })
+    fetch('/api/content/')
+        .then(function(r) {
+            if (!r.ok) throw new Error('API content unavailable');
+            return r.json();
+        })
+        .catch(function() {
+            return fetch('../data/content.json').then(function(r) { return r.json(); });
+        })
         .then(function(contentData) {
             if (contentData.footer) {
                 document.querySelectorAll('.footer-tagline').forEach(function(el) {
@@ -368,8 +355,8 @@
                     el.href = 'https://wa.me/' + num;
                 });
             }
-        })
-        .catch(function() {});
+        });
+    })();
     </script>
 
     <a href="https://wa.me/256700629083" class="floating-whatsapp" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>

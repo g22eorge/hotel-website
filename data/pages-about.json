@@ -1,0 +1,37 @@
+{
+  "page": "about",
+  "sections": [
+    {
+      "key": "hero",
+      "title": "About Latitude Zero",
+      "content": "A locally owned property serving safari travellers, families, and couples since opening.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg",
+      "meta_title": "About - Latitude Zero Cottages Kikorongo",
+      "meta_description": "Learn about Latitude Zero Cottages \u2014 locally owned, park-facing accommodation near Queen Elizabeth National Park."
+    },
+    {
+      "key": "promise",
+      "title": "Our Promise",
+      "content": "fas fa-bed|A comfortable place to stay\nfas fa-leaf|A peaceful natural environment\nfas fa-utensils|Delicious meals and drinks\nfas fa-hands-helping|Friendly and professional service\nfas fa-wifi|Reliable internet connection\nfas fa-map-marked-alt|1 km from Queen Elizabeth National Park gate",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "serve",
+      "title": "Who We Serve",
+      "content": "fas fa-globe|Local and international tourists\nfas fa-binoculars|Safari travellers\nfas fa-heart|Couples\nfas fa-users|Families and groups\nfas fa-briefcase|Business and remote workers\nfas fa-leaf|Nature lovers",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565903/latitude_zero/IMG_3396_qiukqh.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    },
+    {
+      "key": "intro",
+      "title": "About Latitude Zero Cottages",
+      "content": "Latitude Zero Cottages sits at one of the most remarkable crossroads in East Africa \u2014 where the Equator crosses the road to Queen Elizabeth National Park. We opened our doors to give safari travellers and nature enthusiasts a genuine place to rest: clean rooms, fresh food, and a team that knows the park's rhythms.\n\nWhether you are arriving after a long game drive, planning an early morning launch, or simply want to experience Uganda's western corridor, we are here to make it easy.",
+      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565892/latitude_zero/IMG_3388_z4jg8c.jpg",
+      "meta_title": "",
+      "meta_description": ""
+    }
+  ]
+}

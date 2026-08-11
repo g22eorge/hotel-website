@@ -2923,12 +2923,28 @@ a:not(.btn):hover {
         background: linear-gradient(135deg, var(--bg) 0%, var(--bg-light) 100%) !important;
     }
 
-    /* About page dark sections */
+    /* About page dark sections.
+       NOTE: --dark is inverted to a LIGHT value in dark mode, so it must NOT be
+       used as a background here — that turned the stats strip beige with white
+       text on it. Use an actual dark surface. */
     .stats-strip {
-        background: var(--dark) !important;
+        background: var(--bg-light) !important;
     }
     .stats-strip .stat-item h3 {
         color: #fff !important;
+    }
+
+    /* Image badge (About intro) — was white bg + inverted light text = unreadable */
+    .about-intro-badge {
+        background: rgba(20, 18, 17, 0.72) !important;
+        color: var(--text) !important;
+    }
+
+    /* Price pills stay a light chip, but keep DARK text — otherwise var(--dark)
+       inverts to light and the price is unreadable on the white pill. */
+    .room-card-price,
+    .dining-card-price {
+        color: #231F20 !important;
     }
 
     /* Footer border top */

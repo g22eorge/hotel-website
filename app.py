@@ -30,11 +30,27 @@ def _database_uri():
         if url.startswith('postgres://'):
             url = url.replace('postgres://', 'postgresql://', 1)
         return url
+
+    # No DATABASE_URL. On a managed host (Railway/Render/Heroku) SQLite lives on an
+    # ephemeral disk, so every restart silently wipes bookings/content/uploads —
+    # exactly the "it saved but nothing changed" trap. Fail loudly instead, unless
+    # explicitly overridden with ALLOW_SQLITE=true.
+    on_managed_host = any(os.environ.get(k) for k in (
+        'RAILWAY_ENVIRONMENT', 'RAILWAY_PROJECT_ID', 'RAILWAY_SERVICE_ID',
+        'RENDER', 'DYNO', 'FLY_APP_NAME',
+    ))
+    if on_managed_host and not _env_bool('ALLOW_SQLITE', False):
+        raise RuntimeError(
+            'DATABASE_URL is not set, but this looks like a hosted deploy where SQLite '
+            'is ephemeral and loses ALL data on restart. Attach a PostgreSQL database and '
+            'set DATABASE_URL (e.g. DATABASE_URL=${{Postgres.DATABASE_URL}} on Railway). '
+            'To run on SQLite anyway (not recommended), set ALLOW_SQLITE=true.'
+        )
+
     import sys
     print(
-        'WARNING: DATABASE_URL is not set — falling back to local SQLite. '
-        'This is fine for local dev, but on an ephemeral host (Railway/Render/etc.) '
-        'ALL data is lost on every restart. Set DATABASE_URL to a Postgres URL in production.',
+        'WARNING: DATABASE_URL is not set — falling back to local SQLite (dev only). '
+        'Data will not persist across restarts on a hosted server.',
         file=sys.stderr,
     )
     return 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')

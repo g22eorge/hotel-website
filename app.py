@@ -3,7 +3,7 @@ import time
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import CSRFProtect
 from sqlalchemy.exc import OperationalError, ProgrammingError, IntegrityError
@@ -30,6 +30,13 @@ def _database_uri():
         if url.startswith('postgres://'):
             url = url.replace('postgres://', 'postgresql://', 1)
         return url
+    import sys
+    print(
+        'WARNING: DATABASE_URL is not set — falling back to local SQLite. '
+        'This is fine for local dev, but on an ephemeral host (Railway/Render/etc.) '
+        'ALL data is lost on every restart. Set DATABASE_URL to a Postgres URL in production.',
+        file=sys.stderr,
+    )
     return 'sqlite:///' + os.path.join(BASE_DIR, 'latitude_zero.db')
 
 
@@ -144,7 +151,9 @@ login_manager.login_message = 'Please log in to access the admin panel.'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    # Reject sessions of users who were deactivated after logging in.
+    user = User.query.get(int(user_id))
+    return user if (user and user.is_active) else None
 
 # ===== Admin Auth Routes =====
 @app.route('/admin/')
@@ -175,7 +184,11 @@ def admin_login():
     if current_user.is_authenticated:
         return redirect(url_for('admin_dashboard'))
     if request.method == 'POST':
-        ip = request.headers.get('X-Forwarded-For', request.remote_addr or 'unknown').split(',')[0].strip()
+        # Key the throttle off remote_addr only. When TRUST_PROXY=true, ProxyFix
+        # has already rewritten remote_addr to the real client IP from a trusted
+        # proxy. Reading X-Forwarded-For directly would let an attacker rotate a
+        # spoofed header and get a fresh bucket per request, defeating the lockout.
+        ip = request.remote_addr or 'unknown'
         blocked_for = _login_block_seconds(ip)
         if blocked_for:
             flash(f'Too many failed attempts. Try again in {blocked_for} seconds.', 'error')
@@ -279,9 +292,14 @@ def api_create_booking():
             if not data.get(field):
                 return jsonify({'error': f'Missing {field}'}), 400
 
+        checkin = datetime.strptime(data['checkin'], '%Y-%m-%d').date()
+        checkout = datetime.strptime(data['checkout'], '%Y-%m-%d').date()
+        if checkout <= checkin:
+            return jsonify({'error': 'Check-out must be after check-in.'}), 400
+
         booking = Booking(
-            checkin=datetime.strptime(data['checkin'], '%Y-%m-%d').date(),
-            checkout=datetime.strptime(data['checkout'], '%Y-%m-%d').date(),
+            checkin=checkin,
+            checkout=checkout,
             guests=data.get('guests', '2'),
             room=data.get('room', 'Standard Room'),
             name=data['name'],
@@ -361,8 +379,9 @@ def admin_upload():
     try:
         url = upload_to_cloudinary(file, 'latitude_zero/admin')
         return jsonify({'url': url})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    except Exception:
+        app.logger.exception('Image upload failed')
+        return jsonify({'error': 'Upload failed. Check the Cloudinary configuration and try again.'}), 500
 
 @app.route('/api/pages/<page>/')
 def api_page(page):
@@ -733,14 +752,24 @@ def serve_images(filename):
 def serve_pages(filename):
     return send_from_directory(os.path.join(BASE_DIR, 'pages'), filename)
 
+# Only these extensions may be served from the project root. This is a strict
+# allowlist so the catch-all can NEVER hand out app.py, models.py, .env,
+# requirements.txt, the SQLite db, or any other source/secret file.
+ALLOWED_STATIC_EXT = {
+    'html', 'htm', 'css', 'js', 'mjs', 'json', 'txt', 'xml', 'webmanifest',
+    'ico', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'avif',
+    'woff', 'woff2', 'ttf', 'eot', 'map',
+}
+# Project files that share an allowed extension (.txt) but must never be served.
+BLOCKED_STATIC_BASENAMES = {'requirements.txt', 'runtime.txt'}
+
+
 @app.route('/<path:filename>')
 def serve_static(filename):
-    if filename.endswith('.html'):
-        return send_from_directory(BASE_DIR, filename)
-    elif filename.endswith('.css'):
-        return send_from_directory(BASE_DIR, filename)
-    elif filename.endswith('.js'):
-        return send_from_directory(BASE_DIR, filename)
+    ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
+    basename = filename.rsplit('/', 1)[-1].lower()
+    if ext not in ALLOWED_STATIC_EXT or basename in BLOCKED_STATIC_BASENAMES:
+        abort(404)
     return send_from_directory(BASE_DIR, filename)
 
 # ===== Initialize Database =====

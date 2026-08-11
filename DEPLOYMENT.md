@@ -4,8 +4,9 @@ This app is a **Flask website + admin CMS**. For the admin and live editing to
 work, the Flask app must **be** the public site (the frontend calls same-origin
 `/api/…`). A static-only host (plain Netlify) cannot provide the admin.
 
-Deploy the **`production`** branch. It contains the newest frontend **and** the
-hardened backend.
+Deploy the **`main`** branch — it is the canonical production branch (the
+`production` branch was merged into it, so the two are identical). It contains the
+newest frontend **and** the hardened backend.
 
 ---
 
@@ -30,15 +31,18 @@ hardened backend.
 | `CLOUDINARY_API_KEY` | ✅ | from Cloudinary dashboard |
 | `CLOUDINARY_API_SECRET` | ✅ | from Cloudinary dashboard |
 | `COOKIE_SECURE` | ✅ | `true` in production (HTTPS). `false` only for local http. |
+| `TRUST_PROXY` | ✅ (proxied hosts) | `true` on Railway/Render/nginx-VPS so the app reads the real client IP + https scheme from `X-Forwarded-*`. Leave unset only for local/direct. |
 | `LOGIN_MAX_FAILS` | optional | default 8 |
 | `LOGIN_LOCK_SECONDS` | optional | default 300 |
 
 See `.env.example` for a copy-paste template.
 
-**Start command (all hosts):**
+**Start command (managed hosts — Railway/Render/Heroku):**
 ```
 gunicorn --preload -w 4 -b 0.0.0.0:$PORT app:app
 ```
+(The VPS runs the same flags but binds `127.0.0.1:8000` behind nginx — see the
+systemd unit in §2C.)
 `--preload` is required: it runs the one-time DB setup in the master process
 before workers fork, avoiding a "table already exists" race on a fresh database.
 
@@ -81,7 +85,7 @@ sudo apt install -y python3-venv python3-pip python3-dev nginx postgresql git \
 **2. App user + code**
 ```bash
 sudo useradd --system --create-home --home-dir /opt/latitude-zero --shell /usr/sbin/nologin latitude
-sudo -u latitude git clone -b production https://github.com/g22eorge/hotel-website.git /opt/latitude-zero
+sudo -u latitude git clone -b main https://github.com/g22eorge/hotel-website.git /opt/latitude-zero
 cd /opt/latitude-zero
 sudo -u latitude python3 -m venv .venv
 sudo -u latitude .venv/bin/pip install -r requirements.txt
@@ -140,14 +144,10 @@ sudo systemctl restart latitude-zero
 
 ---
 
-## 3. Push the branch
+## 3. Branch to deploy
 
-```bash
-git push -u origin production
-```
-
-Point the host at the **`production`** branch (or merge it into `main` and deploy
-`main` — your call).
+Everything is already on **`main`** (and the identical `production` branch), both
+pushed to GitHub. Point your host's deploy branch at **`main`**.
 
 ---
 
@@ -176,9 +176,13 @@ Point the host at the **`production`** branch (or merge it into `main` and deplo
 
 ## 6. Notes
 
-- The old `https://latitudezero.up.railway.app` currently serves a **static**
-  build with a dead-end admin link — retire it or redeploy it from `production`.
-- `admin/config.yml` + `netlify/` are legacy Decap/Netlify CMS files; harmless,
-  unused by the Flask app. Safe to delete later.
+- **Current live status:** `https://latitudezero.up.railway.app` is NOT running
+  the Flask app yet (its `/admin/` and `/api/` return 404). Deploying `main` there
+  per Part A is what brings the admin online. `netlify.toml` already points its
+  `/api/*` proxy and `/admin` redirect at that URL, so once Flask is deployed the
+  Netlify site wires up automatically. If the redeployed Railway URL differs,
+  update the three hostnames in `netlify.toml`.
+- `admin/config.yml` + `netlify/functions/` are legacy Decap/Netlify CMS files;
+  harmless and unused by the Flask app. Safe to delete later.
 - Back up: export bookings from **Bookings → Export**, and take periodic Postgres
   snapshots via your host.

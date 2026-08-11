@@ -72,8 +72,11 @@ env template. Run everything below as a sudo-capable user.
 **1. Packages**
 ```bash
 sudo apt update
-sudo apt install -y python3-venv python3-pip nginx postgresql git
+sudo apt install -y python3-venv python3-pip python3-dev nginx postgresql git \
+                    libpq-dev gcc      # libpq-dev/gcc: safety net so psycopg2 builds if no wheel
 ```
+> Python **3.10–3.13** is fine (Ubuntu 22.04 = 3.10, 24.04 = 3.12; both work).
+> `psycopg2-binary` ships a prebuilt wheel for these, so it installs in seconds.
 
 **2. App user + code**
 ```bash

@@ -749,6 +749,16 @@ def admin_stats():
         'total_users': User.query.count()
     })
 
+# ===== Pretty-URL redirects (parity with netlify.toml, which only applies on Netlify) =====
+@app.route('/about')
+@app.route('/services')
+@app.route('/gallery')
+@app.route('/contact')
+def _pretty_page_redirect():
+    page = request.path.strip('/')
+    return redirect(f'/pages/{page}.html', code=301)
+
+
 # ===== Static File Serving =====
 @app.route('/')
 def serve_index():

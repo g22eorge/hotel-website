@@ -858,9 +858,7 @@ def init_db():
 
         if not Room.query.first():
             rooms = [
-                Room(name='Standard Room', description='A cozy room with comfortable bedding and all essential amenities for a restful stay. Perfect for solo travelers or couples looking for comfort in nature.', price='From $45/night', image='images/IMG_3384.jpeg', features='WiFi\nHot Shower\nBedroom\nMosquito Net\nAC Available', sort_order=1),
-                Room(name='Deluxe Room', description='Extra spacious room with premium furnishings and stunning views of the surrounding landscape. Ideal for those who want a little more space and luxury.', price='From $65/night', image='images/IMG_3385.jpeg', features='WiFi\nHot Shower\nSpacious Bedroom\nBalcony\nMosquito Net\nAC', sort_order=2),
-                Room(name='Family Cottage', description='Ideal for families and groups, offering generous space and a private cottage setting with separate sleeping areas.', price='From $85/night', image='images/IMG_3388.jpeg', features='WiFi\nHot Shower\n2 Bedrooms\nLiving Area\nPrivate Cottage\nKitchenette', sort_order=3),
+                Room(name='Standard Room', description='A comfortable room with quality bedding and all essential amenities for a restful stay — perfect after a day in the park. One standard rate, everything included.', price='$150/night', image='images/IMG_3384.jpeg', features='WiFi\nHot Shower\nComfortable Bedroom\nMosquito Net\nAC Available', sort_order=1),
             ]
             for r in rooms:
                 db.session.add(r)
@@ -927,6 +925,19 @@ def apply_content_fixes():
                     'Just 300m from the Equator and beside Queen Elizabeth National Park,',
                 )
                 changed = True
+
+            # Accommodation: one Standard room at $150, no variations. Each step
+            # fires only while the value still matches the old seed, so admin edits
+            # to rooms/pricing are never clobbered.
+            std = Room.query.filter_by(name='Standard Room').first()
+            if std and std.price == 'From $45/night':
+                std.price = '$150/night'
+                changed = True
+            for room_name, seed_price in (('Deluxe Room', 'From $65/night'), ('Family Cottage', 'From $85/night')):
+                extra = Room.query.filter_by(name=room_name).first()
+                if extra and extra.is_active and extra.price == seed_price:
+                    extra.is_active = False  # hide (reversible) rather than delete
+                    changed = True
 
             if changed:
                 db.session.commit()

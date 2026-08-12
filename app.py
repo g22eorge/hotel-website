@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import cloudinary
 import cloudinary.uploader
@@ -6,6 +7,7 @@ import cloudinary.api
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, send_from_directory, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import CSRFProtect
+from sqlalchemy import text
 from sqlalchemy.exc import OperationalError, ProgrammingError, IntegrityError
 from werkzeug.middleware.proxy_fix import ProxyFix
 from urllib.parse import urlparse
@@ -789,8 +791,35 @@ def serve_static(filename):
     return send_from_directory(BASE_DIR, filename)
 
 # ===== Initialize Database =====
+def _wait_for_db(max_wait=45, interval=1.5):
+    """Wait for the database to accept connections before init runs.
+
+    On a managed host the web service can start a moment before the Postgres
+    container is ready ('the database system is starting up'). Rather than crash
+    the boot, ping the DB and retry with backoff until it answers or we time out.
+    On SQLite this succeeds on the first try, so local dev is unaffected.
+    """
+    deadline = time.time() + max_wait
+    attempt = 0
+    while True:
+        attempt += 1
+        try:
+            db.session.execute(text('SELECT 1'))
+            db.session.rollback()
+            return
+        except OperationalError as exc:
+            db.session.rollback()
+            if time.time() >= deadline:
+                print(f'Database still unreachable after {max_wait}s — giving up.', file=sys.stderr)
+                raise
+            first_line = str(exc).splitlines()[0][:110]
+            print(f'Database not ready (attempt {attempt}): {first_line} — retrying in {interval}s...', file=sys.stderr)
+            time.sleep(interval)
+
+
 def init_db():
     with app.app_context():
+        _wait_for_db()
         try:
             db.create_all()
         except (OperationalError, ProgrammingError):

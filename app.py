@@ -892,7 +892,51 @@ def init_db():
             db.session.rollback()
             app.logger.warning('init_db seed skipped (already initialized by another worker).')
 
+
+def apply_content_fixes():
+    """One-off, idempotent corrections to seeded content.
+
+    Each change fires ONLY when the stored value still exactly matches the old
+    seeded default, so an admin's own edits are never overwritten. Safe to run on
+    every boot — once corrected (or once an admin edits the field), it's a no-op.
+    """
+    fixes = {
+        'hero_title': (
+            'Your Peaceful Stay Near Queen Elizabeth National Park',
+            'Wake Up to the Wild — 300m from the Equator',
+        ),
+        'hero_tagline': (
+            'Comfortable Cottages. Delicious Meals. Natural Surroundings. Warm Hospitality.',
+            '300m from the Equator · Beside Queen Elizabeth NP · Fresh Meals · 24/7 Wi-Fi',
+        ),
+    }
+    with app.app_context():
+        try:
+            changed = False
+            settings = SiteSettings.query.first()
+            if settings:
+                for field, (old, new) in fixes.items():
+                    if getattr(settings, field, None) == old:
+                        setattr(settings, field, new)
+                        changed = True
+
+            safari = PageSection.query.filter_by(page='services', section_key='safari').first()
+            if safari and safari.content and 'Located just 1km from Queen Elizabeth National Park,' in safari.content:
+                safari.content = safari.content.replace(
+                    'Located just 1km from Queen Elizabeth National Park,',
+                    'Just 300m from the Equator and beside Queen Elizabeth National Park,',
+                )
+                changed = True
+
+            if changed:
+                db.session.commit()
+                print('Applied one-off content fixes (Equator distance).')
+        except (IntegrityError, OperationalError, ProgrammingError):
+            db.session.rollback()
+
+
 init_db()
+apply_content_fixes()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5001)), debug=_env_bool('FLASK_DEBUG', False))

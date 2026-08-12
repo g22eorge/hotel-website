@@ -2726,10 +2726,14 @@ a:not(.btn):hover {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: var(--white);
+    /* Glassmorphism: translucent, blurred backdrop with a light glass edge */
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
     padding: 14px 24px;
     border-radius: 50px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     display: flex;
     align-items: center;
     gap: 16px;
@@ -3196,7 +3200,7 @@ a:not(.btn):hover {
 .bg-dark { background: #1a1817 !important; }
 
 /* Sticky booking bar dark mode */
-.sticky-booking-bar { background: #252321 !important; border-color: #3a3734 !important; }
+.sticky-booking-bar { background: rgba(37, 35, 33, 0.55) !important; border-color: rgba(255, 255, 255, 0.14) !important; }
 .sticky-booking-bar .bar-text { color: #e0dcda !important; }
 .sticky-booking-bar .bar-text span { color: #a89c94 !important; }
 .sticky-booking-bar .bar-close { color: #a8a5a2 !important; }

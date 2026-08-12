@@ -2758,8 +2758,13 @@ a:not(.btn):hover {
 }
 
 .sticky-booking-bar .bar-text span {
-    color: var(--accent);
+    display: inline-block;
+    background: #231F20;
+    color: #fff;
     font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
 }
 
 .sticky-booking-bar .btn {
@@ -3202,6 +3207,6 @@ a:not(.btn):hover {
 /* Sticky booking bar dark mode */
 .sticky-booking-bar { background: rgba(37, 35, 33, 0.55) !important; border-color: rgba(255, 255, 255, 0.14) !important; }
 .sticky-booking-bar .bar-text { color: #e0dcda !important; }
-.sticky-booking-bar .bar-text span { color: #a89c94 !important; }
+.sticky-booking-bar .bar-text span { background: #C9BDB5 !important; color: #231F20 !important; }
 .sticky-booking-bar .bar-close { color: #a8a5a2 !important; }
 }

@@ -869,7 +869,7 @@ def init_db():
                 PageSection(page='about', section_key='mission', title='Our Mission', content='Our goal is to give every guest a comfortable and memorable stay, whether they are visiting for adventure, relaxation, family time, or a peaceful retreat.'),
                 PageSection(page='about', section_key='story', title='Our Story', content='Established with a vision to offer visitors a serene home away from home near Queen Elizabeth National Park, Latitude Zero Cottages has grown into a beloved destination for nature enthusiasts, families, couples, and groups seeking authentic Ugandan hospitality.'),
                 PageSection(page='services', section_key='hero', title='Our Services', content='At Latitude Zero Cottages Kikorongo, we offer more than just a place to stay. Our goal is to provide a comprehensive experience that blends comfort, relaxation, and adventure in one of Uganda most beautiful regions.'),
-                PageSection(page='services', section_key='rooms', title='Comfortable Accommodation', content='Our cottages and rooms are designed for relaxation after a day of adventure. Each room offers modern amenities, comfortable bedding, and a peaceful atmosphere. Whether you prefer a standard room, a deluxe suite, or a family cottage, we have the perfect space for your stay.'),
+                PageSection(page='services', section_key='rooms', title='Comfortable Accommodation', content='Our comfortable Standard Rooms are designed for relaxation after a day of adventure. Each room offers modern amenities, quality bedding, an en-suite bathroom, and a peaceful atmosphere — one standard rate at $150/night, everything included.'),
                 PageSection(page='services', section_key='dining', title='Delicious Dining', content='Enjoy freshly prepared local and international meals at our dining area. Our menu features a blend of traditional Ugandan dishes and continental favorites, all prepared with fresh ingredients.'),
                 PageSection(page='services', section_key='safari', title='Safari Adventures', content='Just 300m from the Equator and beside Queen Elizabeth National Park, we offer easy access to wildlife safaris, game drives, boat cruises, and nature walks. Our team can help you plan the perfect safari adventure.'),
                 PageSection(page='services', section_key='amenities', title='Amenities', content='All rooms include: 24/7 WiFi, hot showers, comfortable bedding, mosquito nets, power backup, and room service. Our facilities are designed to ensure a relaxing and worry-free stay.'),
@@ -935,6 +935,14 @@ def apply_content_fixes():
                 changed = True
             if std and std.image == 'images/IMG_3384.jpeg':
                 std.image = 'images/IMG_3396.jpeg'  # actual room-interior photo (was a building exterior)
+                changed = True
+
+            rooms_sec = PageSection.query.filter_by(page='services', section_key='rooms').first()
+            if rooms_sec and rooms_sec.content and 'a deluxe suite, or a family cottage' in rooms_sec.content:
+                rooms_sec.content = ('Our comfortable Standard Rooms are designed for relaxation after a day of '
+                                     'adventure. Each room offers modern amenities, quality bedding, an en-suite '
+                                     'bathroom, and a peaceful atmosphere — one standard rate at $150/night, '
+                                     'everything included.')
                 changed = True
             for room_name, seed_price in (('Deluxe Room', 'From $65/night'), ('Family Cottage', 'From $85/night')):
                 extra = Room.query.filter_by(name=room_name).first()

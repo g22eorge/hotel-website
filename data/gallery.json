@@ -1,39 +1,64 @@
 {
   "images": [
     {
-      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3382_gaos8t.jpg",
-      "caption": "Cozy Cottage Exterior",
-      "sort_order": 1
-    },
-    {
-      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565884/latitude_zero/IMG_3383_aqfgti.jpg",
-      "caption": "Delicious Local Cuisine",
-      "sort_order": 2
-    },
-    {
-      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565889/latitude_zero/IMG_3384_bdvlsz.jpg",
-      "caption": "Spacious Rooms",
-      "sort_order": 3
-    },
-    {
-      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565881/latitude_zero/IMG_3385_msr32r.jpg",
-      "caption": "Peaceful Views",
-      "sort_order": 4
-    },
-    {
-      "image": "https://res.cloudinary.com/daoxmqexa/image/upload/v1781565897/latitude_zero/IMG_3386_zdb95k.jpg",
-      "caption": "Queen Elizabeth National Park",
-      "sort_order": 5
-    },
-    {
       "image": "images/property-view.jpg",
-      "caption": "Our Grounds & Savannah Views",
-      "sort_order": 6
+      "caption": "Our grounds & savanna views",
+      "sort_order": 10
     },
     {
       "image": "images/guest-rooms.jpg",
-      "caption": "Comfortable Guest Rooms",
-      "sort_order": 7
+      "caption": "Guest rooms with private entrances",
+      "sort_order": 20
+    },
+    {
+      "image": "images/IMG_3396.jpeg",
+      "caption": "Comfortable room interiors",
+      "sort_order": 30
+    },
+    {
+      "image": "images/IMG_3389.jpeg",
+      "caption": "Modern en-suite bathrooms",
+      "sort_order": 40
+    },
+    {
+      "image": "images/IMG_3382.jpeg",
+      "caption": "Cottage exterior",
+      "sort_order": 50
+    },
+    {
+      "image": "images/IMG_3386.jpeg",
+      "caption": "Thatched cottages",
+      "sort_order": 60
+    },
+    {
+      "image": "images/IMG_3387.jpeg",
+      "caption": "Private verandas",
+      "sort_order": 70
+    },
+    {
+      "image": "images/IMG_3391.jpeg",
+      "caption": "Handcrafted timber ceilings",
+      "sort_order": 80
+    },
+    {
+      "image": "images/IMG_3395.jpeg",
+      "caption": "Savanna views",
+      "sort_order": 90
+    },
+    {
+      "image": "images/IMG_3393.jpeg",
+      "caption": "Green surroundings",
+      "sort_order": 100
+    },
+    {
+      "image": "images/IMG_3399.jpeg",
+      "caption": "Peaceful grounds",
+      "sort_order": 110
+    },
+    {
+      "image": "images/IMG_3385.jpeg",
+      "caption": "The road & the plains",
+      "sort_order": 120
     }
   ]
 }

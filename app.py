@@ -880,6 +880,24 @@ def init_db():
             for s in sections:
                 db.session.add(s)
 
+        if not GalleryImage.query.first():
+            gallery = [
+                ('images/property-view.jpg', 'Our grounds & savanna views', 10),
+                ('images/guest-rooms.jpg', 'Guest rooms with private entrances', 20),
+                ('images/IMG_3396.jpeg', 'Comfortable room interiors', 30),
+                ('images/IMG_3389.jpeg', 'Modern en-suite bathrooms', 40),
+                ('images/IMG_3382.jpeg', 'Cottage exterior', 50),
+                ('images/IMG_3386.jpeg', 'Thatched cottages', 60),
+                ('images/IMG_3387.jpeg', 'Private verandas', 70),
+                ('images/IMG_3391.jpeg', 'Handcrafted timber ceilings', 80),
+                ('images/IMG_3395.jpeg', 'Savanna views', 90),
+                ('images/IMG_3393.jpeg', 'Green surroundings', 100),
+                ('images/IMG_3399.jpeg', 'Peaceful grounds', 110),
+                ('images/IMG_3385.jpeg', 'The road & the plains', 120),
+            ]
+            for src, caption, order in gallery:
+                db.session.add(GalleryImage(image=src, caption=caption, sort_order=order))
+
         try:
             db.session.commit()
             print('Database initialized with seed content.')

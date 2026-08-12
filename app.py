@@ -858,7 +858,7 @@ def init_db():
 
         if not Room.query.first():
             rooms = [
-                Room(name='Standard Room', description='A comfortable room with quality bedding and all essential amenities for a restful stay — perfect after a day in the park. One standard rate, everything included.', price='$150/night', image='images/IMG_3384.jpeg', features='WiFi\nHot Shower\nComfortable Bedroom\nMosquito Net\nAC Available', sort_order=1),
+                Room(name='Standard Room', description='A comfortable room with quality bedding and all essential amenities for a restful stay — perfect after a day in the park. One standard rate, everything included.', price='$150/night', image='images/IMG_3396.jpeg', features='WiFi\nHot Shower\nComfortable Bedroom\nMosquito Net\nAC Available', sort_order=1),
             ]
             for r in rooms:
                 db.session.add(r)
@@ -932,6 +932,9 @@ def apply_content_fixes():
             std = Room.query.filter_by(name='Standard Room').first()
             if std and std.price == 'From $45/night':
                 std.price = '$150/night'
+                changed = True
+            if std and std.image == 'images/IMG_3384.jpeg':
+                std.image = 'images/IMG_3396.jpeg'  # actual room-interior photo (was a building exterior)
                 changed = True
             for room_name, seed_price in (('Deluxe Room', 'From $65/night'), ('Family Cottage', 'From $85/night')):
                 extra = Room.query.filter_by(name=room_name).first()

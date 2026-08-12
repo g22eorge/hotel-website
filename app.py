@@ -858,7 +858,7 @@ def init_db():
 
         if not Room.query.first():
             rooms = [
-                Room(name='Standard Room', description='A comfortable room with quality bedding and all essential amenities for a restful stay — perfect after a day in the park. One standard rate, everything included.', price='$150/night', image='images/IMG_3396.jpeg', features='WiFi\nHot Shower\nComfortable Bedroom\nMosquito Net\nAC Available', sort_order=1),
+                Room(name='Standard Room', description='A comfortable room with quality bedding and all essential amenities for a restful stay — perfect after a day in the park. One standard rate, everything included.', price='$150/night', image='/images/IMG_3396.jpeg', features='WiFi\nHot Shower\nComfortable Bedroom\nMosquito Net\nAC Available', sort_order=1),
             ]
             for r in rooms:
                 db.session.add(r)
@@ -882,18 +882,18 @@ def init_db():
 
         if not GalleryImage.query.first():
             gallery = [
-                ('images/property-view.jpg', 'Our grounds & savanna views', 10),
-                ('images/guest-rooms.jpg', 'Guest rooms with private entrances', 20),
-                ('images/IMG_3396.jpeg', 'Comfortable room interiors', 30),
-                ('images/IMG_3389.jpeg', 'Modern en-suite bathrooms', 40),
-                ('images/IMG_3382.jpeg', 'Cottage exterior', 50),
-                ('images/IMG_3386.jpeg', 'Thatched cottages', 60),
-                ('images/IMG_3387.jpeg', 'Private verandas', 70),
-                ('images/IMG_3391.jpeg', 'Handcrafted timber ceilings', 80),
-                ('images/IMG_3395.jpeg', 'Savanna views', 90),
-                ('images/IMG_3393.jpeg', 'Green surroundings', 100),
-                ('images/IMG_3399.jpeg', 'Peaceful grounds', 110),
-                ('images/IMG_3385.jpeg', 'The road & the plains', 120),
+                ('/images/property-view.jpg', 'Our grounds & savanna views', 10),
+                ('/images/guest-rooms.jpg', 'Guest rooms with private entrances', 20),
+                ('/images/IMG_3396.jpeg', 'Comfortable room interiors', 30),
+                ('/images/IMG_3389.jpeg', 'Modern en-suite bathrooms', 40),
+                ('/images/IMG_3382.jpeg', 'Cottage exterior', 50),
+                ('/images/IMG_3386.jpeg', 'Thatched cottages', 60),
+                ('/images/IMG_3387.jpeg', 'Private verandas', 70),
+                ('/images/IMG_3391.jpeg', 'Handcrafted timber ceilings', 80),
+                ('/images/IMG_3395.jpeg', 'Savanna views', 90),
+                ('/images/IMG_3393.jpeg', 'Green surroundings', 100),
+                ('/images/IMG_3399.jpeg', 'Peaceful grounds', 110),
+                ('/images/IMG_3385.jpeg', 'The road & the plains', 120),
             ]
             for src, caption, order in gallery:
                 db.session.add(GalleryImage(image=src, caption=caption, sort_order=order))
@@ -953,6 +953,16 @@ def apply_content_fixes():
                 changed = True
             if std and std.image == 'images/IMG_3384.jpeg':
                 std.image = 'images/IMG_3396.jpeg'  # actual room-interior photo (was a building exterior)
+                changed = True
+
+            # Make stored image paths absolute so they resolve on subpages too — a
+            # relative 'images/x' on /pages/gallery.html becomes /pages/images/x (404).
+            for gi in GalleryImage.query.all():
+                if gi.image and gi.image.startswith('images/'):
+                    gi.image = '/' + gi.image
+                    changed = True
+            if std and std.image and std.image.startswith('images/'):
+                std.image = '/' + std.image
                 changed = True
 
             rooms_sec = PageSection.query.filter_by(page='services', section_key='rooms').first()

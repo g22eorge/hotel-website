@@ -1,62 +1,62 @@
 {
   "images": [
     {
-      "image": "images/property-view.jpg",
+      "image": "/images/property-view.jpg",
       "caption": "Our grounds & savanna views",
       "sort_order": 10
     },
     {
-      "image": "images/guest-rooms.jpg",
+      "image": "/images/guest-rooms.jpg",
       "caption": "Guest rooms with private entrances",
       "sort_order": 20
     },
     {
-      "image": "images/IMG_3396.jpeg",
+      "image": "/images/IMG_3396.jpeg",
       "caption": "Comfortable room interiors",
       "sort_order": 30
     },
     {
-      "image": "images/IMG_3389.jpeg",
+      "image": "/images/IMG_3389.jpeg",
       "caption": "Modern en-suite bathrooms",
       "sort_order": 40
     },
     {
-      "image": "images/IMG_3382.jpeg",
+      "image": "/images/IMG_3382.jpeg",
       "caption": "Cottage exterior",
       "sort_order": 50
     },
     {
-      "image": "images/IMG_3386.jpeg",
+      "image": "/images/IMG_3386.jpeg",
       "caption": "Thatched cottages",
       "sort_order": 60
     },
     {
-      "image": "images/IMG_3387.jpeg",
+      "image": "/images/IMG_3387.jpeg",
       "caption": "Private verandas",
       "sort_order": 70
     },
     {
-      "image": "images/IMG_3391.jpeg",
+      "image": "/images/IMG_3391.jpeg",
       "caption": "Handcrafted timber ceilings",
       "sort_order": 80
     },
     {
-      "image": "images/IMG_3395.jpeg",
+      "image": "/images/IMG_3395.jpeg",
       "caption": "Savanna views",
       "sort_order": 90
     },
     {
-      "image": "images/IMG_3393.jpeg",
+      "image": "/images/IMG_3393.jpeg",
       "caption": "Green surroundings",
       "sort_order": 100
     },
     {
-      "image": "images/IMG_3399.jpeg",
+      "image": "/images/IMG_3399.jpeg",
       "caption": "Peaceful grounds",
       "sort_order": 110
     },
     {
-      "image": "images/IMG_3385.jpeg",
+      "image": "/images/IMG_3385.jpeg",
       "caption": "The road & the plains",
       "sort_order": 120
     }
